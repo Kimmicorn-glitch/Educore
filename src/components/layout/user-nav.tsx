@@ -1,3 +1,4 @@
+
 "use client"
 
 import {
@@ -26,7 +27,9 @@ export function UserNav() {
     const router = useRouter();
 
     const handleSignOut = () => {
-        signOut(auth);
+        if(auth) {
+            signOut(auth);
+        }
         router.push('/login');
     }
   return (
@@ -56,7 +59,7 @@ export function UserNav() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="#">
+            <Link href="/profile">
               Settings
             </Link>
           </DropdownMenuItem>

@@ -127,7 +127,7 @@ export function MainSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Settings">
-              <Link href="#">
+              <Link href="/profile">
                 <Settings />
                 <span>Settings</span>
               </Link>

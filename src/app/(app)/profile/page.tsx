@@ -23,9 +23,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { useUser, useFirestore, useDoc, useMemoFirebase, updateDocumentNonBlocking } from '@/firebase';
 import { doc } from 'firebase/firestore';
-import { updateDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { useToast } from '@/hooks/use-toast';
 
 
 const iconMap: { [key: string]: React.ElementType } = {
@@ -42,38 +42,70 @@ export default function ProfilePage() {
     const { user } = useUser();
     const firestore = useFirestore();
     const [mounted, setMounted] = useState(false);
+    const { toast } = useToast();
 
     const userDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid) : null, [user, firestore]);
-    const { data: userProfile } = useDoc(userDocRef);
+    const { data: userProfile, mutate } = useDoc(userDocRef);
 
-    const [name, setName] = useState(userProfile?.name || user?.displayName || 'Guest User');
+    const [name, setName] = useState('');
 
     useEffect(() => {
         setMounted(true);
+        if (typeof window !== "undefined") {
+            const storedFontSize = localStorage.getItem('fontSize');
+            if(storedFontSize) {
+                handleFontSizeChange(Number(storedFontSize), false);
+            }
+            const storedContrast = localStorage.getItem('highContrast');
+            if(storedContrast) {
+                toggleHighContrast(JSON.parse(storedContrast), false)
+            }
+        }
     }, []);
 
     useEffect(() => {
         if(userProfile) {
             setName(userProfile.name);
+        } else if (user?.displayName) {
+            setName(user.displayName);
+        } else {
+            setName('Guest User');
         }
-    }, [userProfile]);
+    }, [userProfile, user]);
 
     const earnedBadges = allBadges.filter(badge => userProgress.badges.includes(badge.id));
 
-    const handleFontSizeChange = (size: number) => {
+    const handleFontSizeChange = (size: number, showToast = true) => {
       const newSize = Math.max(12, Math.min(24, size));
       setFontSize(newSize);
       document.documentElement.style.fontSize = `${newSize}px`;
+      if (typeof window !== "undefined") {
+        localStorage.setItem('fontSize', newSize.toString());
+      }
+      if(showToast) {
+        toast({ title: "Font size updated" });
+      }
     }
 
-    const toggleHighContrast = (isHighContrast: boolean) => {
+    const toggleHighContrast = (isHighContrast: boolean, showToast = true) => {
         setHighContrast(isHighContrast);
         document.documentElement.classList.toggle('high-contrast', isHighContrast);
+        if (typeof window !== "undefined") {
+            localStorage.setItem('highContrast', JSON.stringify(isHighContrast));
+        }
+        if(showToast) {
+            toast({ title: `High contrast mode ${isHighContrast ? 'enabled' : 'disabled'}` });
+        }
     }
 
     const handleSaveChanges = () => {
-        if(userDocRef) {
+        if(userDocRef && name) {
             updateDocumentNonBlocking(userDocRef, { name });
+            mutate({ ...userProfile, name }); // Optimistic update
+            toast({
+                title: "Profile Updated",
+                description: "Your name has been successfully saved.",
+            });
         }
     }
     
@@ -84,7 +116,7 @@ export default function ProfilePage() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold font-headline">Your Profile</h1>
+          <h1 className="text-3xl font-bold font-headline">Your Profile & Settings</h1>
           <p className="text-muted-foreground">Manage your account settings and preferences.</p>
         </div>
         
@@ -101,19 +133,19 @@ export default function ProfilePage() {
                             <AvatarImage src={user?.photoURL || "https://picsum.photos/seed/user-avatar/80/80"} alt={user?.displayName || "@guest"} data-ai-hint="person portrait" />
                             <AvatarFallback>{user?.email?.[0].toUpperCase() || 'G'}</AvatarFallback>
                         </Avatar>
-                        <Button variant="outline">Change Photo</Button>
+                        <Button variant="outline" disabled>Change Photo</Button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Name</Label>
-                            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} disabled={!user}/>
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input id="email" type="email" value={user?.email || "guest@example.com"} disabled />
                         </div>
                     </div>
-                    <Button onClick={handleSaveChanges}>Save Changes</Button>
+                    <Button onClick={handleSaveChanges} disabled={!user}>Save Changes</Button>
                 </CardContent>
             </Card>
 
@@ -192,4 +224,3 @@ export default function ProfilePage() {
       </div>
     );
   }
-  
