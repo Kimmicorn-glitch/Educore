@@ -1,7 +1,7 @@
 
 "use client";
 
-import { courses, userProgress } from "@/lib/mock-data";
+import { courses } from "@/lib/mock-data";
 import { notFound, useParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,19 +15,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { TargetAudience } from "@/lib/types";
+import type { TargetAudience, UserProgress } from "@/lib/types";
+import { useDoc, useFirestore, useUser, useMemoFirebase } from "@/firebase";
+import { doc } from "firebase/firestore";
+
+const defaultProgress: UserProgress = {
+    lessonCompletions: [],
+    exerciseAttempts: [],
+    badges: [],
+    challengeProgress: [],
+}
 
 export default function SubjectPage() {
   const params = useParams() as { subject: string };
   const course = courses.find(c => c.id.toLowerCase() === params.subject.toLowerCase());
   const [audience, setAudience] = useState<TargetAudience | "all">("all");
+  const { user } = useUser();
+  const firestore = useFirestore();
+
+  const progressDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid, "progress", "main") : null, [user, firestore]);
+  const { data: userProgress } = useDoc<UserProgress>(progressDocRef);
+
+  const progress = userProgress || defaultProgress;
 
   if (!course) {
     notFound();
   }
 
   const getCompletionStatus = (lessonId: string) => {
-    return userProgress.lessonCompletions.find(l => l.lessonId === lessonId)?.isCompleted || false;
+    return progress.lessonCompletions.find(l => l.lessonId === lessonId)?.isCompleted || false;
   }
 
   const filteredLessons = audience === "all"

@@ -6,12 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { getPerformanceAnalysis } from "@/app/actions";
-import { userProgress } from "@/lib/mock-data";
 import type { PerformanceAnalysisOutput } from "@/ai/flows/ai-powered-personalized-learning";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { Subject } from "@/lib/types";
+import type { Subject, UserProgress } from "@/lib/types";
 
-export default function PerformanceAnalysis() {
+interface PerformanceAnalysisProps {
+    userProgress: UserProgress;
+}
+
+export default function PerformanceAnalysis({ userProgress }: PerformanceAnalysisProps) {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const [analysis, setAnalysis] = useState<PerformanceAnalysisOutput | null>(null);

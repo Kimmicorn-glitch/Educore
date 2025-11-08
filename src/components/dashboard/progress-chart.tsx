@@ -7,13 +7,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { useTheme } from "next-themes"
-
-const chartData = [
-  { subject: "Python", progress: 65, fill: "hsl(var(--chart-1))" },
-  { subject: "English", progress: 80, fill: "hsl(var(--chart-1))" },
-  { subject: "Maths", progress: 45, fill: "hsl(var(--chart-1))" },
-  { subject: "Physics", progress: 30, fill: "hsl(var(--chart-2))" },
-]
+import { courses } from "@/lib/mock-data"
+import type { UserProgress } from "@/lib/types"
 
 const chartConfig = {
   progress: {
@@ -21,9 +16,21 @@ const chartConfig = {
   },
 }
 
-export default function ProgressChart() {
+interface ProgressChartProps {
+    userProgress: UserProgress;
+}
+
+export default function ProgressChart({ userProgress }: ProgressChartProps) {
     const { resolvedTheme } = useTheme()
     const tickColor = resolvedTheme === 'dark' ? '#888' : '#333';
+
+    const chartData = courses.map(course => {
+        const courseLessons = course.lessons.map(l => l.id);
+        const completedLessons = userProgress.lessonCompletions.filter(l => l.isCompleted && courseLessons.includes(l.lessonId)).length;
+        const progress = course.lessons.length > 0 ? (completedLessons / course.lessons.length) * 100 : 0;
+        const fill = progress > 50 ? "hsl(var(--chart-1))" : "hsl(var(--chart-2))";
+        return { subject: course.id, progress, fill };
+    })
 
   return (
     <div className="h-80 w-full">

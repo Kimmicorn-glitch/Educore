@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Award, Code, GraduationCap, HardHat, Palette, ZoomIn, ZoomOut } from "lucide-react";
-import { badges as allBadges, userProgress } from "@/lib/mock-data";
+import { badges as allBadges } from "@/lib/mock-data";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
@@ -26,6 +26,7 @@ import {
 import { useUser, useFirestore, useDoc, useMemoFirebase, updateDocumentNonBlocking } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
+import type { UserProgress } from '@/lib/types';
 
 
 const iconMap: { [key: string]: React.ElementType } = {
@@ -34,6 +35,13 @@ const iconMap: { [key: string]: React.ElementType } = {
   GraduationCap,
   HardHat,
 };
+
+const defaultProgress: UserProgress = {
+    lessonCompletions: [],
+    exerciseAttempts: [],
+    badges: [],
+    challengeProgress: [],
+}
 
 export default function ProfilePage() {
     const { theme, setTheme } = useTheme();
@@ -46,6 +54,11 @@ export default function ProfilePage() {
 
     const userDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid) : null, [user, firestore]);
     const { data: userProfile, mutate } = useDoc(userDocRef);
+    
+    const progressDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid, "progress", "main") : null, [user, firestore]);
+    const { data: userProgress } = useDoc<UserProgress>(progressDocRef);
+
+    const progress = userProgress || defaultProgress;
 
     const [name, setName] = useState('');
 
@@ -73,7 +86,7 @@ export default function ProfilePage() {
         }
     }, [userProfile, user]);
 
-    const earnedBadges = allBadges.filter(badge => userProgress.badges.includes(badge.id));
+    const earnedBadges = allBadges.filter(badge => progress.badges.includes(badge.id));
 
     const handleFontSizeChange = (size: number, showToast = true) => {
       const newSize = Math.max(12, Math.min(24, size));

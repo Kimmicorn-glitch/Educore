@@ -1,20 +1,40 @@
+'use client';
+
 import { BookOpenCheck, CheckCircle, Target } from "lucide-react";
 import StatsCard from "@/components/dashboard/stats-card";
 import ProgressChart from "@/components/dashboard/progress-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { userProgress } from "@/lib/mock-data";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import PerformanceAnalysis from "@/components/dashboard/performance-analysis";
+import type { UserProgress } from "@/lib/types";
+
+
+const defaultProgress: UserProgress = {
+    lessonCompletions: [],
+    exerciseAttempts: [],
+    badges: [],
+    challengeProgress: [],
+}
 
 export default function DashboardPage() {
+    const { user } = useUser();
+    const firestore = useFirestore();
+
+    const progressDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid, "progress", "main") : null, [user, firestore]);
+    const { data: userProgress } = useDoc<UserProgress>(progressDocRef);
+
+    const progress = userProgress || defaultProgress;
+
     const totalLessons = 10;
-    const completedLessons = userProgress.lessonCompletions.filter(l => l.isCompleted).length;
+    const completedLessons = progress.lessonCompletions.filter(l => l.isCompleted).length;
     const overallProgress = Math.round((completedLessons / totalLessons) * 100);
-    const totalAttempts = userProgress.exerciseAttempts.reduce((sum, item) => sum + item.attempts, 0);
+    const totalAttempts = progress.exerciseAttempts.reduce((sum, item) => sum + item.attempts, 0);
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold font-headline">Welcome Back, Learner!</h1>
+        <h1 className="text-3xl font-bold font-headline">Welcome Back, {user?.displayName || 'Learner'}!</h1>
         <p className="text-muted-foreground">Here's a snapshot of your learning journey.</p>
       </div>
       
@@ -45,11 +65,11 @@ export default function DashboardPage() {
                 <CardTitle>Subject Performance</CardTitle>
             </CardHeader>
             <CardContent>
-                <ProgressChart />
+                <ProgressChart userProgress={progress}/>
             </CardContent>
         </Card>
         <div className="lg:col-span-2">
-            <PerformanceAnalysis />
+            <PerformanceAnalysis userProgress={progress} />
         </div>
       </div>
     </div>

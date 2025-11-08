@@ -2,23 +2,40 @@
 'use client';
 
 import { useState } from 'react';
-import { challenges, userProgress } from '@/lib/mock-data';
+import { challenges } from '@/lib/mock-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle2, Circle, Swords, Trophy, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import CodeRunner from '@/components/lesson/code-runner';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import type { UserProgress } from '@/lib/types';
+import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
+
+const defaultProgress: UserProgress = {
+    lessonCompletions: [],
+    exerciseAttempts: [],
+    badges: [],
+    challengeProgress: [],
+}
 
 export default function ChallengesPage() {
   const [selectedChallenge, setSelectedChallenge] = useState(challenges[0]);
+  const { user } = useUser();
+  const firestore = useFirestore();
+
+  const progressDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid, "progress", "main") : null, [user, firestore]);
+  const { data: userProgress } = useDoc<UserProgress>(progressDocRef);
+
+  const progress = userProgress || defaultProgress;
 
   const getCompletionStatus = (level: number) => {
-    return userProgress.challengeProgress.find(p => p.level === level)?.completed || false;
+    return progress.challengeProgress.find(p => p.level === level)?.completed || false;
   };
 
-  const totalCompleted = userProgress.challengeProgress.filter(p => p.completed).length;
+  const totalCompleted = progress.challengeProgress.filter(p => p.completed).length;
   const totalChallenges = challenges.length;
-  const progressPercentage = (totalCompleted / totalChallenges) * 100;
+  const progressPercentage = totalChallenges > 0 ? (totalCompleted / totalChallenges) * 100 : 0;
 
   return (
     <div className="space-y-8">

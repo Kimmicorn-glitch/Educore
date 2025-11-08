@@ -37,9 +37,10 @@ export default function SignupPage() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isNewUser, setIsNewUser] = useState(false);
 
     useEffect(() => {
-        if (user) {
+        if (user && isNewUser) {
             // Create a user profile document in Firestore
             const userRef = doc(firestore, "users", user.uid);
             const userData = {
@@ -49,15 +50,30 @@ export default function SignupPage() {
                 name: name || user.displayName
             };
             setDocumentNonBlocking(userRef, userData, { merge: true });
+
+            // Create an initial progress document
+            const progressRef = doc(firestore, "users", user.uid, "progress", "main");
+            const initialProgress = {
+                lessonCompletions: [],
+                exerciseAttempts: [],
+                badges: [],
+                challengeProgress: []
+            };
+            setDocumentNonBlocking(progressRef, initialProgress);
+
+            router.push('/dashboard');
+        } else if (user && !isNewUser) {
             router.push('/dashboard');
         }
-    }, [user, router, firestore, name]);
+    }, [user, isNewUser, router, firestore, name]);
 
     const handleSignUp = () => {
+        setIsNewUser(true);
         initiateEmailSignUp(auth, email, password);
     };
 
     const handleGoogleSignIn = () => {
+        setIsNewUser(true);
         if(auth) {
             initiateGoogleSignIn(auth);
         }

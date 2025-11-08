@@ -32,6 +32,54 @@
         "registrationDate"
       ]
     },
+    "UserProgress": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "UserProgress",
+        "type": "object",
+        "description": "Stores a user's progress through lessons, exercises, and challenges.",
+        "properties": {
+          "lessonCompletions": {
+            "type": "array",
+            "description": "List of completed lessons.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "lessonId": { "type": "string" },
+                "isCompleted": { "type": "boolean" }
+              }
+            }
+          },
+          "exerciseAttempts": {
+            "type": "array",
+            "description": "Record of attempts on exercises.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "exerciseId": { "type": "string" },
+                "attempts": { "type": "number" },
+                "successRate": { "type": "number" }
+              }
+            }
+          },
+          "badges": {
+            "type": "array",
+            "description": "List of earned badge IDs.",
+            "items": { "type": "string" }
+          },
+          "challengeProgress": {
+            "type": "array",
+            "description": "Progress on coding challenges.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "level": { "type": "number" },
+                    "completed": { "type": "boolean" }
+                }
+            }
+          }
+        },
+        "required": ["lessonCompletions", "exerciseAttempts", "badges", "challengeProgress"]
+      },
     "SupportTicket": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "SupportTicket",
@@ -96,6 +144,16 @@
             "$ref": "#/backend/entities/UserAccount"
           },
           "description": "Stores user account information."
+        }
+      },
+      {
+        "path": "/users/{userId}/progress/{progressId}",
+        "definition": {
+            "entityName": "UserProgress",
+            "schema": {
+                "$ref": "#/backend/entities/UserProgress"
+            },
+            "description": "Stores the progress of a single user."
         }
       },
       {
