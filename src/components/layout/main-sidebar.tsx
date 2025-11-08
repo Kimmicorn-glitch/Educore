@@ -55,18 +55,16 @@ export function MainSidebar() {
         <SidebarMenu>
           {links.map((link) => (
             <SidebarMenuItem key={link.href}>
-              <Link href={link.href} legacyBehavior passHref>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname.startsWith(link.href)}
-                  tooltip={link.label}
-                >
-                  <a>
-                    <link.icon />
-                    <span>{link.label}</span>
-                  </a>
-                </SidebarMenuButton>
-              </Link>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith(link.href)}
+                tooltip={link.label}
+              >
+                <Link href={link.href}>
+                  <link.icon />
+                  <span>{link.label}</span>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
@@ -76,14 +74,12 @@ export function MainSidebar() {
         <Separator className="my-2" />
         <SidebarMenu>
           <SidebarMenuItem>
-             <Link href="#" legacyBehavior passHref>
-                <SidebarMenuButton asChild tooltip="Settings">
-                  <a>
-                    <Settings />
-                    <span>Settings</span>
-                  </a>
-                </SidebarMenuButton>
+            <SidebarMenuButton asChild tooltip="Settings">
+              <Link href="#">
+                <Settings />
+                <span>Settings</span>
               </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
