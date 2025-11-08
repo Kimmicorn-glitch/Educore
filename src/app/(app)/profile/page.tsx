@@ -24,7 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
+import { updateDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 
 const iconMap: { [key: string]: React.ElementType } = {
@@ -40,11 +41,16 @@ export default function ProfilePage() {
     const [highContrast, setHighContrast] = useState(false);
     const { user } = useUser();
     const firestore = useFirestore();
+    const [mounted, setMounted] = useState(false);
 
     const userDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid) : null, [user, firestore]);
     const { data: userProfile } = useDoc(userDocRef);
 
     const [name, setName] = useState(userProfile?.name || user?.displayName || 'Guest User');
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
         if(userProfile) {
@@ -65,10 +71,14 @@ export default function ProfilePage() {
         document.documentElement.classList.toggle('high-contrast', isHighContrast);
     }
 
-    const handleSaveChanges = async () => {
+    const handleSaveChanges = () => {
         if(userDocRef) {
-            await updateDoc(userDocRef, { name });
+            updateDocumentNonBlocking(userDocRef, { name });
         }
+    }
+    
+    if (!mounted) {
+        return null;
     }
     
     return (
