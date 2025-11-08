@@ -43,8 +43,8 @@ export default function LessonPage() {
             <h1 className="text-4xl font-bold font-headline">{lesson.title}</h1>
         </div>
 
-        <div className="prose prose-lg max-w-none dark:prose-invert">
-            <p>{lesson.content}</p>
+        <div className="prose prose-lg max-w-none dark:prose-invert" style={{ whiteSpace: 'pre-wrap' }}>
+            {lesson.content}
         </div>
 
         {exercise && (
