@@ -10,7 +10,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { use } from "react";
 
 export default function LessonPage() {
   const params = useParams() as { subject: string; lessonId: string };
@@ -43,7 +42,7 @@ export default function LessonPage() {
             <h1 className="text-4xl font-bold font-headline">{lesson.title}</h1>
         </div>
 
-        <div className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.content.replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\n/g, '<br />') }} />
+        <div className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.content.replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />') }} />
 
 
         {exercise && (
@@ -58,7 +57,7 @@ export default function LessonPage() {
             </Card>
         )}
 
-        <AiChatbot />
+        <AiChatbot lessonContent={lesson.content} />
     </div>
   );
 }

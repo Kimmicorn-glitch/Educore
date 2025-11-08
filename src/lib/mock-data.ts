@@ -410,6 +410,31 @@ Now, you can "decorate" another function with it using the \`@\` symbol:
 When you call \`say_whee()\`, you'll see the decorator's messages printed around the original function's output. Decorators help keep your code DRY (Don't Repeat Yourself).`,
         linkedExerciseId: 'ex-py-decorators'
       },
+       {
+        id: 'py-14',
+        title: 'Generators and Iterators',
+        level: 'Advanced',
+        targetAudience: 'Adults',
+        content: `Generators provide a way to create iterators in a simple, memory-efficient way. While a normal function computes a value and returns it, a generator function 'yields' a value and pauses its execution, ready to resume later.
+
+This is extremely useful for working with large datasets because it doesn't require all the data to be loaded into memory at once.
+
+A normal function to get squares:
+\`def get_squares(n):\`
+  \`return [x**2 for x in range(n)]\`
+
+A generator function for squares:
+\`def gen_squares(n):\`
+  \`for x in range(n):\`
+    \`yield x**2\`
+
+When you call \`gen_squares(5)\`, it doesn't run the code. It returns a generator object. You can then iterate over it:
+\`for i in gen_squares(5):\`
+  \`print(i)\`
+
+This prints the numbers one by one, with the function pausing and resuming at each \`yield\`. This is the core of lazy evaluation in Python.`,
+        linkedExerciseId: 'ex-py-generators'
+      },
     ],
   },
   {
@@ -564,6 +589,26 @@ A popular format is the **Conventional Commits** specification. It follows a sim
 
 This is far more useful than a message like "added login stuff".`
       },
+       {
+        id: 'en-8',
+        title: 'Explaining Technical Concepts Simply',
+        level: 'Advanced',
+        targetAudience: 'Adults',
+        content: `A key skill for senior developers and team leads is the ability to explain complex technical topics to non-technical stakeholders (like managers, clients, or designers). This requires empathy and the use of analogy.
+
+**The Feynman Technique:**
+1.  Choose a concept you want to understand.
+2.  Pretend you are teaching it to a student in grade 6.
+3.  Identify gaps in your explanation. Go back to the source material to understand it better.
+4.  Simplify and use analogies.
+
+**Example: Explaining an API**
+
+*   **Too Technical:** "We're using a RESTful API that returns JSON objects over HTTP."
+*   **A Better Analogy:** "Think of an API like a waiter in a restaurant. Your application (the customer) tells the waiter (the API) what it wants. The waiter goes to the kitchen (the server), gets the food (the data), and brings it back to you. You don't need to know how the kitchen works, you just need to know how to ask the waiter."
+
+Practicing this skill will make you a more effective communicator and a more valuable team member.`
+      },
     ],
   },
   {
@@ -697,6 +742,21 @@ While you don't always have to do calculus by hand (libraries do it for you), un
 Understanding Big O is crucial for writing efficient code, especially when working with large datasets.`,
         linkedExerciseId: 'ex-ma-big-o'
       },
+      {
+        id: 'ma-8',
+        title: 'Linear Algebra for Data Science',
+        level: 'Advanced',
+        targetAudience: 'Adults',
+        content: `Linear algebra is the mathematics of vectors and matrices. It is the language of data science and machine learning.
+
+**Vectors:** As we've seen in physics, a vector is a list of numbers representing a point in space. In data science, a vector can represent a single data point with many features. For example, a user could be represented by a vector \`[age, income, screen_time]\`.
+
+**Matrices:** A matrix is a grid of numbers, or a collection of vectors. A whole dataset can be represented as a matrix, where each row is a data point (a user) and each column is a feature.
+
+**Why is this useful?**
+By representing data as vectors and matrices, we can use powerful linear algebra operations to manipulate it at scale. For example, multiplying matrices is a fundamental operation in neural networks. Libraries like NumPy in Python are highly optimized for these operations, allowing us to process massive datasets efficiently. Understanding the concepts of matrix multiplication, dot products, and transformations is key to understanding how many machine learning models work.`,
+        linkedExerciseId: 'ex-ma-matrix'
+      },
     ],
   },
   {
@@ -800,6 +860,23 @@ For simple AABB (Axis-Aligned Bounding Box) collisions, the simplest response is
 
 For more complex physics (like two balls hitting each other), you need to account for their mass and angle of impact using momentum conservation formulas. This can get very complex, but the basic principle of resolving the overlap and then adjusting velocities is the same.`,
       },
+       {
+        id: 'ph-8',
+        title: 'Raycasting',
+        level: 'Advanced',
+        targetAudience: 'Adults',
+        content: `Raycasting is a technique used to determine what a ray, or a straight line, intersects with in a scene. It's like shining a laser pointer and seeing what it hits first.
+
+In games and simulations, it has many uses:
+- **Shooting mechanics:** To see if a bullet hits a target.
+- **AI line of sight:** To determine if an enemy can "see" the player.
+- **Determining what's under the mouse cursor:** To allow the player to interact with objects.
+
+The basic algorithm for a ray-line intersection involves some vector math. You have a ray with an origin point and a direction vector. For each line segment in your scene (like the walls of a room), you solve a system of equations to see if and where the ray and the line intersect.
+
+If the ray intersects multiple objects, you usually only care about the intersection point that is closest to the ray's origin. While the math can be complex, many physics libraries provide simple, highly-optimized raycasting functions. For example: \`hit_object = physics.raycast(origin, direction)\`.`,
+        linkedExerciseId: 'ex-ph-raycast'
+      },
     ],
   },
 ];
@@ -851,7 +928,6 @@ print("Correct!")
         test: `
 # --- User's code is executed here ---
 x = 10
-print(x)
 # --- End of user code ---
 
 # Assertion
@@ -1308,6 +1384,70 @@ def add_vectors(v1, v2):
 
 assert add_vectors({"x": 1, "y": 1}, {"x": 1, "y": 1}) == {"x": 2, "y": 2}
 assert add_vectors({"x": 10, "y": -5}, {"x": -8, "y": 5}) == {"x": 2, "y": 0}
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-py-generators',
+        title: 'Create a Generator',
+        type: 'coding',
+        description: 'Create a generator function `countdown` that yields numbers from `n` down to 1.',
+        starterCode: 'def countdown(n):\n  while n > 0:\n    yield n\n    n -= 1\n\n# Print numbers from 5 down to 1\nfor i in countdown(5):\n  print(i)',
+        test: `
+# --- User's function definition is executed here ---
+def countdown(n):
+  while n > 0:
+    yield n
+    n -= 1
+# ---
+gen = countdown(3)
+assert next(gen) == 3
+assert next(gen) == 2
+assert next(gen) == 1
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-ma-matrix',
+        title: 'Matrix Multiplication with NumPy',
+        type: 'coding',
+        description: 'Using the NumPy library, multiply the two matrices `A` and `B` and store the result in a variable called `C`.',
+        starterCode: 'import numpy as np\n\nA = np.array([[1, 2], [3, 4]])\nB = np.array([[5, 6], [7, 8]])\n\n# Multiply matrices A and B\nC = np.dot(A, B)\n\nprint(C)',
+        test: `
+import numpy as np
+# --- User's code is executed here ---
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+C = np.dot(A, B)
+# ---
+expected = np.array([[19, 22], [43, 50]])
+assert np.array_equal(C, expected)
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-ph-raycast',
+        title: 'Simple Raycast Logic',
+        type: 'coding',
+        description: 'You have a list of objects, each with a `distance`. Write a function `find_closest_hit` that iterates through a list of `hits` and returns the one with the smallest distance. Return `None` if the list is empty.',
+        starterCode: 'def find_closest_hit(hits):\n  if not hits:\n    return None\n  \n  closest = hits[0]\n  for hit in hits:\n    if hit["distance"] < closest["distance"]:\n      closest = hit\n  return closest\n\n# Test case\nhits = [\n  {"name": "wall", "distance": 100},\n  {"name": "enemy", "distance": 50},\n  {"name": "tree", "distance": 75}\n]\nprint(find_closest_hit(hits))',
+        test: `
+# --- User's function definition is executed here ---
+def find_closest_hit(hits):
+  if not hits:
+    return None
+  
+  closest = hits[0]
+  for hit in hits:
+    if hit["distance"] < closest["distance"]:
+      closest = hit
+  return closest
+# ---
+hits = [{"name": "wall", "distance": 100}, {"name": "enemy", "distance": 50}]
+closest = find_closest_hit(hits)
+assert closest is not None
+assert closest["name"] == "enemy"
+assert find_closest_hit([]) is None
 print("Correct!")
 `
     },

@@ -2,6 +2,7 @@
 'use server';
 
 import { analyzePerformanceAndAdjustDifficulty, type PerformanceAnalysisInput } from '@/ai/flows/ai-powered-personalized-learning';
+import { askChatbot, type AskChatbotInput } from '@/ai/ai-chatbot-assistance';
 
 export async function getPerformanceAnalysis(input: PerformanceAnalysisInput) {
   try {
@@ -12,4 +13,15 @@ export async function getPerformanceAnalysis(input: PerformanceAnalysisInput) {
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
     return { success: false, error: `Failed to analyze performance: ${errorMessage}` };
   }
+}
+
+export async function getChatbotResponse(input: AskChatbotInput) {
+    try {
+        const result = await askChatbot(input);
+        return { success: true, data: result };
+    } catch (error) {
+        console.error(error);
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+        return { success: false, error: `Failed to get chatbot response: ${errorMessage}` };
+    }
 }
