@@ -1,5 +1,3 @@
-Got it! Here’s the updated `README.md` with the license section removed:
-
 ---
 
 # EduCore – Adaptive Learning Platform
