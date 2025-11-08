@@ -1,3 +1,34 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "python-course",
+      "description": "An illustration representing the Python programming language.",
+      "imageUrl": "https://images.unsplash.com/photo-1580121521203-ab94824d9382?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29kZSUyMHB5dGhvbnxlbnwwfHx8fDE3NjI2MjQ1OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "code python"
+    },
+    {
+      "id": "english-course",
+      "description": "An illustration representing the English language.",
+      "imageUrl": "https://images.unsplash.com/photo-1588580000645-4562a6d2c839?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxib29rJTIwbGlicmFyeXxlbnwwfHx8fDE3NjI1ODk0NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "book library"
+    },
+    {
+      "id": "maths-course",
+      "description": "An illustration representing Mathematics.",
+      "imageUrl": "https://images.unsplash.com/photo-1657550650283-2fba3a0123fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxhbGdlYnJhJTIwbWF0aHxlbnwwfHx8fDE3NjI2MjQ1OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "algebra math"
+    },
+    {
+      "id": "physics-course",
+      "description": "An illustration representing Physics.",
+      "imageUrl": "https://images.unsplash.com/photo-1724854674019-9364aa52f557?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxhdG9tJTIwcGh5c2ljc3xlbnwwfHx8fDE3NjI2MjQ1OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "atom physics"
+    },
+    {
+      "id": "user-avatar",
+      "description": "A placeholder for a user's avatar.",
+      "imageUrl": "https://images.unsplash.com/photo-1521119989659-a83eee488004?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjI1OTQ3NDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    }
+  ]
 }
