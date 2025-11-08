@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "UserAccount": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserAccount",
+      "type": "object",
+      "description": "Stores user account information, excluding authentication credentials.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user account."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "registrationDate": {
+          "type": "string",
+          "description": "Date and time when the user registered.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "registrationDate"
+      ]
+    },
+    "SupportTicket": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SupportTicket",
+      "type": "object",
+      "description": "Represents a support ticket submitted by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the support ticket."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserAccount. (Relationship: UserAccount 1:N SupportTicket)"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Subject of the support ticket."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the issue."
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the ticket (e.g., Open, In Progress, Closed)."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "Date and time when the ticket was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "subject",
+        "description",
+        "status",
+        "submissionDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserAccount",
+          "schema": {
+            "$ref": "#/backend/entities/UserAccount"
+          },
+          "description": "Stores user account information. Uses path-based ownership for data isolation.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "Unique identifier for the user account."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/supportTickets/{ticketId}",
+        "definition": {
+          "entityName": "SupportTicket",
+          "schema": {
+            "$ref": "#/backend/entities/SupportTicket"
+          },
+          "description": "Stores support tickets submitted by users. Includes denormalized 'userId' for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "Unique identifier for the user account."
+            },
+            {
+              "name": "ticketId",
+              "description": "Unique identifier for the support ticket."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to ensure secure and scalable data management for the EduCore platform, focusing on authorization independence, clarity, and ease of debugging. The primary strategy is to leverage path-based ownership for user-specific data and denormalization to eliminate hierarchical authorization dependencies. This approach enhances security, supports atomic operations, and simplifies security rules. User accounts are stored under `/users/{userId}`, providing a clear and secure location for personal data. Support tickets, associated with specific users, are stored in a subcollection `/users/{userId}/supportTickets/{ticketId}`. This establishes a clear ownership model, simplifying security rules and data access. The structure supports the required QAPs by segregating data based on ownership (user profiles, support tickets) and leveraging path-based ownership. This ensures secure `list` operations, as rules can easily restrict access to resources based on the `userId` in the path. Denormalization is achieved by including the `userId` within each `SupportTicket` document, enabling rules to validate ownership without needing to perform `get()` operations on parent documents. This structure promotes clarity, security, and scalability, aligning with the core design principles."
+  }
+}
