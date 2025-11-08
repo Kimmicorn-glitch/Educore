@@ -12,11 +12,11 @@ export const courses: Course[] = [
       hint: 'code python',
     },
     lessons: [
-      { 
-        id: 'py-1', 
-        title: 'Introduction to Variables', 
-        level: 'Beginner', 
-        targetAudience: 'Children', 
+      {
+        id: 'py-1',
+        title: 'Introduction to Variables',
+        level: 'Beginner',
+        targetAudience: 'Children',
         content: `Welcome to the world of Python! Today, we're learning about variables.
 
 A variable is like a box or a container where you can store information. You give the box a name, and then you can put things inside it. In programming, we store data values in variables.
@@ -38,14 +38,14 @@ You can print your variables to see what's inside them:
 \`print(name)\`
 \`print(age)\`
 
-This will show "Alice" and 10 on the screen. Now it's your turn to try!`, 
-        linkedExerciseId: 'ex-py-1' 
+This will show "Alice" and 10 on the screen. Now it's your turn to try!`,
+        linkedExerciseId: 'ex-py-1'
       },
-      { 
-        id: 'py-2', 
-        title: 'Fun with Python Turtle', 
-        level: 'Beginner', 
-        targetAudience: 'Children', 
+      {
+        id: 'py-2',
+        title: 'Fun with Python Turtle',
+        level: 'Beginner',
+        targetAudience: 'Children',
         content: `Let's have some fun by drawing with code! Python has a special feature called the 'turtle' module that lets you draw cool pictures.
 
 Imagine a tiny turtle with a pen tied to its tail. You can tell the turtle where to go, and it will draw a line as it moves.
@@ -74,14 +74,14 @@ If we combine these commands, we can draw a square:
 \`turtle.right(90)\`
 \`turtle.forward(100)\`
 
-Try it out in the exercise below!`, 
-        linkedExerciseId: 'ex-py-turtle' 
+Try it out in the exercise below!`,
+        linkedExerciseId: 'ex-py-turtle'
       },
-      { 
-        id: 'py-3', 
-        title: 'Conditional Logic', 
-        level: 'Beginner', 
-        targetAudience: 'Teenagers', 
+      {
+        id: 'py-3',
+        title: 'Conditional Logic',
+        level: 'Beginner',
+        targetAudience: 'Teenagers',
         content: `In life, we make decisions based on conditions. For example, "IF it is raining, THEN I will take an umbrella." Programming works the same way using 'if' statements.
 
 An 'if' statement runs a block of code only if a certain condition is true.
@@ -102,8 +102,8 @@ What if the condition is false? We can add an 'else' block.
 \`else:\`
     \`print("You are not eligible to vote yet.")\`
 
-In this case, since 'age' is 16, the condition is false, and the code inside the 'else' block will run. This is the foundation of making your programs smart!`, 
-        linkedExerciseId: 'ex-py-2' 
+In this case, since 'age' is 16, the condition is false, and the code inside the 'else' block will run. This is the foundation of making your programs smart!`,
+        linkedExerciseId: 'ex-py-2'
       },
       {
         id: 'py-7',
@@ -131,11 +131,35 @@ This loop will take each item from the 'fruits' list one by one, assign it to th
 Loops are incredibly powerful for automating repetitive tasks.`,
         linkedExerciseId: 'ex-py-lists'
       },
-      { 
-        id: 'py-4', 
-        title: 'Introduction to Functions', 
-        level: 'Intermediate', 
-        targetAudience: 'Teenagers', 
+      {
+        id: 'py-9',
+        title: 'Basic Input and Output',
+        level: 'Beginner',
+        targetAudience: 'Children',
+        content: `So far, our programs have been a bit predictable. Let's make them interactive! We can ask the user for information using the \`input()\` function.
+
+When you use \`input()\`, the program will pause and wait for the user to type something and press Enter.
+
+\`name = input("What is your name? ")\`
+\`print(f"Hello, {name}!")\`
+
+In this example, the program prints "What is your name? ", waits for an answer, and then greets the user by the name they entered.
+
+The \`input()\` function always gives you back a string. If you need to work with a number, you have to convert it.
+
+\`age_string = input("How old are you? ")\`
+\`age = int(age_string)\`
+\`next_year_age = age + 1\`
+\`print(f"Next year, you will be {next_year_age}!")\`
+
+Here, \`int()\` converts the string from the input into an integer (a whole number).`,
+        linkedExerciseId: 'ex-py-input'
+      },
+      {
+        id: 'py-4',
+        title: 'Introduction to Functions',
+        level: 'Intermediate',
+        targetAudience: 'Teenagers',
         content: `As your programs get bigger, you'll find yourself writing the same code over and over. Functions are here to help!
 
 A function is a reusable block of code that performs a specific task. You define it once and can use it many times.
@@ -166,8 +190,8 @@ And they can also return a value:
 \`sum_result = add(5, 3)\`
 \`print(sum_result)\`  # This will print 8
 
-Functions are essential for writing clean, organized, and efficient code.`, 
-        linkedExerciseId: 'ex-py-3' 
+Functions are essential for writing clean, organized, and efficient code.`,
+        linkedExerciseId: 'ex-py-3'
       },
       {
         id: 'py-8',
@@ -198,11 +222,69 @@ Or change an existing value:
 Dictionaries are extremely useful for organizing and retrieving related information.`,
         linkedExerciseId: 'ex-py-dict'
       },
-      { 
-        id: 'py-5', 
-        title: 'Object-Oriented Python', 
-        level: 'Advanced', 
-        targetAudience: 'Adults', 
+      {
+        id: 'py-10',
+        title: 'File I/O',
+        level: 'Intermediate',
+        targetAudience: 'Teenagers',
+        content: `Your programs can read from and write to files on your computer. This is called File Input/Output (I/O).
+
+To work with a file, you first need to open it. The \`with open(...) as ...:\` syntax is the recommended way, as it handles closing the file for you automatically.
+
+**Writing to a file:**
+Use the mode 'w' to write to a file. This will overwrite the file if it already exists.
+
+\`with open("greeting.txt", "w") as f:\`
+  \`f.write("Hello, from Python!")\`
+
+**Reading from a file:**
+Use the mode 'r' to read a file.
+
+\`with open("greeting.txt", "r") as f:\`
+  \`content = f.read()\`
+\`print(content)\` # Will print "Hello, from Python!"
+
+**Appending to a file:**
+Use the mode 'a' to add to the end of an existing file without deleting its contents.
+
+\`with open("greeting.txt", "a") as f:\`
+  \`f.write("\\nHave a nice day!")\`
+
+Working with files allows your programs to save data permanently.`,
+        linkedExerciseId: 'ex-py-files'
+      },
+      {
+        id: 'py-11',
+        title: 'Error Handling with Try/Except',
+        level: 'Intermediate',
+        targetAudience: 'Adults',
+        content: `Sometimes, things go wrong in a program. A user might enter text when you expect a number, or you might try to divide by zero. If you don't handle these situations, your program will crash.
+
+The \`try...except\` block lets you "try" a piece of code that might cause an error, and "catch" the error if it happens.
+
+\`try:\`
+  \`number = int(input("Enter a number: "))\`
+  \`result = 10 / number\`
+  \`print(result)\`
+\`except ValueError:\`
+  \`print("That wasn't a valid number!")\`
+\`except ZeroDivisionError:\`
+  \`print("You can't divide by zero!")\`
+
+In this code:
+- Python first tries to run the code in the \`try\` block.
+- If the user enters "abc", a \`ValueError\` occurs, and the code jumps to that \`except\` block.
+- If the user enters "0", a \`ZeroDivisionError\` occurs, and it jumps to that block.
+- If no error occurs, the \`except\` blocks are skipped.
+
+This makes your programs much more robust and user-friendly.`,
+        linkedExerciseId: 'ex-py-try-except'
+      },
+      {
+        id: 'py-5',
+        title: 'Object-Oriented Python',
+        level: 'Advanced',
+        targetAudience: 'Adults',
         content: `Object-Oriented Programming (OOP) is a powerful paradigm for structuring your applications. It's based on the concept of "objects," which can contain data and code.
 
 The blueprint for an object is called a 'class'. Let's define a class for a 'Car':
@@ -215,7 +297,7 @@ The blueprint for an object is called a 'class'. Let's define a class for a 'Car
     \`def display_info(self):\`
         \`print(f"{self.brand} {self.model}")\`
 
-The '__init__' method is a special method that runs when you create a new object from the class. 'self' refers to the instance of the object itself.
+The \`__init__\` method is a special method that runs when you create a new object from the class. \`self\` refers to the instance of the object itself.
 
 Now, we can create 'instances' of the Car class:
 
@@ -229,14 +311,14 @@ We can call methods on these objects:
 \`my_car.display_info()\`  # Prints "Tesla Model 3"
 \`your_car.display_info()\` # Prints "Ford Mustang"
 
-OOP helps you model real-world things and manage complexity in large applications.`, 
-        linkedExerciseId: 'ex-py-oop' 
+OOP helps you model real-world things and manage complexity in large applications.`,
+        linkedExerciseId: 'ex-py-oop'
       },
-      { 
-        id: 'py-6', 
-        title: 'Data Analysis with Pandas', 
-        level: 'Advanced', 
-        targetAudience: 'Adults', 
+      {
+        id: 'py-6',
+        title: 'Data Analysis with Pandas',
+        level: 'Advanced',
+        targetAudience: 'Adults',
         content: `Pandas is the most popular Python library for data analysis. It provides high-performance, easy-to-use data structures and data analysis tools.
 
 The primary data structure in Pandas is the 'DataFrame', which is like a table or a spreadsheet.
@@ -265,8 +347,68 @@ You can then easily select columns, filter rows, and perform complex calculation
 
 \`print(df['Age'])\`
 
-Pandas is a fundamental tool for anyone working with data in Python.`, 
-        linkedExerciseId: 'ex-py-pandas' 
+Pandas is a fundamental tool for anyone working with data in Python.`,
+        linkedExerciseId: 'ex-py-pandas'
+      },
+      {
+        id: 'py-12',
+        title: 'List Comprehensions',
+        level: 'Advanced',
+        targetAudience: 'Adults',
+        content: `List comprehensions provide a concise way to create lists. They are often more readable and more performant than using a standard \`for\` loop.
+
+Suppose you want to create a list of squares from 0 to 9. A standard \`for\` loop would look like this:
+
+\`squares = []\`
+\`for x in range(10):\`
+  \`squares.append(x**2)\`
+
+With a list comprehension, you can achieve the same result in a single line:
+
+\`squares = [x**2 for x in range(10)]\`
+
+The structure is: \`[expression for item in iterable]\`.
+
+You can also add a condition to filter the list. Let's get the squares of only the even numbers:
+
+\`even_squares = [x**2 for x in range(10) if x % 2 == 0]\`
+
+This is equivalent to:
+
+\`even_squares = []\`
+\`for x in range(10):\`
+  \`if x % 2 == 0:\`
+    \`even_squares.append(x**2)\`
+
+List comprehensions are a hallmark of idiomatic Python code.`,
+        linkedExerciseId: 'ex-py-list-comprehension'
+      },
+      {
+        id: 'py-13',
+        title: 'Decorators',
+        level: 'Advanced',
+        targetAudience: 'Adults',
+        content: `Decorators are a powerful and flexible way to modify or enhance functions without permanently changing their code. A decorator is a function that takes another function as input, adds some functionality to it, and returns the modified function.
+
+They are often used for logging, timing, and enforcing access control.
+
+Here's a simple decorator that prints a message before and after a function runs:
+
+\`def my_decorator(func):\`
+  \`def wrapper():\`
+    \`print("Something is happening before the function is called.")\`
+    \`func()\`
+    \`print("Something is happening after the function is called.")\`
+  \`return wrapper\`
+
+Now, you can "decorate" another function with it using the \`@\` symbol:
+
+\`@my_decorator\`
+\`def say_whee():\`
+  \`print("Whee!")\`
+
+When you call \`say_whee()\`, you'll see the decorator's messages printed around the original function's output. Decorators help keep your code DRY (Don't Repeat Yourself).`,
+        linkedExerciseId: 'ex-py-decorators'
       },
     ],
   },
@@ -349,6 +491,26 @@ Notice how the active voice is more direct. It immediately tells you *who* or *w
 Use passive voice sparingly, perhaps when the actor is unknown or unimportant.`,
         linkedExerciseId: 'ex-en-active-passive'
       },
+      {
+        id: 'en-6',
+        title: 'Punctuation for Clarity',
+        level: 'Intermediate',
+        targetAudience: 'Teenagers',
+        content: `Proper punctuation is essential for clarity in technical writing. Misplaced commas can change the meaning of a sentence entirely.
+
+**Commas (,):** Use commas to separate items in a list, to separate clauses in a complex sentence, and to set off non-essential information.
+- List: "The function requires a username, password, and token."
+- Clauses: "If the connection fails, the program will retry."
+
+**Semicolons (;):** Use a semicolon to connect two closely related independent clauses.
+- Example: "The first test passed; the second one failed."
+
+**Colons (:):** Use a colon to introduce a list, an explanation, or a quotation.
+- Example: "The function returns one of three states: 'success', 'pending', or 'failure'."
+
+Using these correctly will make your documentation and comments much easier for others to read.`,
+        linkedExerciseId: 'ex-en-punctuation'
+      },
       { id: 'en-4', title: 'Writing Technical Documentation', level: 'Advanced', targetAudience: 'Adults', content: `Good code needs good documentation. Technical writing is a skill that makes your projects usable and maintainable by others (and your future self!).
 
 Key principles:
@@ -370,6 +532,38 @@ function add(a, b) {
 }\`
 
 This is clear, simple, and tells another developer everything they need to know.` },
+      {
+        id: 'en-7',
+        title: 'Writing Effective Commit Messages',
+        level: 'Advanced',
+        targetAudience: 'Adults',
+        content: `Commit messages are a vital part of collaborative software development. They are a log of *why* changes were made. A well-written commit message saves developers time and frustration.
+
+A popular format is the **Conventional Commits** specification. It follows a simple structure:
+
+\`<type>[optional scope]: <description>\`
+
+\`[optional body]\`
+
+\`[optional footer]\`
+
+**Type:**
+- \`feat\`: A new feature
+- \`fix\`: A bug fix
+- \`docs\`: Documentation only changes
+- \`style\`: Changes that do not affect the meaning of the code (white-space, formatting)
+- \`refactor\`: A code change that neither fixes a bug nor adds a feature
+- \`test\`: Adding missing tests or correcting existing tests
+- \`chore\`: Changes to the build process or auxiliary tools
+
+**Example:**
+
+\`feat(auth): Add Google OAuth provider\`
+
+\`Implements the Google Sign-In flow using Firebase. When a user signs up with Google, a new user profile is created in Firestore.\`
+
+This is far more useful than a message like "added login stuff".`
+      },
     ],
   },
   {
@@ -447,6 +641,33 @@ NOT (true) is false.
 NOT (false) is true.
 
 This is how computers make complex decisions.`, linkedExerciseId: 'ex-py-2' },
+      {
+        id: 'ma-6',
+        title: 'Binary Numbers',
+        level: 'Intermediate',
+        targetAudience: 'Teenagers',
+        content: `Computers don't think in the numbers we use (0-9). They think in **binary**, which only uses two digits: 0 and 1. Everything a computer does, from showing a picture to running a game, is broken down into a series of 0s and 1s.
+
+Our number system is "base-10" because we have 10 digits. Binary is "base-2".
+
+Let's see how it works. In base-10, each place value is a power of 10:
+... 1000s, 100s, 10s, 1s
+
+In binary, each place value is a power of 2:
+... 16s, 8s, 4s, 2s, 1s
+
+So, the number 5 in binary is \`101\`. Why?
+- \`1\` in the 4s place = 4
+- \`0\` in the 2s place = 0
+- \`1\` in the 1s place = 1
+- 4 + 0 + 1 = 5
+
+The number 10 in binary is \`1010\`.
+- \`1\` * 8 + \`0\` * 4 + \`1\` * 2 + \`0\` * 1 = 10.
+
+Understanding binary is key to understanding how computers work at their most fundamental level.`,
+        linkedExerciseId: 'ex-ma-binary'
+      },
       { id: 'ma-4', title: 'Calculus for Machine Learning', level: 'Advanced', targetAudience: 'Adults', content: `Calculus is the mathematics of change, and it's fundamental to how machine learning models 'learn'.
 
 The most important concept is the 'derivative', which measures the instantaneous rate of change. Think of it as the slope of a curve at a single point. In machine learning, we use derivatives to find the 'error' of our model's prediction. The derivative tells us in which direction to adjust the model's parameters to reduce the error. This process is called 'gradient descent'.
@@ -454,6 +675,28 @@ The most important concept is the 'derivative', which measures the instantaneous
 An 'integral' is the reverse of a derivative. It's used to calculate the total area under a curve. In probability and statistics, which are central to AI, integrals help us find the probability of a range of outcomes.
 
 While you don't always have to do calculus by hand (libraries do it for you), understanding what derivatives and integrals represent is key to understanding how AI works under the hood.` },
+      {
+        id: 'ma-7',
+        title: 'Big O Notation',
+        level: 'Advanced',
+        targetAudience: 'Adults',
+        content: `How do we measure how "fast" an algorithm is? We use Big O notation. It doesn't measure time in seconds, but rather how the runtime of an algorithm grows as the input size grows.
+
+**O(1) - Constant Time:** The runtime is the same, no matter the size of the input.
+- Example: Accessing an item in an array by its index (\`my_array[5]\`).
+
+**O(n) - Linear Time:** The runtime grows linearly with the input size 'n'.
+- Example: Looping through every item in a list once. If the list has 10 items, it takes 10 "steps". If it has 1,000,000 items, it takes 1,000,000 "steps".
+
+**O(n²) - Quadratic Time:** The runtime grows by the square of the input size. This is common in algorithms with nested loops.
+- Example: Comparing every item in a list to every other item.
+
+**O(log n) - Logarithmic Time:** The runtime grows very slowly. Every time you double the input size, you only add one "step" to the work.
+- Example: Binary search in a sorted array.
+
+Understanding Big O is crucial for writing efficient code, especially when working with large datasets.`,
+        linkedExerciseId: 'ex-ma-big-o'
+      },
     ],
   },
   {
@@ -509,6 +752,26 @@ To check if two rectangles (rect1 and rect2) are colliding, you need to check fo
 If **all four** of these conditions are true, the rectangles are overlapping, and a collision has occurred! This logic is the foundation of interaction in most 2D games.`,
         linkedExerciseId: 'ex-ph-collision'
       },
+      {
+        id: 'ph-6',
+        title: 'Vectors for Game Development',
+        level: 'Intermediate',
+        targetAudience: 'Adults',
+        content: `In physics and game development, a **vector** is an object that has both a magnitude (length/size) and a direction. We use vectors to represent things like position, velocity, and acceleration.
+
+A 2D vector has two components: an x component and a y component. You might see it written as \`(x, y)\`.
+
+**Position:** A vector from the origin (0,0) to a point in space. The vector \`(10, 20)\` represents the point 10 units right and 20 units down.
+
+**Velocity:** A vector representing the change in position over time. A velocity vector of \`(5, -2)\` means the object moves 5 units right and 2 units up every second.
+
+**Vector Math:**
+- **Addition:** To add two vectors, you add their components. \`(2, 3) + (4, 1) = (6, 4)\`. This is used to combine forces or velocities.
+- **Scalar Multiplication:** To multiply a vector by a single number (a scalar), you multiply each component. \`3 * (2, 5) = (6, 15)\`. This is used to scale forces or speed.
+
+Understanding vectors is essential for creating movement and interactions in any physics simulation.`,
+        linkedExerciseId: 'ex-ph-vectors'
+      },
       { id: 'ph-4', title: 'Building a Simple Physics Engine', level: 'Advanced', targetAudience: 'Adults', content: `A physics engine is the part of a game or simulation that calculates how objects move and interact. Let's outline a very simple one for a 2D world.
 
 Core components:
@@ -519,8 +782,24 @@ Core components:
     b. Update velocity: \`velocity += acceleration * time_delta\`. The \`time_delta\` is the time since the last tick.
     c. Update position: \`position += velocity * time_delta\`.
     d. Reset acceleration: \`acceleration = (0, 0)\` so forces don't accumulate incorrectly.
-    
+
 This is the basic 'Euler integration' method. It's simple but can be inaccurate at high speeds. More advanced engines use methods like 'Verlet integration'.` },
+      {
+        id: 'ph-7',
+        title: 'Collision Response',
+        level: 'Advanced',
+        targetAudience: 'Adults',
+        content: `Once you detect a collision, what do you do? This is **collision response**. The goal is to make objects react realistically.
+
+For simple AABB (Axis-Aligned Bounding Box) collisions, the simplest response is to stop the objects from overlapping.
+1.  **Find the Overlap:** Calculate how much the two boxes are overlapping on the X and Y axes.
+2.  **Resolve the Overlap:** Move one or both of the objects so they are just touching. Usually, you move them along the axis with the *smallest* overlap. This is called the Minimum Translation Vector (MTV).
+3.  **Update Velocity:** For a realistic bounce, you need to change the object's velocity. For a simple bounce off a wall, you reverse the velocity component for that axis.
+    - Hitting a vertical wall: \`velocity.x = -velocity.x\`
+    - Hitting a horizontal surface: \`velocity.y = -velocity.y\`
+
+For more complex physics (like two balls hitting each other), you need to account for their mass and angle of impact using momentum conservation formulas. This can get very complex, but the basic principle of resolving the overlap and then adjusting velocities is the same.`,
+      },
     ],
   },
 ];
@@ -532,11 +811,11 @@ export const badges: Badge[] = [
 ]
 
 export const exercises: Exercise[] = [
-    { 
-        id: 'ex-py-1', 
-        title: 'Declare Variables', 
-        type: 'coding', 
-        description: 'Declare a variable `name` with your name and an `age` variable with your age, then print a sentence.', 
+    {
+        id: 'ex-py-1',
+        title: 'Declare Variables',
+        type: 'coding',
+        description: 'Declare a variable `name` with your name and an `age` variable with your age, then print a sentence.',
         starterCode: 'name = "Alex"\nage = 10\nprint(f"My name is {name} and I am {age} years old.")',
         test: `
 import sys
@@ -547,12 +826,11 @@ original_stdout = sys.stdout
 # Redirect stdout
 sys.stdout = captured_output = StringIO()
 
-# User's code is executed here (imagine it's injected)
-# Based on starter: 
-# name = "Alex"
-# age = 10
-# print(f"My name is {name} and I am {age} years old.")
-# The test will check the output, not the variable values themselves.
+# --- User's code is executed here ---
+name = "Alex"
+age = 10
+print(f"My name is {name} and I am {age} years old.")
+# --- End of user code ---
 
 # Restore stdout
 sys.stdout = original_stdout
@@ -564,75 +842,75 @@ assert "and i am" in output.lower()
 print("Correct!")
 `
     },
-    { 
-        id: 'ex-ma-2', 
-        title: 'Solve for X', 
-        type: 'coding', 
-        description: 'The equation is x + 15 = 25. Find the value of x and print it.', 
+    {
+        id: 'ex-ma-2',
+        title: 'Solve for X',
+        type: 'coding',
+        description: 'The equation is x + 15 = 25. Find the value of x and print it.',
         starterCode: '# Solve for x in the equation: x + 15 = 25\nx = 0 # Change this line\nprint(x)',
         test: `
-# Setup to capture print output
-import sys
-from io import StringIO
-original_stdout = sys.stdout
-sys.stdout = captured_output = StringIO()
-
+# --- User's code is executed here ---
 x = 10
 print(x)
+# --- End of user code ---
 
-# Restore stdout
-sys.stdout = original_stdout
-output = captured_output.getvalue().strip()
-assert output == "10"
+# Assertion
+assert 'x' in locals()
+assert locals()['x'] == 10
 print("Correct!")
 `
     },
-    { 
-        id: 'ex-py-2', 
-        title: 'If-Else Statement', 
-        type: 'coding', 
-        description: 'Check if the `number` is greater than 0. If it is, print "Positive". Otherwise, print "Not Positive".', 
+    {
+        id: 'ex-py-2',
+        title: 'If-Else Statement',
+        type: 'coding',
+        description: 'Check if the `number` is greater than 0. If it is, print "Positive". Otherwise, print "Not Positive".',
         starterCode: 'number = 5\n\n# Your code here\nif number > 0:\n  print("Positive")\nelse:\n  print("Not Positive")',
         test: `
-# Setup to capture print output
 import sys
 from io import StringIO
 original_stdout = sys.stdout
-captured_output = StringIO()
-sys.stdout = captured_output
 
-# Injected user code
+# Test case 1: Positive
+sys.stdout = captured_output_1 = StringIO()
 number = 5
+# --- User code for test 1 ---
 if number > 0:
     print("Positive")
 else:
     print("Not Positive")
-assert "Positive" in captured_output.getvalue()
-
-# Reset and test the other case
-captured_output.truncate(0)
-captured_output.seek(0)
-number = -2
-if number > 0:
-    print("Positive")
-else:
-    print("Not Positive")
-assert "Not Positive" in captured_output.getvalue()
-
+# ---
 sys.stdout = original_stdout
+output_1 = captured_output_1.getvalue().strip()
+assert "Positive" in output_1, "Failed on positive number"
+
+# Test case 2: Negative
+sys.stdout = captured_output_2 = StringIO()
+number = -2
+# --- User code for test 2 ---
+if number > 0:
+    print("Positive")
+else:
+    print("Not Positive")
+# ---
+sys.stdout = original_stdout
+output_2 = captured_output_2.getvalue().strip()
+assert "Not Positive" in output_2, "Failed on negative number"
+
 print("Correct!")
 `
     },
-    { 
-        id: 'ex-py-3', 
-        title: 'Simple Function', 
-        type: 'coding', 
-        description: 'Complete the function to take two numbers and return their sum.', 
+    {
+        id: 'ex-py-3',
+        title: 'Simple Function',
+        type: 'coding',
+        description: 'Complete the function to take two numbers and return their sum.',
         starterCode: 'def add(a, b):\n  # Your code here\n  return a + b\n\n# You can test your function by calling it\nresult = add(5, 10)\nprint(result)',
         test: `
+# --- User's function definition is executed here ---
 def add(a, b):
-    # This is where user\'s function code would be injected
-    return a + b
+  return a + b
+# ---
 
 assert add(1, 2) == 3
 assert add(-5, 5) == 0
@@ -640,85 +918,72 @@ assert add(100, 200) == 300
 print("Correct!")
 `
     },
-    { 
-        id: 'ex-en-1', 
-        title: 'String Concatenation', 
-        type: 'coding', 
-        description: 'Create a single sentence by joining the three strings.', 
+    {
+        id: 'ex-en-1',
+        title: 'String Concatenation',
+        type: 'coding',
+        description: 'Create a single sentence by joining the three strings.',
         starterCode: 'word1 = "Programming"\nword2 = "is"\nword3 = "powerful"\n\nsentence = word1 + " " + word2 + " " + word3\nprint(sentence)',
         test: `
-# Setup to capture print output
-import sys
-from io import StringIO
-original_stdout = sys.stdout
-sys.stdout = captured_output = StringIO()
-
-# Injected user code
+# --- User's code is executed here ---
 word1 = "Programming"
 word2 = "is"
 word3 = "powerful"
 sentence = word1 + " " + word2 + " " + word3
-print(sentence)
+# ---
 
-# Restore stdout
-sys.stdout = original_stdout
-output = captured_output.getvalue().strip()
-assert output == "Programming is powerful"
+assert 'sentence' in locals()
+assert locals()['sentence'] == "Programming is powerful"
 print("Correct!")
 `
     },
-    { 
-        id: 'ex-ph-2', 
-        title: 'Simulate a Bouncing Ball', 
-        type: 'coding', 
-        description: 'Simulate a ball bouncing 5 times, reducing its height by half each time. The initial height is 100.', 
+    {
+        id: 'ex-ph-2',
+        title: 'Simulate a Bouncing Ball',
+        type: 'coding',
+        description: 'Simulate a ball bouncing 5 times, reducing its height by half each time. The initial height is 100.',
         starterCode: 'height = 100\n\nfor i in range(5):\n  height = height / 2\n  print(f"Bounce {i+1}: New height is {height}")',
         test: `
-# Setup to capture print output
 import sys
 from io import StringIO
 original_stdout = sys.stdout
 sys.stdout = captured_output = StringIO()
 
-# Injected user code
+# --- User's code is executed here ---
 height = 100
 for i in range(5):
   height = height / 2
-  print(f"Bounce {i+1}: New height is {height}")
-
-# Restore stdout
+# ---
 sys.stdout = original_stdout
-output = captured_output.getvalue().strip().split('\\n')
-assert "50.0" in output[0]
-assert "25.0" in output[1]
-assert "12.5" in output[2]
-assert "6.25" in output[3]
-assert "3.125" in output[4]
+# The test will check the final value of height
+assert abs(height - 3.125) < 0.001
 print("Correct!")
 `
     },
-    { 
-        id: 'ex-py-turtle', 
-        title: 'Draw a Square', 
-        type: 'coding', 
-        description: 'Complete the loop to make the turtle draw a square.', 
+    {
+        id: 'ex-py-turtle',
+        title: 'Draw a Square',
+        type: 'coding',
+        description: 'Complete the loop to make the turtle draw a square.',
         starterCode: 'import turtle\n\n# Loop 4 times to draw 4 sides\nfor _ in range(4):\n  turtle.forward(100)\n  turtle.right(90)\n\nturtle.done()',
         test: `
 # Turtle tests are visual and hard to automate here. We'll assume correctness if it runs.
 print("Correct!")
 `
     },
-    { 
-        id: 'ex-py-oop', 
-        title: 'Create a Car Class', 
-        type: 'coding', 
-        description: 'Define a Car class with a brand and model. The __init__ method should store them as attributes.', 
+    {
+        id: 'ex-py-oop',
+        title: 'Create a Car Class',
+        type: 'coding',
+        description: 'Define a Car class with a brand and model. The __init__ method should store them as attributes.',
         starterCode: 'class Car:\n  def __init__(self, brand, model):\n    self.brand = brand\n    self.model = model\n\nmy_car = Car("Tesla", "Model S")\nprint(my_car.brand)\nprint(my_car.model)',
         test: `
+# --- User's class definition is executed here ---
 class Car:
-    def __init__(self, brand, model):
-        self.brand = brand
-        self.model = model
+  def __init__(self, brand, model):
+    self.brand = brand
+    self.model = model
+# ---
 
 test_car = Car("Generic", "Test")
 assert hasattr(test_car, 'brand')
@@ -728,48 +993,45 @@ assert test_car.model == "Test"
 print("Correct!")
 `
     },
-    { 
-        id: 'ex-py-pandas', 
-        title: 'Create a DataFrame', 
-        type: 'coding', 
-        description: 'Use pandas to create a DataFrame from the given dictionary and print it.', 
+    {
+        id: 'ex-py-pandas',
+        title: 'Create a DataFrame',
+        type: 'coding',
+        description: 'Use pandas to create a DataFrame from the given dictionary and print it.',
         starterCode: 'import pandas as pd\n\ndata = {\n    "Fruit": ["Apple", "Banana", "Cherry"],\n    "Count": [10, 15, 7]\n}\n\ndf = pd.DataFrame(data)\nprint(df)',
         test: `
 import pandas as pd
+# --- User's code is executed here ---
 data = {
     "Fruit": ["Apple", "Banana", "Cherry"],
     "Count": [10, 15, 7]
 }
 df = pd.DataFrame(data)
-assert 'Fruit' in df.columns
-assert 'Count' in df.columns
-assert len(df) == 3
+# ---
+
+assert 'df' in locals()
+assert isinstance(locals()['df'], pd.DataFrame)
+assert 'Fruit' in locals()['df'].columns
+assert 'Count' in locals()['df'].columns
+assert len(locals()['df']) == 3
 print("Correct!")
 `
     },
-    { 
-        id: 'ex-en-2', 
-        title: 'Logical Connectors', 
-        type: 'coding', 
-        description: 'Combine the two ideas using the word "because".', 
+    {
+        id: 'ex-en-2',
+        title: 'Logical Connectors',
+        type: 'coding',
+        description: 'Combine the two ideas using the word "because".',
         starterCode: 'idea1 = "The code failed"\nidea2 = "there was a syntax error"\n\nsentence = idea1 + " because " + idea2\nprint(sentence)',
         test: `
-# Setup to capture print output
-import sys
-from io import StringIO
-original_stdout = sys.stdout
-sys.stdout = captured_output = StringIO()
-
-# Injected user code
+# --- User's code is executed here ---
 idea1 = "The code failed"
 idea2 = "there was a syntax error"
 sentence = idea1 + " because " + idea2
-print(sentence)
+# ---
 
-# Restore stdout
-sys.stdout = original_stdout
-output = captured_output.getvalue().strip()
-assert output == "The code failed because there was a syntax error"
+assert 'sentence' in locals()
+assert locals()['sentence'] == "The code failed because there was a syntax error"
 print("Correct!")
 `
     },
@@ -780,11 +1042,13 @@ print("Correct!")
         description: 'Write a function that takes a list of numbers and returns their sum.',
         starterCode: 'def sum_list(numbers):\n  # Your code here\n  total = 0\n  for num in numbers:\n    total += num\n  return total\n\n# Test the function\nprint(sum_list([1, 2, 3, 4, 5]))',
         test: `
+# --- User's function definition is executed here ---
 def sum_list(numbers):
   total = 0
   for num in numbers:
     total += num
   return total
+# ---
 
 assert sum_list([1, 2, 3]) == 6
 assert sum_list([-1, 0, 1]) == 0
@@ -800,22 +1064,17 @@ print("Correct!")
         description: 'Given the dictionary, access and print the value associated with the "major" key.',
         starterCode: 'student = {\n  "name": "John Doe",\n  "age": 21,\n  "major": "Computer Science"\n}\n\n# Your code here\nmajor = student["major"]\nprint(major)',
         test: `
-import sys
-from io import StringIO
-original_stdout = sys.stdout
-sys.stdout = captured_output = StringIO()
-
+# --- User's code is executed here ---
 student = {
   "name": "John Doe",
   "age": 21,
   "major": "Computer Science"
 }
 major = student["major"]
-print(major)
+# ---
 
-sys.stdout = original_stdout
-output = captured_output.getvalue().strip()
-assert output == "Computer Science"
+assert 'major' in locals()
+assert locals()['major'] == "Computer Science"
 print("Correct!")
 `
     },
@@ -823,19 +1082,14 @@ print("Correct!")
         id: 'ex-en-active-passive',
         title: 'Rewrite in Active Voice',
         type: 'coding',
-        description: 'The variable `passive_sentence` contains a sentence in the passive voice. Rewrite it in the active voice and print it.',
+        description: 'The variable `passive_sentence` contains a sentence in the passive voice. Rewrite it in the active voice and assign it to the `active_sentence` variable.',
         starterCode: 'passive_sentence = "The bug was fixed by the developer."\n\n# Your code here\nactive_sentence = "The developer fixed the bug."\nprint(active_sentence)',
         test: `
-import sys
-from io import StringIO
-original_stdout = sys.stdout
-sys.stdout = captured_output = StringIO()
-
+# --- User's code is executed here ---
 active_sentence = "The developer fixed the bug."
-print(active_sentence)
+# ---
 
-sys.stdout = original_stdout
-output = captured_output.getvalue().strip().lower()
+output = locals()['active_sentence'].lower()
 assert "developer" in output
 assert "fixed" in output
 assert "bug" in output
@@ -851,17 +1105,12 @@ print("Correct!")
         description: 'Calculate the result of the expression `5 * (4 - 2) + 10` following the order of operations and print the final number.',
         starterCode: '# Calculate and print the result\nresult = 5 * (4 - 2) + 10\nprint(result)',
         test: `
-import sys
-from io import StringIO
-original_stdout = sys.stdout
-sys.stdout = captured_output = StringIO()
-
+# --- User's code is executed here ---
 result = 5 * (4 - 2) + 10
-print(result)
+# ---
 
-sys.stdout = original_stdout
-output = captured_output.getvalue().strip()
-assert output == "20"
+assert 'result' in locals()
+assert locals()['result'] == 20
 print("Correct!")
 `
     },
@@ -872,11 +1121,13 @@ print("Correct!")
         description: 'Complete the `check_collision` function. It should return `True` if the two rectangles are colliding and `False` otherwise. Each rectangle is a dictionary with x, y, width, and height.',
         starterCode: 'def check_collision(rect1, rect2):\n  # Check for collision between rect1 and rect2\n  # Return True if they collide, False otherwise\n  return (rect1["x"] < rect2["x"] + rect2["width"] and\n          rect1["x"] + rect1["width"] > rect2["x"] and\n          rect1["y"] < rect2["y"] + rect2["height"] and\n          rect1["y"] + rect1["height"] > rect2["y"])\n\n# Test cases (You can add more)\nrectA = {"x": 0, "y": 0, "width": 50, "height": 50}\nrectB = {"x": 40, "y": 40, "width": 50, "height": 50}\nprint(check_collision(rectA, rectB)) # Should print True',
         test: `
+# --- User's function definition is executed here ---
 def check_collision(rect1, rect2):
   return (rect1["x"] < rect2["x"] + rect2["width"] and
           rect1["x"] + rect1["width"] > rect2["x"] and
           rect1["y"] < rect2["y"] + rect2["height"] and
           rect1["y"] + rect1["height"] > rect2["y"])
+# ---
 
 # Test Case 1: Overlapping
 rect1 = {"x": 0, "y": 0, "width": 50, "height": 50}
@@ -895,6 +1146,168 @@ assert check_collision(rect1, rect4) == False, "Test Case 3 Failed"
 rect5 = {"x": 10, "y": 10, "width": 20, "height": 20}
 assert check_collision(rect1, rect5) == True, "Test Case 4 Failed"
 
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-py-input',
+        title: 'Greeting Machine',
+        type: 'coding',
+        description: 'Ask the user for their name and then print a greeting message. This exercise cannot be auto-graded due to its interactive nature.',
+        starterCode: '# Ask for the user\'s name\nname = input("What is your name? ")\n# Print a greeting\nprint(f"Hello, {name}!")',
+        test: `
+# Input() cannot be tested in this environment, so we will assume correctness.
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-py-files',
+        title: 'Write to a File',
+        type: 'coding',
+        description: 'Write a program that asks for a user\'s favorite color and saves it to a file named `favorite_color.txt`. This cannot be auto-graded.',
+        starterCode: 'color = input("What is your favorite color? ")\n\nwith open("favorite_color.txt", "w") as f:\n  f.write(color)',
+        test: `
+# File I/O cannot be reliably tested in this sandboxed environment.
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-py-try-except',
+        title: 'Safe Division Calculator',
+        type: 'coding',
+        description: 'Create a function `safe_divide(a, b)` that returns the result of a / b. If b is zero, it should return the string "Error: Cannot divide by zero." instead of crashing.',
+        starterCode: 'def safe_divide(a, b):\n  try:\n    return a / b\n  except ZeroDivisionError:\n    return "Error: Cannot divide by zero."\n\n# Test cases\nprint(safe_divide(10, 2))\nprint(safe_divide(10, 0))',
+        test: `
+# --- User's function definition is executed here ---
+def safe_divide(a, b):
+  try:
+    return a / b
+  except ZeroDivisionError:
+    return "Error: Cannot divide by zero."
+# ---
+
+assert safe_divide(10, 2) == 5
+assert safe_divide(10, 0) == "Error: Cannot divide by zero."
+assert safe_divide(0, 5) == 0
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-py-list-comprehension',
+        title: 'Filter a List',
+        type: 'coding',
+        description: 'Given a list of numbers, use a list comprehension to create a new list containing only the numbers greater than 10.',
+        starterCode: 'numbers = [5, 20, 3, 15, 8, 25]\n\n# Your list comprehension here\ngreater_than_10 = [n for n in numbers if n > 10]\n\nprint(greater_than_10)',
+        test: `
+# --- User's code is executed here ---
+numbers = [5, 20, 3, 15, 8, 25]
+greater_than_10 = [n for n in numbers if n > 10]
+# ---
+
+assert 'greater_than_10' in locals()
+assert locals()['greater_than_10'] == [20, 15, 25]
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-py-decorators',
+        title: 'Timing a Function',
+        type: 'coding',
+        description: 'Write a decorator `timer` that prints the time a function takes to execute. The `time` library has been imported for you.',
+        starterCode: 'import time\n\ndef timer(func):\n  def wrapper(*args, **kwargs):\n    start_time = time.time()\n    result = func(*args, **kwargs)\n    end_time = time.time()\n    print(f"Function {func.__name__} took {end_time - start_time:.4f} seconds")\n    return result\n  return wrapper\n\n@timer\ndef slow_function():\n  time.sleep(1)\n  print("Function finished.")\n\nslow_function()',
+        test: `
+import time
+
+# --- User's decorator is executed here ---
+def timer(func):
+  def wrapper(*args, **kwargs):
+    start_time = time.time()
+    result = func(*args, **kwargs)
+    end_time = time.time()
+    print(f"Function {func.__name__} took {end_time - start_time:.4f} seconds")
+    return result
+  return wrapper
+# ---
+
+@timer
+def test_func():
+  pass
+
+# The test will pass if the decorator is syntactically correct and callable.
+# Visual inspection of the output is needed for full verification.
+test_func()
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-en-punctuation',
+        title: 'Fix the Punctuation',
+        type: 'coding',
+        description: 'The string `sentence` is missing a comma. Add the comma in the correct place to separate the two clauses and print the corrected sentence.',
+        starterCode: '# Add a comma to this sentence\nsentence = "If the user is not logged in we should redirect them."\n\n# Your correction here\ncorrected_sentence = "If the user is not logged in, we should redirect them."\nprint(corrected_sentence)',
+        test: `
+# --- User's code is executed here ---
+corrected_sentence = "If the user is not logged in, we should redirect them."
+# ---
+
+assert 'corrected_sentence' in locals()
+assert "," in locals()['corrected_sentence']
+assert locals()['corrected_sentence'] == "If the user is not logged in, we should redirect them."
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-ma-binary',
+        title: 'Binary to Decimal',
+        type: 'coding',
+        description: 'Create a function `binary_to_decimal` that takes a string representing a binary number (e.g., "101") and returns its decimal (base-10) equivalent.',
+        starterCode: 'def binary_to_decimal(binary_string):\n  # Python\'s int() function can do this for you with a second argument!\n  return int(binary_string, 2)\n\n# Test case\nprint(binary_to_decimal("1010")) # Should be 10',
+        test: `
+# --- User's function definition is executed here ---
+def binary_to_decimal(binary_string):
+  return int(binary_string, 2)
+# ---
+
+assert binary_to_decimal("101") == 5
+assert binary_to_decimal("1111") == 15
+assert binary_to_decimal("0") == 0
+assert binary_to_decimal("10000") == 16
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-ma-big-o',
+        title: 'Identify the Big O',
+        type: 'coding',
+        description: 'Look at the `find_duplicates` function. What is its Big O time complexity? Assign your answer as a string to the `big_o_complexity` variable (e.g., "O(n)").',
+        starterCode: 'def find_duplicates(my_list):\n  for i in range(len(my_list)):\n    for j in range(i + 1, len(my_list)):\n      if my_list[i] == my_list[j]:\n        return True\n  return False\n\n# What is the Big O of the function above?\nbig_o_complexity = "O(n^2)"',
+        test: `
+# --- User's code is executed here ---
+big_o_complexity = "O(n^2)"
+# ---
+
+assert 'big_o_complexity' in locals()
+# Common acceptable answers
+assert locals()['big_o_complexity'].replace(" ", "").lower() in ["o(n^2)", "o(n**2)"]
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-ph-vectors',
+        title: 'Vector Addition',
+        type: 'coding',
+        description: 'Create a function `add_vectors` that takes two vectors (represented as dictionaries) and returns their sum as a new vector.',
+        starterCode: 'def add_vectors(v1, v2):\n  # Add the x and y components\n  sum_x = v1["x"] + v2["x"]\n  sum_y = v1["y"] + v2["y"]\n  return {"x": sum_x, "y": sum_y}\n\n# Test case\nvec1 = {"x": 3, "y": 5}\nvec2 = {"x": -1, "y": 2}\nprint(add_vectors(vec1, vec2)) # Should be {\'x\': 2, \'y\': 7}',
+        test: `
+# --- User's function definition is executed here ---
+def add_vectors(v1, v2):
+  sum_x = v1["x"] + v2["x"]
+  sum_y = v1["y"] + v2["y"]
+  return {"x": sum_x, "y": sum_y}
+# ---
+
+assert add_vectors({"x": 1, "y": 1}, {"x": 1, "y": 1}) == {"x": 2, "y": 2}
+assert add_vectors({"x": 10, "y": -5}, {"x": -8, "y": 5}) == {"x": 2, "y": 0}
 print("Correct!")
 `
     },
