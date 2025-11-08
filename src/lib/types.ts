@@ -28,6 +28,8 @@ export interface Exercise {
   type: 'coding' | 'quiz';
   description: string;
   starterCode?: string;
+  solution?: string;
+  test?: string;
 }
 
 export interface Badge {

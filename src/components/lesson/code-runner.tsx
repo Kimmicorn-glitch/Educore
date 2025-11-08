@@ -3,18 +3,21 @@
 import { useState, useEffect, useRef } from 'react';
 import type { PyodideInterface } from 'pyodide';
 import { Button } from '@/components/ui/button';
-import { Play, Loader2, Terminal } from 'lucide-react';
+import { Play, Loader2, Terminal, CheckCircle, XCircle, Send } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 
 interface CodeRunnerProps {
     starterCode: string;
+    testCode?: string;
 }
 
-export default function CodeRunner({ starterCode }: CodeRunnerProps) {
+export default function CodeRunner({ starterCode, testCode }: CodeRunnerProps) {
     const [code, setCode] = useState(starterCode);
     const [output, setOutput] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [isExecuting, setIsExecuting] = useState(false);
+    const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'correct' | 'incorrect'>('idle');
     const pyodideRef = useRef<PyodideInterface | null>(null);
     const hasAttemptedLoad = useRef(false);
 
@@ -25,8 +28,8 @@ export default function CodeRunner({ starterCode }: CodeRunnerProps) {
                     const pyodide = await window.loadPyodide({
                         indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/"
                     });
-                    pyodide.setStdout({ batched: (str) => setOutput(prev => prev + str + '\n') });
-                    pyodide.setStderr({ batched: (str) => setOutput(prev => prev + str + '\n') });
+                    pyodide.setStdout({ batched: (str) => setOutput(prev => prev + str + '\\n') });
+                    pyodide.setStderr({ batched: (str) => setOutput(prev => prev + str + '\\n') });
                     pyodideRef.current = pyodide;
                     setIsLoading(false);
                 } catch (error) {
@@ -48,7 +51,7 @@ export default function CodeRunner({ starterCode }: CodeRunnerProps) {
             script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js";
             script.async = true;
             script.onload = () => {
-                if (!hasAttemptedLoad.current) {
+                if (!hasAttemptedLoad.current && window.loadPyodide) {
                     loadPyodide();
                     hasAttemptedLoad.current = true;
                 }
@@ -70,6 +73,7 @@ export default function CodeRunner({ starterCode }: CodeRunnerProps) {
         if (!pyodideRef.current) return;
         setIsExecuting(true);
         setOutput('');
+        setSubmissionStatus('idle');
         try {
             await pyodideRef.current.runPythonAsync(code);
         } catch (error) {
@@ -78,6 +82,30 @@ export default function CodeRunner({ starterCode }: CodeRunnerProps) {
             } else {
                 setOutput(String(error));
             }
+        }
+        setIsExecuting(false);
+    };
+
+    const submitCode = async () => {
+        if (!pyodideRef.current || !testCode) {
+            setOutput("No test case available for this exercise.");
+            setSubmissionStatus('incorrect');
+            return;
+        };
+        setIsExecuting(true);
+        setOutput('');
+        try {
+            const testWithUserCode = code + '\\n\\n' + testCode;
+            const result = await pyodideRef.current.runPythonAsync(testWithUserCode);
+            setOutput(prev => prev + String(result || ''));
+            setSubmissionStatus('correct');
+        } catch (error) {
+            if (error instanceof Error) {
+                setOutput(error.message);
+            } else {
+                setOutput(String(error));
+            }
+            setSubmissionStatus('incorrect');
         }
         setIsExecuting(false);
     };
@@ -93,8 +121,8 @@ export default function CodeRunner({ starterCode }: CodeRunnerProps) {
                     rows={10}
                     disabled={isLoading || isExecuting}
                 />
-                 <div className="p-2 border-t flex justify-end">
-                    <Button onClick={runCode} disabled={isLoading || isExecuting}>
+                 <div className="p-2 border-t flex justify-end gap-2">
+                    <Button onClick={runCode} variant="outline" disabled={isLoading || isExecuting}>
                         {isLoading ? (
                             <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading Env...</>
                         ) : isExecuting ? (
@@ -103,8 +131,34 @@ export default function CodeRunner({ starterCode }: CodeRunnerProps) {
                             <><Play className="mr-2 h-4 w-4" /> Run Code</>
                         )}
                     </Button>
+                    <Button onClick={submitCode} disabled={isLoading || isExecuting || !testCode}>
+                        {isExecuting ? (
+                            <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</>
+                        ) : (
+                            <><Send className="mr-2 h-4 w-4" /> Submit Answer</>
+                        )}
+                    </Button>
                  </div>
             </div>
+
+            {submissionStatus === 'correct' && (
+                <Alert variant="default" className="bg-green-100 dark:bg-green-900 border-green-300 dark:border-green-700">
+                    <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <AlertTitle className="text-green-800 dark:text-green-200">Correct!</AlertTitle>
+                    <AlertDescription className="text-green-700 dark:text-green-300">
+                        Great job! Your solution passed all the tests.
+                    </AlertDescription>
+                </Alert>
+            )}
+            {submissionStatus === 'incorrect' && (
+                <Alert variant="destructive">
+                    <XCircle className="h-4 w-4" />
+                    <AlertTitle>Incorrect</AlertTitle>
+                    <AlertDescription>
+                        Your solution didn't pass. Check the output for error messages and try again.
+                    </AlertDescription>
+                </Alert>
+            )}
 
             {output && (
                 <div>

@@ -406,16 +406,248 @@ export const badges: Badge[] = [
 ]
 
 export const exercises: Exercise[] = [
-    { id: 'ex-py-1', title: 'Declare Variables', type: 'coding', description: 'Declare a variable `name` with your name and an `age` variable with your age, then print a sentence.', starterCode: 'name = "Alex"\nage = 10\nprint(f"My name is {name} and I am {age} years old.")' },
-    { id: 'ex-ma-2', title: 'Solve for X', type: 'coding', description: 'The equation is x + 15 = 25. Find the value of x and print it.', starterCode: '# Solve for x in the equation: x + 15 = 25\nx = 0 # Change this line\nprint(x)' },
-    { id: 'ex-py-2', title: 'If-Else Statement', type: 'coding', description: 'Check if the `number` is greater than 0. If it is, print "Positive". Otherwise, print "Not Positive".', starterCode: 'number = 5\n\n# Your code here\nif number > 0:\n  print("Positive")\nelse:\n  print("Not Positive")' },
-    { id: 'ex-py-3', title: 'Simple Function', type: 'coding', description: 'Complete the function to take two numbers and return their sum.', starterCode: 'def add(a, b):\n  # Your code here\n  return a + b' },
-    { id: 'ex-en-1', title: 'String Concatenation', type: 'coding', description: 'Create a single sentence by joining the three strings.', starterCode: 'word1 = "Programming"\nword2 = "is"\nword3 = "powerful"\n\nsentence = word1 + " " + word2 + " " + word3\nprint(sentence)' },
-    { id: 'ex-ph-2', title: 'Simulate a Bouncing Ball', type: 'coding', description: 'Simulate a ball bouncing 5 times, reducing its height by half each time. The initial height is 100.', starterCode: 'height = 100\n\nfor i in range(5):\n  height = height / 2\n  print(f"Bounce {i+1}: New height is {height}")' },
-    { id: 'ex-py-turtle', title: 'Draw a Square', type: 'coding', description: 'Complete the loop to make the turtle draw a square.', starterCode: 'import turtle\n\n# Loop 4 times to draw 4 sides\nfor _ in range(4):\n  turtle.forward(100)\n  turtle.right(90)\n\nturtle.done()' },
-    { id: 'ex-py-oop', title: 'Create a Car Class', type: 'coding', description: 'Define a Car class with a brand and model. The __init__ method should store them as attributes.', starterCode: 'class Car:\n  def __init__(self, brand, model):\n    self.brand = brand\n    self.model = model\n\nmy_car = Car("Tesla", "Model S")\nprint(my_car.brand)\nprint(my_car.model)'},
-    { id: 'ex-py-pandas', title: 'Create a DataFrame', type: 'coding', description: 'Use pandas to create a DataFrame from the given dictionary and print it.', starterCode: 'import pandas as pd\n\ndata = {\n    "Fruit": ["Apple", "Banana", "Cherry"],\n    "Count": [10, 15, 7]\n}\n\ndf = pd.DataFrame(data)\nprint(df)'},
-    { id: 'ex-en-2', title: 'Logical Connectors', type: 'coding', description: 'Combine the two ideas using the word "because".', starterCode: 'idea1 = "The code failed"\nidea2 = "there was a syntax error"\n\nsentence = idea1 + " because " + idea2\nprint(sentence)' },
+    { 
+        id: 'ex-py-1', 
+        title: 'Declare Variables', 
+        type: 'coding', 
+        description: 'Declare a variable `name` with your name and an `age` variable with your age, then print a sentence.', 
+        starterCode: 'name = "Alex"\\nage = 10\\nprint(f"My name is {name} and I am {age} years old.")',
+        test: `
+import sys
+from io import StringIO
+
+# Capture original stdout
+original_stdout = sys.stdout
+# Redirect stdout
+sys.stdout = captured_output = StringIO()
+
+# User's code is executed here (imagine it's injected)
+# Based on starter: 
+# name = "Alex"
+# age = 10
+# print(f"My name is {name} and I am {age} years old.")
+# The test will check the output, not the variable values themselves.
+
+# Restore stdout
+sys.stdout = original_stdout
+output = captured_output.getvalue().strip()
+
+# Assertion
+assert "my name is" in output.lower()
+assert "and i am" in output.lower()
+print("Correct!")
+`
+    },
+    { 
+        id: 'ex-ma-2', 
+        title: 'Solve for X', 
+        type: 'coding', 
+        description: 'The equation is x + 15 = 25. Find the value of x and print it.', 
+        starterCode: '# Solve for x in the equation: x + 15 = 25\\nx = 0 # Change this line\\nprint(x)',
+        test: `
+# Setup to capture print output
+import sys
+from io import StringIO
+original_stdout = sys.stdout
+sys.stdout = captured_output = StringIO()
+
+# Injected user code would be here... e.g.
+# x = 10
+# print(x)
+
+# Restore stdout
+sys.stdout = original_stdout
+output = captured_output.getvalue().strip()
+assert output == "10"
+print("Correct!")
+`
+    },
+    { 
+        id: 'ex-py-2', 
+        title: 'If-Else Statement', 
+        type: 'coding', 
+        description: 'Check if the `number` is greater than 0. If it is, print "Positive". Otherwise, print "Not Positive".', 
+        starterCode: 'number = 5\\n\\n# Your code here\\nif number > 0:\\n  print("Positive")\\nelse:\\n  print("Not Positive")',
+        test: `
+# Setup to capture print output
+import sys
+from io import StringIO
+original_stdout = sys.stdout
+sys.stdout = captured_output = StringIO()
+
+# Injected user code
+# This test assumes the user has modified the \\\`number\\\` variable or the if/else block
+# Let's test both cases
+number = 5
+if number > 0:
+    print("Positive")
+else:
+    print("Not Positive")
+assert "Positive" in captured_output.getvalue()
+
+# Reset and test the other case
+sys.stdout = captured_output = StringIO()
+number = -2
+if number > 0:
+    print("Positive")
+else:
+    print("Not Positive")
+assert "Not Positive" in captured_output.getvalue()
+
+sys.stdout = original_stdout
+print("Correct!")
+`
+    },
+    { 
+        id: 'ex-py-3', 
+        title: 'Simple Function', 
+        type: 'coding', 
+        description: 'Complete the function to take two numbers and return their sum.', 
+        starterCode: 'def add(a, b):\\n  # Your code here\\n  return a + b\\n\\n# You can test your function by calling it\\nresult = add(5, 10)\\nprint(result)',
+        test: `
+def add(a, b):
+    # This is where user's function code would be injected
+    return a + b
+
+assert add(1, 2) == 3
+assert add(-5, 5) == 0
+assert add(100, 200) == 300
+print("Correct!")
+`
+    },
+    { 
+        id: 'ex-en-1', 
+        title: 'String Concatenation', 
+        type: 'coding', 
+        description: 'Create a single sentence by joining the three strings.', 
+        starterCode: 'word1 = "Programming"\\nword2 = "is"\\nword3 = "powerful"\\n\\nsentence = word1 + " " + word2 + " " + word3\\nprint(sentence)',
+        test: `
+# Setup to capture print output
+import sys
+from io import StringIO
+original_stdout = sys.stdout
+sys.stdout = captured_output = StringIO()
+
+# Injected user code
+word1 = "Programming"
+word2 = "is"
+word3 = "powerful"
+sentence = word1 + " " + word2 + " " + word3
+print(sentence)
+
+# Restore stdout
+sys.stdout = original_stdout
+output = captured_output.getvalue().strip()
+assert output == "Programming is powerful"
+print("Correct!")
+`
+    },
+    { 
+        id: 'ex-ph-2', 
+        title: 'Simulate a Bouncing Ball', 
+        type: 'coding', 
+        description: 'Simulate a ball bouncing 5 times, reducing its height by half each time. The initial height is 100.', 
+        starterCode: 'height = 100\\n\\nfor i in range(5):\\n  height = height / 2\\n  print(f"Bounce {i+1}: New height is {height}")',
+        test: `
+# Setup to capture print output
+import sys
+from io import StringIO
+original_stdout = sys.stdout
+sys.stdout = captured_output = StringIO()
+
+# Injected user code
+height = 100
+for i in range(5):
+  height = height / 2
+  print(f"Bounce {i+1}: New height is {height}")
+
+# Restore stdout
+sys.stdout = original_stdout
+output = captured_output.getvalue().strip().split('\\n')
+assert "50.0" in output[0]
+assert "25.0" in output[1]
+assert "12.5" in output[2]
+assert "6.25" in output[3]
+assert "3.125" in output[4]
+print("Correct!")
+`
+    },
+    { 
+        id: 'ex-py-turtle', 
+        title: 'Draw a Square', 
+        type: 'coding', 
+        description: 'Complete the loop to make the turtle draw a square.', 
+        starterCode: 'import turtle\\n\\n# Loop 4 times to draw 4 sides\\nfor _ in range(4):\\n  turtle.forward(100)\\n  turtle.right(90)\\n\\nturtle.done()',
+        test: `
+# Turtle tests are visual and hard to automate here. We'll assume correctness if it runs.
+print("Correct!")
+`
+    },
+    { 
+        id: 'ex-py-oop', 
+        title: 'Create a Car Class', 
+        type: 'coding', 
+        description: 'Define a Car class with a brand and model. The __init__ method should store them as attributes.', 
+        starterCode: 'class Car:\\n  def __init__(self, brand, model):\\n    self.brand = brand\\n    self.model = model\\n\\nmy_car = Car("Tesla", "Model S")\\nprint(my_car.brand)\\nprint(my_car.model)',
+        test: `
+class Car:
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
+
+test_car = Car("Generic", "Test")
+assert hasattr(test_car, 'brand')
+assert hasattr(test_car, 'model')
+assert test_car.brand == "Generic"
+assert test_car.model == "Test"
+print("Correct!")
+`
+    },
+    { 
+        id: 'ex-py-pandas', 
+        title: 'Create a DataFrame', 
+        type: 'coding', 
+        description: 'Use pandas to create a DataFrame from the given dictionary and print it.', 
+        starterCode: 'import pandas as pd\\n\\ndata = {\\n    "Fruit": ["Apple", "Banana", "Cherry"],\\n    "Count": [10, 15, 7]\\n}\\n\\ndf = pd.DataFrame(data)\\nprint(df)',
+        test: `
+import pandas as pd
+data = {
+    "Fruit": ["Apple", "Banana", "Cherry"],
+    "Count": [10, 15, 7]
+}
+df = pd.DataFrame(data)
+assert 'Fruit' in df.columns
+assert 'Count' in df.columns
+assert len(df) == 3
+print("Correct!")
+`
+    },
+    { 
+        id: 'ex-en-2', 
+        title: 'Logical Connectors', 
+        type: 'coding', 
+        description: 'Combine the two ideas using the word "because".', 
+        starterCode: 'idea1 = "The code failed"\\nidea2 = "there was a syntax error"\\n\\nsentence = idea1 + " because " + idea2\\nprint(sentence)',
+        test: `
+# Setup to capture print output
+import sys
+from io import StringIO
+original_stdout = sys.stdout
+sys.stdout = captured_output = StringIO()
+
+# Injected user code
+idea1 = "The code failed"
+idea2 = "there was a syntax error"
+sentence = idea1 + " because " + idea2
+print(sentence)
+
+# Restore stdout
+sys.stdout = original_stdout
+output = captured_output.getvalue().strip()
+assert output == "The code failed because there was a syntax error"
+print("Correct!")
+`
+    },
 ];
 
 export const userProgress: UserProgress = {

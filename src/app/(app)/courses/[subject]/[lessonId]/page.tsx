@@ -43,9 +43,8 @@ export default function LessonPage() {
             <h1 className="text-4xl font-bold font-headline">{lesson.title}</h1>
         </div>
 
-        <div className="prose prose-lg max-w-none dark:prose-invert" style={{ whiteSpace: 'pre-wrap' }}>
-            {lesson.content}
-        </div>
+        <div className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.content.replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\n/g, '<br />') }} />
+
 
         {exercise && (
             <Card>
@@ -54,7 +53,7 @@ export default function LessonPage() {
                     <CardDescription>{exercise.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <CodeRunner starterCode={exercise.starterCode || ''} />
+                    <CodeRunner starterCode={exercise.starterCode || ''} testCode={exercise.test} />
                 </CardContent>
             </Card>
         )}
