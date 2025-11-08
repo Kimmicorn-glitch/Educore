@@ -16,6 +16,7 @@ export default function CodeRunner({ starterCode }: CodeRunnerProps) {
     const [isLoading, setIsLoading] = useState(true);
     const [isExecuting, setIsExecuting] = useState(false);
     const pyodideRef = useRef<PyodideInterface | null>(null);
+    const hasAttemptedLoad = useRef(false);
 
     useEffect(() => {
         const loadPyodide = async () => {
@@ -27,18 +28,43 @@ export default function CodeRunner({ starterCode }: CodeRunnerProps) {
                     pyodide.setStdout({ batched: (str) => setOutput(prev => prev + str + '\n') });
                     pyodide.setStderr({ batched: (str) => setOutput(prev => prev + str + '\n') });
                     pyodideRef.current = pyodide;
+                    setIsLoading(false);
                 } catch (error) {
                     console.error("Failed to load Pyodide:", error);
                     setOutput("Error: Failed to load Python environment.");
+                    setIsLoading(false);
                 }
             } else {
-                console.error("Pyodide script not loaded.");
-                setOutput("Error: Python runtime is not available.");
+                 console.error("Pyodide script not loaded.");
+                 setOutput("Error: Python runtime is not available.");
+                 setIsLoading(false);
             }
-            setIsLoading(false);
         };
-        loadPyodide();
+        
+        // Ensure script is on the page before trying to load
+        if (!document.getElementById('pyodide-script')) {
+            const script = document.createElement('script');
+            script.id = 'pyodide-script';
+            script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js";
+            script.async = true;
+            script.onload = () => {
+                if (!hasAttemptedLoad.current) {
+                    loadPyodide();
+                    hasAttemptedLoad.current = true;
+                }
+            };
+            script.onerror = () => {
+                 setOutput("Error: Failed to load Python runtime script.");
+                 setIsLoading(false);
+            }
+            document.body.appendChild(script);
+        } else if (window.loadPyodide && !hasAttemptedLoad.current) {
+            loadPyodide();
+            hasAttemptedLoad.current = true;
+        }
+
     }, []);
+
 
     const runCode = async () => {
         if (!pyodideRef.current) return;
@@ -55,17 +81,6 @@ export default function CodeRunner({ starterCode }: CodeRunnerProps) {
         }
         setIsExecuting(false);
     };
-    
-    // Pyodide is not defined on the server, so we need to add its script tag.
-    // The component logic assumes it will be available on the `window` object.
-    useEffect(() => {
-        if (document.getElementById('pyodide-script')) return;
-        const script = document.createElement('script');
-        script.id = 'pyodide-script';
-        script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js";
-        script.async = true;
-        document.body.appendChild(script);
-    }, []);
 
     return (
         <div className="space-y-4">
