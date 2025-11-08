@@ -2,7 +2,7 @@
 "use client";
 
 import { courses, userProgress } from "@/lib/mock-data";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/select";
 import type { TargetAudience } from "@/lib/types";
 
-export default function SubjectPage({ params }: { params: { subject: string } }) {
+export default function SubjectPage() {
+  const params = useParams() as { subject: string };
   const course = courses.find(c => c.id.toLowerCase() === params.subject.toLowerCase());
   const [audience, setAudience] = useState<TargetAudience | "all">("all");
 

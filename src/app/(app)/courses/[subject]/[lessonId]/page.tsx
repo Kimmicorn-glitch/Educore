@@ -1,5 +1,8 @@
+
+'use client';
+
 import { courses, exercises } from "@/lib/mock-data";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import CodeRunner from "@/components/lesson/code-runner";
 import AiChatbot from "@/components/lesson/ai-chatbot";
@@ -7,8 +10,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { use } from "react";
 
-export default function LessonPage({ params }: { params: { subject: string; lessonId: string } }) {
+export default function LessonPage() {
+  const params = useParams() as { subject: string; lessonId: string };
   const course = courses.find(c => c.id.toLowerCase() === params.subject.toLowerCase());
   const lesson = course?.lessons.find(l => l.id === params.lessonId);
   
