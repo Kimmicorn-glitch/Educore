@@ -67,7 +67,7 @@ export function MainSidebar() {
   return (
     <>
       <SidebarHeader>
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <BookDashed className="h-8 w-8 text-primary" />
           <span className="text-xl font-bold font-headline text-foreground group-data-[collapsible=icon]:hidden">
             EduCore
