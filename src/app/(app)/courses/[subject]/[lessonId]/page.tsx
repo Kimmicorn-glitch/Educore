@@ -26,12 +26,15 @@ export default function LessonPage({ params }: { params: { subject: string; less
         </Link>
         
         <div className="space-y-2">
-            <Badge 
-                variant={lesson.level === 'Beginner' ? 'secondary' : lesson.level === 'Intermediate' ? 'default' : 'destructive'}
-                className="w-fit"
-            >
-                {lesson.level}
-            </Badge>
+            <div className="flex items-center gap-2">
+                <Badge 
+                    variant={lesson.level === 'Beginner' ? 'secondary' : lesson.level === 'Intermediate' ? 'default' : 'destructive'}
+                    className="w-fit"
+                >
+                    {lesson.level}
+                </Badge>
+                <Badge variant="outline">{lesson.targetAudience}</Badge>
+            </div>
             <h1 className="text-4xl font-bold font-headline">{lesson.title}</h1>
         </div>
 

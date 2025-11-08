@@ -1,4 +1,5 @@
 export type Subject = 'Python' | 'English' | 'Maths' | 'Physics';
+export type TargetAudience = 'Children' | 'Teenagers' | 'Adults';
 
 export interface Course {
   id: Subject;
@@ -16,6 +17,7 @@ export interface Lesson {
   id: string;
   title: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced';
+  targetAudience: TargetAudience;
   content: string;
   linkedExerciseId?: string;
 }
@@ -28,7 +30,15 @@ export interface Exercise {
   starterCode?: string;
 }
 
+export interface Badge {
+  id: string;
+  title:string;
+  description: string;
+  icon: string;
+}
+
 export interface UserProgress {
   lessonCompletions: { lessonId: string; isCompleted: boolean }[];
   exerciseAttempts: { exerciseId: string; attempts: number; successRate: number }[];
+  badges: string[];
 }
