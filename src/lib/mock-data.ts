@@ -1,5 +1,5 @@
 
-import type { Course, Exercise, UserProgress, Badge } from './types';
+import type { Course, Exercise, UserProgress, Badge, Challenge } from './types';
 
 export const courses: Course[] = [
   {
@@ -884,7 +884,8 @@ If the ray intersects multiple objects, you usually only care about the intersec
 export const badges: Badge[] = [
     { id: 'py-beginner', title: 'Python Novice', description: 'Completed the Python beginner lessons.', icon: 'GraduationCap' },
     { id: 'py-intermediate', title: 'Python Apprentice', description: 'Mastered intermediate Python concepts.', icon: 'Code' },
-    { id: 'first-badge', title: 'First Steps', description: 'Earned your very first badge!', icon: 'Award' }
+    { id: 'first-badge', title: 'First Steps', description: 'Earned your very first badge!', icon: 'Award' },
+    { id: 'challenge-master', title: 'Challenge Master', description: 'Completed all 20 coding challenges.', icon: 'HardHat' }
 ]
 
 export const exercises: Exercise[] = [
@@ -1453,6 +1454,169 @@ print("Correct!")
     },
 ];
 
+export const challenges: Challenge[] = [
+    {
+        level: 1,
+        title: "Variable Swap",
+        description: "You are given two variables, `a` and `b`. Swap their values and print them.",
+        starterCode: "a = 5\nb = 10\n\n# Your code here to swap a and b\n\nprint(f'a: {a}')\nprint(f'b: {b}')",
+        test: "assert a == 10 and b == 5, 'The variables were not swapped correctly.'\nprint('Correct!')",
+        tags: ['Python']
+    },
+    {
+        level: 2,
+        title: "Even or Odd",
+        description: "Write a function `is_even(number)` that returns `True` if a number is even and `False` otherwise.",
+        starterCode: "def is_even(number):\n  # Your code here\n  pass\n\nprint(is_even(4))\nprint(is_even(7))",
+        test: "assert is_even(10) == True, 'is_even(10) should be True'\nassert is_even(7) == False, 'is_even(7) should be False'\nassert is_even(0) == True, 'is_even(0) should be True'\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 3,
+        title: "String Reversal",
+        description: "Write a function `reverse_string(s)` that takes a string and returns it reversed.",
+        starterCode: "def reverse_string(s):\n  # Your code here\n  pass\n\nprint(reverse_string('hello'))",
+        test: "assert reverse_string('hello') == 'olleh'\nassert reverse_string('Python') == 'nohtyP'\nassert reverse_string('') == ''\nprint('Correct!')",
+        tags: ['Python', 'English']
+    },
+    {
+        level: 4,
+        title: "Find the Maximum",
+        description: "Write a function `find_max(numbers)` that finds the maximum number in a list without using the built-in `max()` function.",
+        starterCode: "def find_max(numbers):\n  # Your code here\n  pass\n\nprint(find_max([1, 5, 2, 9, 3]))",
+        test: "assert find_max([1, 5, 2, 9, 3]) == 9\nassert find_max([-1, -5, -2]) == -1\nassert find_max([100]) == 100\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 5,
+        title: "Factorial",
+        description: "Write a function `factorial(n)` that calculates the factorial of a non-negative integer. The factorial of n is the product of all positive integers up to n.",
+        starterCode: "def factorial(n):\n  # Your code here\n  pass\n\nprint(factorial(5)) # Should be 120",
+        test: "assert factorial(5) == 120\nassert factorial(0) == 1\nassert factorial(1) == 1\nassert factorial(7) == 5040\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 6,
+        title: "Palindrome Check",
+        description: "Write a function `is_palindrome(s)` that checks if a string is a palindrome (reads the same forwards and backwards). Ignore case and non-alphanumeric characters.",
+        starterCode: "import re\n\ndef is_palindrome(s):\n  # Your code here\n  pass\n\nprint(is_palindrome('A man, a plan, a canal: Panama'))",
+        test: "assert is_palindrome('A man, a plan, a canal: Panama') == True\nassert is_palindrome('race a car') == False\nassert is_palindrome('Was it a car or a cat I saw?') == True\nprint('Correct!')",
+        tags: ['Python', 'English']
+    },
+    {
+        level: 7,
+        title: "Fibonacci Sequence",
+        description: "Write a function `fibonacci(n)` that returns the nth number in the Fibonacci sequence. The sequence starts 0, 1, 1, 2, 3, 5, ...",
+        starterCode: "def fibonacci(n):\n  # Your code here\n  pass\n\nprint(fibonacci(10))",
+        test: "assert fibonacci(0) == 0\nassert fibonacci(1) == 1\nassert fibonacci(10) == 55\nassert fibonacci(15) == 610\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 8,
+        title: "FizzBuzz",
+        description: "Write a function `fizzbuzz(n)` that prints numbers from 1 to n. But for multiples of three print 'Fizz' instead of the number and for the multiples of five print 'Buzz'. For numbers which are multiples of both three and five print 'FizzBuzz'.",
+        starterCode: "def fizzbuzz(n):\n  # Your code here\n  pass\n\nfizzbuzz(15)",
+        test: "import sys\nfrom io import StringIO\n\nsys.stdout = captured_output = StringIO()\nfizzbuzz(15)\nsys.stdout = sys.__stdout__\noutput = captured_output.getvalue().strip().split('\\n')\nexpected = ['1', '2', 'Fizz', '4', 'Buzz', 'Fizz', '7', '8', 'Fizz', 'Buzz', '11', 'Fizz', '13', '14', 'FizzBuzz']\nassert output == expected, 'Output does not match FizzBuzz sequence'\nprint('Correct!')",
+        tags: ['Python', 'Maths', 'English']
+    },
+    {
+        level: 9,
+        title: "Prime Number Check",
+        description: "Write a function `is_prime(num)` that returns `True` if a number is prime and `False` otherwise.",
+        starterCode: "def is_prime(num):\n  # Your code here\n  pass\n\nprint(is_prime(11))\nprint(is_prime(10))",
+        test: "assert is_prime(2) == True\nassert is_prime(11) == True\nassert is_prime(15) == False\nassert is_prime(29) == True\nassert is_prime(1) == False\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 10,
+        title: "Simple Vector Class",
+        description: "Create a `Vector` class that supports initialization with x and y coordinates, and has a method `magnitude()` that returns its length from the origin.",
+        starterCode: "import math\n\nclass Vector:\n  def __init__(self, x, y):\n    # Your code here\n    pass\n\n  def magnitude(self):\n    # Your code here\n    pass\n\nv = Vector(3, 4)\nprint(v.magnitude()) # Should be 5",
+        test: "import math\nv1 = Vector(3, 4)\nassert abs(v1.magnitude() - 5) < 1e-9\nv2 = Vector(0, 0)\nassert v2.magnitude() == 0\nv3 = Vector(-5, 12)\nassert abs(v3.magnitude() - 13) < 1e-9\nprint('Correct!')",
+        tags: ['Python', 'Physics']
+    },
+    {
+        level: 11,
+        title: "Count Vowels",
+        description: "Write a function `count_vowels(s)` that counts the number of vowels (a, e, i, o, u) in a string, case-insensitively.",
+        starterCode: "def count_vowels(s):\n  # Your code here\n  pass\n\nprint(count_vowels('Hello World'))",
+        test: "assert count_vowels('Hello World') == 3\nassert count_vowels('AEIOU') == 5\nassert count_vowels('Rhythm') == 0\nprint('Correct!')",
+        tags: ['Python', 'English']
+    },
+    {
+        level: 12,
+        title: "Bubble Sort",
+        description: "Implement the Bubble Sort algorithm in a function `bubble_sort(arr)` that sorts a list of numbers in ascending order.",
+        starterCode: "def bubble_sort(arr):\n  # Your code here\n  return arr\n\nprint(bubble_sort([5, 3, 8, 4, 2]))",
+        test: "assert bubble_sort([5, 3, 8, 4, 2]) == [2, 3, 4, 5, 8]\nassert bubble_sort([1, 2, 3]) == [1, 2, 3]\nassert bubble_sort([5, 4, 3, 2, 1]) == [1, 2, 3, 4, 5]\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 13,
+        title: "Find Missing Number",
+        description: "You are given a list of n-1 integers and these integers are in the range of 1 to n. There are no duplicates. One of the integers is missing. Write a function `find_missing(arr)` to find it.",
+        starterCode: "def find_missing(arr):\n  # Your code here\n  pass\n\nprint(find_missing([1, 2, 4, 5])) # Should be 3",
+        test: "assert find_missing([1, 2, 4, 5, 6]) == 3\nassert find_missing([3, 1]) == 2\nassert find_missing([1, 2, 3, 4, 5, 6, 8, 9, 10]) == 7\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 14,
+        title: "Two Sum Problem",
+        description: "Given a list of numbers and a target, write a function `two_sum(arr, target)` that returns the indices of the two numbers that add up to the target. Assume there is exactly one solution.",
+        starterCode: "def two_sum(arr, target):\n  # Your code here\n  pass\n\nprint(two_sum([2, 7, 11, 15], 9)) # Should be (0, 1) or [0, 1]",
+        test: "result = two_sum([2, 7, 11, 15], 9)\nassert sorted(result) == [0, 1]\nresult2 = two_sum([3, 2, 4], 6)\nassert sorted(result2) == [1, 2]\nresult3 = two_sum([3, 3], 6)\nassert sorted(result3) == [0, 1]\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 15,
+        title: "Balanced Brackets",
+        description: "Write a function `are_brackets_balanced(s)` that checks if a string of brackets '()[]{}' is balanced. This means every opening bracket has a matching closing bracket in the correct order.",
+        starterCode: "def are_brackets_balanced(s):\n  # Your code here\n  pass\n\nprint(are_brackets_balanced('{[()]}'))\nprint(are_brackets_balanced('{[(])}'))",
+        test: "assert are_brackets_balanced('{[()]}') == True\nassert are_brackets_balanced('{[(])}') == False\nassert are_brackets_balanced('{{[[(())]]}}') == True\nassert are_brackets_balanced('[[') == False\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 16,
+        title: "Run-Length Encoding",
+        description: "Write a function `encode(s)` that performs run-length encoding. For example, 'AAAABBBCCDAA' would be encoded as '4A3B2C1D2A'.",
+        starterCode: "def encode(s):\n  # Your code here\n  pass\n\nprint(encode('AAAABBBCCDAA'))",
+        test: "assert encode('AAAABBBCCDAA') == '4A3B2C1D2A'\nassert encode('WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB') == '12W1B12W3B24W1B'\nassert encode('A') == '1A'\nassert encode('') == ''\nprint('Correct!')",
+        tags: ['Python', 'English']
+    },
+    {
+        level: 17,
+        title: "Caesar Cipher",
+        description: "Implement a Caesar cipher in a function `caesar_cipher(text, shift)`. It should shift each letter by a certain number of places down the alphabet, wrapping around from Z to A.",
+        starterCode: "def caesar_cipher(text, shift):\n  # Your code here\n  pass\n\nprint(caesar_cipher('Hello, World!', 3))",
+        test: "assert caesar_cipher('Hello, World!', 3) == 'Khoor, Zruog!'\nassert caesar_cipher('xyz', 3) == 'abc'\nassert caesar_cipher('PYTHON', 13) == 'CLGUBA'\nprint('Correct!')",
+        tags: ['Python', 'English']
+    },
+    {
+        level: 18,
+        title: "Projectile Motion Simulation",
+        description: "Write a function `simulate_projectile(vx, vy, num_steps)` that simulates the path of a projectile. Given initial x/y velocities, update its position over `num_steps`. Assume gravity `g = -9.8` and a time step of `dt = 0.1`.",
+        starterCode: "def simulate_projectile(vx, vy, num_steps):\n  g = -9.8\n  dt = 0.1\n  x, y = 0.0, 0.0\n  path = []\n  for _ in range(num_steps):\n    # Your physics update logic here\n    path.append((x, y))\n  return path",
+        test: "path = simulate_projectile(10, 20, 10)\nfinal_pos = path[-1]\nassert abs(final_pos[0] - 9.0) < 1e-6\nassert abs(final_pos[1] - 15.59) < 1e-6\nprint('Correct! Final position is approx (9.0, 15.59)')",
+        tags: ['Python', 'Physics']
+    },
+    {
+        level: 19,
+        title: "Sudoku Validator",
+        description: "Write a function `is_valid_sudoku(board)` that determines if a 9x9 Sudoku board is valid. The board is a 2D list. Validity means no repeated numbers in any row, column, or 3x3 sub-grid.",
+        starterCode: "def is_valid_sudoku(board):\n  # Your code here\n  pass\n\n# Example valid board (represented as a list of lists)\nvalid_board = [[...]]",
+        test: "valid_board = [[5,3,0,0,7,0,0,0,0],[6,0,0,1,9,5,0,0,0],[0,9,8,0,0,0,0,6,0],[8,0,0,0,6,0,0,0,3],[4,0,0,8,0,3,0,0,1],[7,0,0,0,2,0,0,0,6],[0,6,0,0,0,0,2,8,0],[0,0,0,4,1,9,0,0,5],[0,0,0,0,8,0,0,7,9]]\ninvalid_board = [[8,3,0,0,7,0,0,0,0],[6,0,0,1,9,5,0,0,0],[0,9,8,0,0,0,0,6,0],[8,0,0,0,6,0,0,0,3],[4,0,0,8,0,3,0,0,1],[7,0,0,0,2,0,0,0,6],[0,6,0,0,0,0,2,8,0],[0,0,0,4,1,9,0,0,5],[0,0,0,0,8,0,0,7,9]]\nassert is_valid_sudoku(valid_board) == True\nassert is_valid_sudoku(invalid_board) == False\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+    {
+        level: 20,
+        title: "Longest Common Subsequence",
+        description: "Write a function `lcs(X, Y)` to find the length of the longest common subsequence between two strings X and Y.",
+        starterCode: "def lcs(X, Y):\n  # Your code here\n  pass\n\nprint(lcs('AGGTAB', 'GXTXAYB')) # Should be 4 (GTAB)",
+        test: "assert lcs('AGGTAB', 'GXTXAYB') == 4\nassert lcs('ABCDGH', 'AEDFHR') == 3\nassert lcs('ABC', 'XYZ') == 0\nprint('Correct!')",
+        tags: ['Python', 'Maths']
+    },
+];
+
 export const userProgress: UserProgress = {
   lessonCompletions: [
     { lessonId: 'py-1', isCompleted: true },
@@ -1464,5 +1628,10 @@ export const userProgress: UserProgress = {
     { exerciseId: 'ex-en-1', attempts: 3, successRate: 0.66 },
     { exerciseId: 'ex-py-2', attempts: 5, successRate: 0.2 },
   ],
-  badges: ['first-badge', 'py-beginner']
+  badges: ['first-badge', 'py-beginner'],
+  challengeProgress: [
+    { level: 1, completed: true },
+    { level: 2, completed: true },
+    { level: 3, completed: false }
+  ]
 };

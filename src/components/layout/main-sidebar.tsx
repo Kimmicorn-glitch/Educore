@@ -10,6 +10,7 @@ import {
   User,
   Settings,
   LifeBuoy,
+  Swords,
 } from "lucide-react";
 import {
   SidebarContent,
@@ -33,6 +34,11 @@ const links = [
     href: "/courses",
     label: "Courses",
     icon: BookCopy,
+  },
+  {
+    href: "/challenges",
+    label: "Challenges",
+    icon: Swords,
   },
   {
     href: "/profile",

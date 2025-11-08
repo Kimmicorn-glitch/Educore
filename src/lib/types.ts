@@ -43,6 +43,7 @@ export interface UserProgress {
   lessonCompletions: { lessonId: string; isCompleted: boolean }[];
   exerciseAttempts: { exerciseId: string; attempts: number; successRate: number }[];
   badges: string[];
+  challengeProgress: { level: number, completed: boolean }[];
 }
 
 export interface UserAccount {
@@ -59,4 +60,13 @@ export interface SupportTicket {
     description: string;
     status: 'Open' | 'In Progress' | 'Closed';
     submissionDate: string;
+}
+
+export interface Challenge {
+    level: number;
+    title: string;
+    description: string;
+    starterCode: string;
+    test: string;
+    tags: Subject[];
 }
