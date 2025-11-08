@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useAuth, useUser } from "@/firebase";
-import { initiateEmailSignUp } from "@/firebase/non-blocking-login";
+import { initiateEmailSignUp, initiateGoogleSignIn } from "@/firebase/non-blocking-login";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { setDocumentNonBlocking } from "@/firebase/non-blocking-updates";
@@ -58,7 +58,9 @@ export default function SignupPage() {
     };
 
     const handleGoogleSignIn = () => {
-        // Implement Google Sign-In
+        if(auth) {
+            initiateGoogleSignIn(auth);
+        }
     };
 
 
