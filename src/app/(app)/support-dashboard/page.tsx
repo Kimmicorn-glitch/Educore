@@ -1,8 +1,8 @@
 
 "use client";
 
-import { useState } from 'react';
-import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { useState, useEffect } from 'react';
+import { useFirestore, useCollection, useMemoFirebase, useUser } from '@/firebase';
 import { collectionGroup, query, where, doc, updateDoc, Timestamp } from 'firebase/firestore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import type { SupportTicket, UserAccount } from '@/lib/types';
 import { format } from 'date-fns';
 import { useDoc } from '@/firebase/firestore/use-doc';
+import { useRouter } from 'next/navigation';
 
 type EnrichedSupportTicket = SupportTicket & { user?: UserAccount, originalId: string };
 
@@ -32,7 +33,15 @@ function UserProfileCell({ userId }: { userId: string }) {
 
 export default function SupportDashboardPage() {
     const firestore = useFirestore();
+    const router = useRouter();
+    const { isSupportAgent, isUserLoading } = useUser();
     const [statusFilter, setStatusFilter] = useState<'All' | 'Open' | 'In Progress' | 'Closed'>('All');
+
+    useEffect(() => {
+        if (!isUserLoading && !isSupportAgent) {
+            router.push('/dashboard');
+        }
+    }, [isUserLoading, isSupportAgent, router]);
 
     const ticketsQuery = useMemoFirebase(() => {
         const baseQuery = query(collectionGroup(firestore, 'supportTickets'));
@@ -63,6 +72,14 @@ export default function SupportDashboardPage() {
     };
 
     const sortedTickets = tickets?.sort((a, b) => new Date(b.submissionDate).getTime() - new Date(a.submissionDate).getTime());
+    
+    if (isUserLoading || !isSupportAgent) {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <p>Loading or unauthorized...</p>
+            </div>
+        )
+    }
 
     return (
         <div className="space-y-6">
@@ -144,4 +161,3 @@ export default function SupportDashboardPage() {
         </div>
     );
 }
-
