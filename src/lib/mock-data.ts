@@ -105,6 +105,32 @@ What if the condition is false? We can add an 'else' block.
 In this case, since 'age' is 16, the condition is false, and the code inside the 'else' block will run. This is the foundation of making your programs smart!`, 
         linkedExerciseId: 'ex-py-2' 
       },
+      {
+        id: 'py-7',
+        title: 'Working with Lists and Loops',
+        level: 'Beginner',
+        targetAudience: 'Teenagers',
+        content: `A 'list' is a collection of items in a particular order. Think of it as a shopping list. You can store numbers, strings, or a mix of different types.
+
+Here's how you create a list of numbers:
+\`my_numbers = [1, 2, 3, 4, 5]\`
+
+And a list of strings:
+\`fruits = ["apple", "banana", "cherry"]\`
+
+To go through each item in a list, we use a 'for loop'. A for loop lets you execute a block of code for every single item in a collection.
+
+\`for fruit in fruits:\`
+  \`print(f"I like to eat {fruit}s.")\`
+
+This loop will take each item from the 'fruits' list one by one, assign it to the variable 'fruit', and then run the print statement. The output would be:
+"I like to eat apples."
+"I like to eat bananas."
+"I like to eat cherries."
+
+Loops are incredibly powerful for automating repetitive tasks.`,
+        linkedExerciseId: 'ex-py-lists'
+      },
       { 
         id: 'py-4', 
         title: 'Introduction to Functions', 
@@ -142,6 +168,35 @@ And they can also return a value:
 
 Functions are essential for writing clean, organized, and efficient code.`, 
         linkedExerciseId: 'ex-py-3' 
+      },
+      {
+        id: 'py-8',
+        title: 'Understanding Dictionaries',
+        level: 'Intermediate',
+        targetAudience: 'Teenagers',
+        content: `While lists are for ordered collections, 'dictionaries' are for storing data in 'key-value' pairs. Think of a real dictionary: you look up a word (the 'key') to find its definition (the 'value').
+
+In Python, you create a dictionary using curly braces \`{}\`:
+
+\`student = {\`
+  \`"name": "John Doe",\`
+  \`"age": 21,\`
+  \`"major": "Computer Science"\`
+\`}\`
+
+Here, "name", "age", and "major" are the keys, and "John Doe", 21, and "Computer Science" are their corresponding values.
+
+You access a value by its key:
+\`print(student["name"])\`  # This will print "John Doe"
+
+You can add new key-value pairs:
+\`student["gpa"] = 3.8\`
+
+Or change an existing value:
+\`student["age"] = 22\`
+
+Dictionaries are extremely useful for organizing and retrieving related information.`,
+        linkedExerciseId: 'ex-py-dict'
       },
       { 
         id: 'py-5', 
@@ -269,6 +324,31 @@ Example:
 "Because the API was slow" is a dependent clause. It needs the main clause to make sense.
 
 Mastering these helps you write better documentation and explain technical problems more effectively.`, linkedExerciseId: 'ex-en-2' },
+      {
+        id: 'en-5',
+        title: 'Active vs. Passive Voice',
+        level: 'Intermediate',
+        targetAudience: 'Teenagers',
+        content: `The 'voice' of a sentence describes whether the subject performs or receives the action of the verb. This is crucial for clear technical writing.
+
+**Active Voice:** The subject performs the action. This is direct, clear, and generally preferred.
+- Example: "The compiler **threw** an error."
+- Subject: "The compiler"
+- Action: "threw"
+
+**Passive Voice:** The subject receives the action. This can be wordy or ambiguous.
+- Example: "An error **was thrown** by the compiler."
+- Subject: "An error"
+- Action: "was thrown"
+
+Notice how the active voice is more direct. It immediately tells you *who* or *what* did the action. In code comments, git commits, and documentation, active voice makes responsibility and action clear.
+
+- **Prefer:** "The function validates the input."
+- **Avoid:** "The input is validated by the function."
+
+Use passive voice sparingly, perhaps when the actor is unknown or unimportant.`,
+        linkedExerciseId: 'ex-en-active-passive'
+      },
       { id: 'en-4', title: 'Writing Technical Documentation', level: 'Advanced', targetAudience: 'Adults', content: `Good code needs good documentation. Technical writing is a skill that makes your projects usable and maintainable by others (and your future self!).
 
 Key principles:
@@ -311,6 +391,32 @@ Subtraction (-) is for taking things away. If you have 5 balloons and 1 pops, yo
 Multiplication (x) is for adding the same number many times. 3 groups of 4 stars is 4 + 4 + 4, which is the same as 3 x 4 = 12 stars.
 
 Let's try a problem: What is 10 + 5?` },
+      {
+        id: 'ma-5',
+        title: 'Order of Operations (PEMDAS)',
+        level: 'Beginner',
+        targetAudience: 'Children',
+        content: `When you have a math problem with many operations, how do you know which one to do first? We use the Order of Operations, which you can remember with the acronym **PEMDAS**.
+
+**P** - Parentheses: Always solve what's inside parentheses first.
+**E** - Exponents: Next, solve any exponents (powers).
+**M/D** - Multiplication and Division: Do these from left to right, whichever comes first.
+**A/S** - Addition and Subtraction: Finally, do these from left to right.
+
+Let's try an example: \`10 + 2 * 3\`
+1. No Parentheses or Exponents.
+2. Multiplication first: \`2 * 3 = 6\`.
+3. Now the problem is \`10 + 6\`.
+4. Addition last: \`10 + 6 = 16\`.
+
+Another one: \`(3 + 2) * 4\`
+1. Parentheses first: \`3 + 2 = 5\`.
+2. Now the problem is \`5 * 4\`.
+3. Multiplication last: \`5 * 4 = 20\`.
+
+This order is very important in programming, as computers follow it exactly!`,
+        linkedExerciseId: 'ex-ma-pemdas'
+      },
       { id: 'ma-2', title: 'Basic Algebra', level: 'Intermediate', targetAudience: 'Teenagers', content: `Algebra introduces 'variables', which are letters that stand in for unknown numbers. The most common one is 'x'.
 
 The goal is often to "solve for x". This means finding the value of x that makes an equation true.
@@ -383,6 +489,26 @@ It's a combination of two separate movements:
 When you combine these two, you get a curved path called a 'parabola'.
 
 To simulate this, you need to track the horizontal velocity (which stays the same) and the vertical velocity (which is changed by gravity in every step of your simulation).`, linkedExerciseId: 'ex-ph-2' },
+      {
+        id: 'ph-5',
+        title: 'Basic Collision Detection',
+        level: 'Intermediate',
+        targetAudience: 'Teenagers',
+        content: `How do video games know when two objects hit each other? Collision detection!
+
+The simplest form is **Axis-Aligned Bounding Box (AABB)** detection. Imagine drawing a rectangle around each of your objects that is aligned with the screen's X and Y axes.
+
+An object (like a character or a ball) has properties: \`x\`, \`y\`, \`width\`, and \`height\`.
+
+To check if two rectangles (rect1 and rect2) are colliding, you need to check four conditions:
+1. Is rect1's right side to the right of rect2's left side? (\`rect1.x + rect1.width > rect2.x\`)
+2. Is rect1's left side to the left of rect2's right side? (\`rect1.x < rect2.x + rect2.width\`)
+3. Is rect1's bottom side below rect2's top side? (\`rect1.y + rect1.height > rect2.y\`)
+4. Is rect1's top side above rect2's bottom side? (\`rect1.y < rect2.y + rect2.height\`)
+
+If **all four** of these conditions are true, the rectangles are overlapping, and a collision has occurred! This logic is the foundation of interaction in most 2D games.`,
+        linkedExerciseId: 'ex-ph-collision'
+      },
       { id: 'ph-4', title: 'Building a Simple Physics Engine', level: 'Advanced', targetAudience: 'Adults', content: `A physics engine is the part of a game or simulation that calculates how objects move and interact. Let's outline a very simple one for a 2D world.
 
 Core components:
@@ -411,7 +537,7 @@ export const exercises: Exercise[] = [
         title: 'Declare Variables', 
         type: 'coding', 
         description: 'Declare a variable `name` with your name and an `age` variable with your age, then print a sentence.', 
-        starterCode: 'name = "Alex"\\nage = 10\\nprint(f"My name is {name} and I am {age} years old.")',
+        starterCode: 'name = "Alex"\nage = 10\nprint(f"My name is {name} and I am {age} years old.")',
         test: `
 import sys
 from io import StringIO
@@ -443,7 +569,7 @@ print("Correct!")
         title: 'Solve for X', 
         type: 'coding', 
         description: 'The equation is x + 15 = 25. Find the value of x and print it.', 
-        starterCode: '# Solve for x in the equation: x + 15 = 25\\nx = 0 # Change this line\\nprint(x)',
+        starterCode: '# Solve for x in the equation: x + 15 = 25\nx = 0 # Change this line\nprint(x)',
         test: `
 # Setup to capture print output
 import sys
@@ -451,9 +577,8 @@ from io import StringIO
 original_stdout = sys.stdout
 sys.stdout = captured_output = StringIO()
 
-# Injected user code would be here... e.g.
-# x = 10
-# print(x)
+x = 10
+print(x)
 
 # Restore stdout
 sys.stdout = original_stdout
@@ -467,17 +592,16 @@ print("Correct!")
         title: 'If-Else Statement', 
         type: 'coding', 
         description: 'Check if the `number` is greater than 0. If it is, print "Positive". Otherwise, print "Not Positive".', 
-        starterCode: 'number = 5\\n\\n# Your code here\\nif number > 0:\\n  print("Positive")\\nelse:\\n  print("Not Positive")',
+        starterCode: 'number = 5\n\n# Your code here\nif number > 0:\n  print("Positive")\nelse:\n  print("Not Positive")',
         test: `
 # Setup to capture print output
 import sys
 from io import StringIO
 original_stdout = sys.stdout
-sys.stdout = captured_output = StringIO()
+captured_output = StringIO()
+sys.stdout = captured_output
 
 # Injected user code
-# This test assumes the user has modified the \\\`number\\\` variable or the if/else block
-# Let's test both cases
 number = 5
 if number > 0:
     print("Positive")
@@ -486,7 +610,8 @@ else:
 assert "Positive" in captured_output.getvalue()
 
 # Reset and test the other case
-sys.stdout = captured_output = StringIO()
+captured_output.truncate(0)
+captured_output.seek(0)
 number = -2
 if number > 0:
     print("Positive")
@@ -503,10 +628,10 @@ print("Correct!")
         title: 'Simple Function', 
         type: 'coding', 
         description: 'Complete the function to take two numbers and return their sum.', 
-        starterCode: 'def add(a, b):\\n  # Your code here\\n  return a + b\\n\\n# You can test your function by calling it\\nresult = add(5, 10)\\nprint(result)',
+        starterCode: 'def add(a, b):\n  # Your code here\n  return a + b\n\n# You can test your function by calling it\nresult = add(5, 10)\nprint(result)',
         test: `
 def add(a, b):
-    # This is where user's function code would be injected
+    # This is where user\'s function code would be injected
     return a + b
 
 assert add(1, 2) == 3
@@ -520,7 +645,7 @@ print("Correct!")
         title: 'String Concatenation', 
         type: 'coding', 
         description: 'Create a single sentence by joining the three strings.', 
-        starterCode: 'word1 = "Programming"\\nword2 = "is"\\nword3 = "powerful"\\n\\nsentence = word1 + " " + word2 + " " + word3\\nprint(sentence)',
+        starterCode: 'word1 = "Programming"\nword2 = "is"\nword3 = "powerful"\n\nsentence = word1 + " " + word2 + " " + word3\nprint(sentence)',
         test: `
 # Setup to capture print output
 import sys
@@ -547,7 +672,7 @@ print("Correct!")
         title: 'Simulate a Bouncing Ball', 
         type: 'coding', 
         description: 'Simulate a ball bouncing 5 times, reducing its height by half each time. The initial height is 100.', 
-        starterCode: 'height = 100\\n\\nfor i in range(5):\\n  height = height / 2\\n  print(f"Bounce {i+1}: New height is {height}")',
+        starterCode: 'height = 100\n\nfor i in range(5):\n  height = height / 2\n  print(f"Bounce {i+1}: New height is {height}")',
         test: `
 # Setup to capture print output
 import sys
@@ -577,7 +702,7 @@ print("Correct!")
         title: 'Draw a Square', 
         type: 'coding', 
         description: 'Complete the loop to make the turtle draw a square.', 
-        starterCode: 'import turtle\\n\\n# Loop 4 times to draw 4 sides\\nfor _ in range(4):\\n  turtle.forward(100)\\n  turtle.right(90)\\n\\nturtle.done()',
+        starterCode: 'import turtle\n\n# Loop 4 times to draw 4 sides\nfor _ in range(4):\n  turtle.forward(100)\n  turtle.right(90)\n\nturtle.done()',
         test: `
 # Turtle tests are visual and hard to automate here. We'll assume correctness if it runs.
 print("Correct!")
@@ -588,7 +713,7 @@ print("Correct!")
         title: 'Create a Car Class', 
         type: 'coding', 
         description: 'Define a Car class with a brand and model. The __init__ method should store them as attributes.', 
-        starterCode: 'class Car:\\n  def __init__(self, brand, model):\\n    self.brand = brand\\n    self.model = model\\n\\nmy_car = Car("Tesla", "Model S")\\nprint(my_car.brand)\\nprint(my_car.model)',
+        starterCode: 'class Car:\n  def __init__(self, brand, model):\n    self.brand = brand\n    self.model = model\n\nmy_car = Car("Tesla", "Model S")\nprint(my_car.brand)\nprint(my_car.model)',
         test: `
 class Car:
     def __init__(self, brand, model):
@@ -608,7 +733,7 @@ print("Correct!")
         title: 'Create a DataFrame', 
         type: 'coding', 
         description: 'Use pandas to create a DataFrame from the given dictionary and print it.', 
-        starterCode: 'import pandas as pd\\n\\ndata = {\\n    "Fruit": ["Apple", "Banana", "Cherry"],\\n    "Count": [10, 15, 7]\\n}\\n\\ndf = pd.DataFrame(data)\\nprint(df)',
+        starterCode: 'import pandas as pd\n\ndata = {\n    "Fruit": ["Apple", "Banana", "Cherry"],\n    "Count": [10, 15, 7]\n}\n\ndf = pd.DataFrame(data)\nprint(df)',
         test: `
 import pandas as pd
 data = {
@@ -627,7 +752,7 @@ print("Correct!")
         title: 'Logical Connectors', 
         type: 'coding', 
         description: 'Combine the two ideas using the word "because".', 
-        starterCode: 'idea1 = "The code failed"\\nidea2 = "there was a syntax error"\\n\\nsentence = idea1 + " because " + idea2\\nprint(sentence)',
+        starterCode: 'idea1 = "The code failed"\nidea2 = "there was a syntax error"\n\nsentence = idea1 + " because " + idea2\nprint(sentence)',
         test: `
 # Setup to capture print output
 import sys
@@ -645,6 +770,131 @@ print(sentence)
 sys.stdout = original_stdout
 output = captured_output.getvalue().strip()
 assert output == "The code failed because there was a syntax error"
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-py-lists',
+        title: 'Sum a List',
+        type: 'coding',
+        description: 'Write a function that takes a list of numbers and returns their sum.',
+        starterCode: 'def sum_list(numbers):\n  # Your code here\n  total = 0\n  for num in numbers:\n    total += num\n  return total\n\n# Test the function\nprint(sum_list([1, 2, 3, 4, 5]))',
+        test: `
+def sum_list(numbers):
+  total = 0
+  for num in numbers:
+    total += num
+  return total
+
+assert sum_list([1, 2, 3]) == 6
+assert sum_list([-1, 0, 1]) == 0
+assert sum_list([]) == 0
+assert sum_list([100]) == 100
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-py-dict',
+        title: 'Access Dictionary Data',
+        type: 'coding',
+        description: 'Given the dictionary, access and print the value associated with the "major" key.',
+        starterCode: 'student = {\n  "name": "John Doe",\n  "age": 21,\n  "major": "Computer Science"\n}\n\n# Your code here\nmajor = student["major"]\nprint(major)',
+        test: `
+import sys
+from io import StringIO
+original_stdout = sys.stdout
+sys.stdout = captured_output = StringIO()
+
+student = {
+  "name": "John Doe",
+  "age": 21,
+  "major": "Computer Science"
+}
+major = student["major"]
+print(major)
+
+sys.stdout = original_stdout
+output = captured_output.getvalue().strip()
+assert output == "Computer Science"
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-en-active-passive',
+        title: 'Rewrite in Active Voice',
+        type: 'coding',
+        description: 'The variable `passive_sentence` contains a sentence in the passive voice. Rewrite it in the active voice and print it.',
+        starterCode: 'passive_sentence = "The bug was fixed by the developer."\n\n# Your code here\nactive_sentence = "The developer fixed the bug."\nprint(active_sentence)',
+        test: `
+import sys
+from io import StringIO
+original_stdout = sys.stdout
+sys.stdout = captured_output = StringIO()
+
+active_sentence = "The developer fixed the bug."
+print(active_sentence)
+
+sys.stdout = original_stdout
+output = captured_output.getvalue().strip().lower()
+assert "developer" in output
+assert "fixed" in output
+assert "bug" in output
+assert "was fixed" not in output
+assert output.startswith("the developer")
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-ma-pemdas',
+        title: 'Calculate with PEMDAS',
+        type: 'coding',
+        description: 'Calculate the result of the expression `5 * (4 - 2) + 10` following the order of operations and print the final number.',
+        starterCode: '# Calculate and print the result\nresult = 5 * (4 - 2) + 10\nprint(result)',
+        test: `
+import sys
+from io import StringIO
+original_stdout = sys.stdout
+sys.stdout = captured_output = StringIO()
+
+result = 5 * (4 - 2) + 10
+print(result)
+
+sys.stdout = original_stdout
+output = captured_output.getvalue().strip()
+assert output == "20"
+print("Correct!")
+`
+    },
+    {
+        id: 'ex-ph-collision',
+        title: 'AABB Collision Function',
+        type: 'coding',
+        description: 'Complete the `check_collision` function. It should return `True` if the two rectangles are colliding and `False` otherwise. Each rectangle is a dictionary with x, y, width, and height.',
+        starterCode: 'def check_collision(rect1, rect2):\n  # Check for collision between rect1 and rect2\n  # Return True if they collide, False otherwise\n  return (rect1["x"] < rect2["x"] + rect2["width"] and\n          rect1["x"] + rect1["width"] > rect2["x"] and\n          rect1["y"] < rect2["y"] + rect2["height"] and\n          rect1["y"] + rect1["height"] > rect2["y"])\n\n# Test cases (You can add more)\nrectA = {"x": 0, "y": 0, "width": 50, "height": 50}\nrectB = {"x": 40, "y": 40, "width": 50, "height": 50}\nprint(check_collision(rectA, rectB)) # Should print True',
+        test: `
+def check_collision(rect1, rect2):
+  return (rect1["x"] < rect2["x"] + rect2["width"] and
+          rect1["x"] + rect1["width"] > rect2["x"] and
+          rect1["y"] < rect2["y"] + rect2["height"] and
+          rect1["y"] + rect1["height"] > rect2["y"])
+
+# Test Case 1: Overlapping
+rect1 = {"x": 0, "y": 0, "width": 50, "height": 50}
+rect2 = {"x": 40, "y": 40, "width": 50, "height": 50}
+assert check_collision(rect1, rect2) == True, "Test Case 1 Failed"
+
+# Test Case 2: Not Overlapping
+rect3 = {"x": 100, "y": 100, "width": 50, "height": 50}
+assert check_collision(rect1, rect3) == False, "Test Case 2 Failed"
+
+# Test Case 3: Touching Edges
+rect4 = {"x": 50, "y": 0, "width": 50, "height": 50}
+assert check_collision(rect1, rect4) == False, "Test Case 3 Failed"
+
+# Test Case 4: One inside another
+rect5 = {"x": 10, "y": 10, "width": 20, "height": 20}
+assert check_collision(rect1, rect5) == True, "Test Case 4 Failed"
+
 print("Correct!")
 `
     },
