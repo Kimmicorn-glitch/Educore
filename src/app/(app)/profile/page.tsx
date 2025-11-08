@@ -1,6 +1,6 @@
 
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import {
     Avatar,
@@ -23,6 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
 
 const iconMap: { [key: string]: React.ElementType } = {
@@ -36,6 +38,19 @@ export default function ProfilePage() {
     const { theme, setTheme } = useTheme();
     const [fontSize, setFontSize] = useState(16);
     const [highContrast, setHighContrast] = useState(false);
+    const { user } = useUser();
+    const firestore = useFirestore();
+
+    const userDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid) : null, [user, firestore]);
+    const { data: userProfile } = useDoc(userDocRef);
+
+    const [name, setName] = useState(userProfile?.name || user?.displayName || 'Guest User');
+
+    useEffect(() => {
+        if(userProfile) {
+            setName(userProfile.name);
+        }
+    }, [userProfile]);
 
     const earnedBadges = allBadges.filter(badge => userProgress.badges.includes(badge.id));
 
@@ -48,6 +63,12 @@ export default function ProfilePage() {
     const toggleHighContrast = (isHighContrast: boolean) => {
         setHighContrast(isHighContrast);
         document.documentElement.classList.toggle('high-contrast', isHighContrast);
+    }
+
+    const handleSaveChanges = async () => {
+        if(userDocRef) {
+            await updateDoc(userDocRef, { name });
+        }
     }
     
     return (
@@ -67,22 +88,22 @@ export default function ProfilePage() {
                 <CardContent className="space-y-4">
                     <div className="flex items-center gap-4">
                         <Avatar className="h-20 w-20">
-                            <AvatarImage src="https://picsum.photos/seed/user-avatar/80/80" alt="@guest" data-ai-hint="person portrait" />
-                            <AvatarFallback>G</AvatarFallback>
+                            <AvatarImage src={user?.photoURL || "https://picsum.photos/seed/user-avatar/80/80"} alt={user?.displayName || "@guest"} data-ai-hint="person portrait" />
+                            <AvatarFallback>{user?.email?.[0].toUpperCase() || 'G'}</AvatarFallback>
                         </Avatar>
                         <Button variant="outline">Change Photo</Button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Name</Label>
-                            <Input id="name" defaultValue="Guest User" />
+                            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" type="email" defaultValue="guest@example.com" disabled />
+                            <Input id="email" type="email" value={user?.email || "guest@example.com"} disabled />
                         </div>
                     </div>
-                    <Button>Save Changes</Button>
+                    <Button onClick={handleSaveChanges}>Save Changes</Button>
                 </CardContent>
             </Card>
 

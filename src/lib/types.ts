@@ -42,3 +42,19 @@ export interface UserProgress {
   exerciseAttempts: { exerciseId: string; attempts: number; successRate: number }[];
   badges: string[];
 }
+
+export interface UserAccount {
+  id: string;
+  email: string;
+  registrationDate: string;
+  name: string;
+}
+
+export interface SupportTicket {
+    id: string;
+    userId: string;
+    subject: string;
+    description: string;
+    status: 'Open' | 'In Progress' | 'Closed';
+    submissionDate: string;
+}

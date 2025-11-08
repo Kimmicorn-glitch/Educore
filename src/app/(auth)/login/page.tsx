@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -10,6 +12,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { useAuth, useUser } from "@/firebase";
+import { initiateEmailSignIn } from "@/firebase/non-blocking-login";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -22,6 +28,28 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 
 export default function LoginPage() {
+    const auth = useAuth();
+    const { user } = useUser();
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        if (user) {
+            router.push('/dashboard');
+        }
+    }, [user, router]);
+
+
+    const handleSignIn = () => {
+        initiateEmailSignIn(auth, email, password);
+    };
+
+    const handleGoogleSignIn = () => {
+        // Implement Google Sign-In
+    };
+
+
   return (
     <Card>
       <CardHeader className="space-y-1 text-center">
@@ -31,7 +59,7 @@ export default function LoginPage() {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
             <GoogleIcon className="mr-2" />
             Sign in with Google
         </Button>
@@ -47,13 +75,13 @@ export default function LoginPage() {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" />
+          <Input id="email" type="email" placeholder="m@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" />
+          <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-         <Button type="submit" className="w-full font-bold">
+         <Button onClick={handleSignIn} className="w-full font-bold">
           Sign In
         </Button>
       </CardContent>

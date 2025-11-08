@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Avatar,
   AvatarFallback,
@@ -13,25 +15,36 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useUser, useAuth } from "@/firebase"
+import { signOut } from "firebase/auth"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export function UserNav() {
+    const { user } = useUser();
+    const auth = useAuth();
+    const router = useRouter();
+
+    const handleSignOut = () => {
+        signOut(auth);
+        router.push('/login');
+    }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="https://picsum.photos/seed/user-avatar/40/40" alt="@guest" data-ai-hint="person portrait"/>
-            <AvatarFallback>G</AvatarFallback>
+            <AvatarImage src={user?.photoURL || "https://picsum.photos/seed/user-avatar/40/40"} alt={user?.displayName || "Guest"} data-ai-hint="person portrait"/>
+            <AvatarFallback>{user?.email?.[0].toUpperCase() || 'G'}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Guest User</p>
+            <p className="text-sm font-medium leading-none">{user?.displayName || 'Guest User'}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              guest@example.com
+              {user?.email || 'guest@example.com'}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -49,10 +62,8 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/login">
+        <DropdownMenuItem onClick={handleSignOut}>
             Log out
-          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -8,6 +8,7 @@ import {
   BookCopy,
   User,
   Settings,
+  LifeBuoy,
 } from "lucide-react";
 import {
   SidebarContent,
@@ -35,7 +36,20 @@ const links = [
     label: "Profile",
     icon: User,
   },
+  {
+    href: "/support",
+    label: "Support",
+    icon: LifeBuoy,
+  },
 ];
+
+const agentLinks = [
+    {
+      href: "/support-dashboard",
+      label: "Support Dashboard",
+      icon: LayoutDashboard,
+    }
+]
 
 export function MainSidebar() {
   const pathname = usePathname();
@@ -54,6 +68,24 @@ export function MainSidebar() {
       <SidebarContent>
         <SidebarMenu>
           {links.map((link) => (
+            <SidebarMenuItem key={link.href}>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith(link.href)}
+                tooltip={link.label}
+              >
+                <Link href={link.href}>
+                  <link.icon />
+                  <span>{link.label}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+        <Separator className="my-4" />
+        <p className="px-4 text-xs text-muted-foreground font-semibold uppercase group-data-[collapsible=icon]:hidden">Support Agent</p>
+         <SidebarMenu>
+          {agentLinks.map((link) => (
             <SidebarMenuItem key={link.href}>
               <SidebarMenuButton
                 asChild

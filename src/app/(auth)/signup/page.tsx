@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,6 +11,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { useAuth, useUser } from "@/firebase";
+import { initiateEmailSignUp } from "@/firebase/non-blocking-login";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { setDocumentNonBlocking } from "@/firebase/non-blocking-updates";
+import { doc } from "firebase/firestore";
+import { useFirestore } from "@/firebase/provider";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -20,6 +29,39 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function SignupPage() {
+    const auth = useAuth();
+    const firestore = useFirestore();
+    const { user } = useUser();
+    const router = useRouter();
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        if (user) {
+            // Create a user profile document in Firestore
+            const userRef = doc(firestore, "users", user.uid);
+            const userData = {
+                id: user.uid,
+                email: user.email,
+                registrationDate: new Date().toISOString(),
+                name: name || user.displayName
+            };
+            setDocumentNonBlocking(userRef, userData, { merge: true });
+            router.push('/dashboard');
+        }
+    }, [user, router, firestore, name]);
+
+    const handleSignUp = () => {
+        initiateEmailSignUp(auth, email, password);
+    };
+
+    const handleGoogleSignIn = () => {
+        // Implement Google Sign-In
+    };
+
+
   return (
     <Card>
       <CardHeader className="space-y-1 text-center">
@@ -29,7 +71,7 @@ export default function SignupPage() {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
             <GoogleIcon className="mr-2" />
             Sign up with Google
         </Button>
@@ -45,17 +87,17 @@ export default function SignupPage() {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" type="text" placeholder="Jane Doe" />
+          <Input id="name" type="text" placeholder="Jane Doe" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="jane@example.com" />
+          <Input id="email" type="email" placeholder="jane@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" />
+          <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-        <Button type="submit" className="w-full font-bold">
+        <Button onClick={handleSignUp} className="w-full font-bold">
           Create Account
         </Button>
         <p className="mt-2 text-center text-xs text-muted-foreground">
