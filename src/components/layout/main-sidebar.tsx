@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { useUser } from "@/firebase";
+import { useEffect, useState } from "react";
 
 const links = [
   {
@@ -56,6 +57,12 @@ const agentLinks = [
 export function MainSidebar() {
   const pathname = usePathname();
   const { isSupportAgent } = useUser();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
 
   return (
     <>
@@ -85,7 +92,7 @@ export function MainSidebar() {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
-        {isSupportAgent && (
+        {mounted && isSupportAgent && (
           <>
             <Separator className="my-4" />
             <p className="px-4 text-xs text-muted-foreground font-semibold uppercase group-data-[collapsible=icon]:hidden">Support Agent</p>
