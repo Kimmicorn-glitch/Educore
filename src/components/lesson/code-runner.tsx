@@ -22,14 +22,18 @@ export default function CodeRunner({ starterCode, testCode }: CodeRunnerProps) {
     const hasAttemptedLoad = useRef(false);
 
     useEffect(() => {
+        setCode(starterCode);
+    }, [starterCode]);
+
+    useEffect(() => {
         const loadPyodide = async () => {
             if (window.loadPyodide) {
                 try {
                     const pyodide = await window.loadPyodide({
                         indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/"
                     });
-                    pyodide.setStdout({ batched: (str) => setOutput(prev => prev + str + '\\n') });
-                    pyodide.setStderr({ batched: (str) => setOutput(prev => prev + str + '\\n') });
+                    pyodide.setStdout({ batched: (str) => setOutput(prev => prev + str + '\n') });
+                    pyodide.setStderr({ batched: (str) => setOutput(prev => prev + str + '\n') });
                     pyodideRef.current = pyodide;
                     setIsLoading(false);
                 } catch (error) {
@@ -95,7 +99,17 @@ export default function CodeRunner({ starterCode, testCode }: CodeRunnerProps) {
         setIsExecuting(true);
         setOutput('');
         try {
-            const testWithUserCode = code + '\\n\\n' + testCode;
+            // Define the user's code within the Python environment
+            pyodideRef.current.globals.set('user_code', code);
+            
+            const testWithUserCode = `
+# --- User's code is executed here ---
+exec(user_code)
+# ---
+
+# --- Test code is executed here ---
+${testCode}
+`;
             const result = await pyodideRef.current.runPythonAsync(testWithUserCode);
             setOutput(prev => prev + String(result || ''));
             setSubmissionStatus('correct');

@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { CheckCircle2, Circle, Swords, Trophy, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import CodeRunner from '@/components/lesson/code-runner';
+import AiChatbot from '@/components/lesson/ai-chatbot';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import type { UserProgress } from '@/lib/types';
 import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
@@ -36,6 +37,8 @@ export default function ChallengesPage() {
   const totalCompleted = progress.challengeProgress.filter(p => p.completed).length;
   const totalChallenges = challenges.length;
   const progressPercentage = totalChallenges > 0 ? (totalCompleted / totalChallenges) * 100 : 0;
+  
+  const lessonContentForBot = `Challenge: ${selectedChallenge.title}. Description: ${selectedChallenge.description}. Starter Code: ${selectedChallenge.starterCode}`;
 
   return (
     <div className="space-y-8">
@@ -138,6 +141,7 @@ export default function ChallengesPage() {
                 </Card>
             </div>
         </div>
+        <AiChatbot lessonContent={lessonContentForBot} />
     </div>
   );
 }
