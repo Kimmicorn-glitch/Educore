@@ -23,26 +23,6 @@ export default function AppLayout({
     }, []);
 
 
-    if (!mounted) {
-        return (
-             <FirebaseClientProvider>
-                <SidebarProvider>
-                    <Sidebar>
-                        <MainSidebar />
-                    </Sidebar>
-                    <SidebarInset>
-                        <div className="flex h-full flex-col">
-                            <Header />
-                            <main className="flex-1 overflow-y-auto p-4 pt-6 md:p-8">
-                                {/* You can add a skeleton loader here if you want */}
-                            </main>
-                        </div>
-                    </SidebarInset>
-                </SidebarProvider>
-            </FirebaseClientProvider>
-        )
-    }
-    
     return (
         <FirebaseClientProvider>
             <SidebarProvider>
@@ -53,12 +33,12 @@ export default function AppLayout({
                     <div className="flex h-full flex-col">
                         <Header />
                         <main className="flex-1 overflow-y-auto p-4 pt-6 md:p-8">
-                            {children}
+                            {mounted && children}
                         </main>
                     </div>
                 </SidebarInset>
             </SidebarProvider>
-            <OnboardingTutorial />
+            {mounted && <OnboardingTutorial />}
         </FirebaseClientProvider>
     );
 }

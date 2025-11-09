@@ -19,8 +19,8 @@ service cloud.firestore {
 
     // Secure user profiles
     match /users/{userId} {
-      allow read, update, delete: if isOwner(userId) || isSupportAgent();
-      allow create: if isSignedIn();
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow read, update, delete: if isOwner(userId);
       
       // Secure progress subcollection
       match /progress/{progressId} {
