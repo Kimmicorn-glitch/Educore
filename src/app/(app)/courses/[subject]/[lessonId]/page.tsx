@@ -10,8 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle } from "lucide-react";
-import { useUser, useFirestore, useMemoFirebase } from "@/firebase";
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { useUser, useFirestore, useMemoFirebase, updateDocumentNonBlocking } from "@/firebase";
+import { doc, arrayUnion } from 'firebase/firestore';
 import { useToast } from "@/hooks/use-toast";
 
 export default function LessonPage() {
@@ -29,7 +29,7 @@ export default function LessonPage() {
 
   const exercise = exercises.find(e => e.id === lesson.linkedExerciseId);
 
-  const handleMarkComplete = async () => {
+  const handleMarkComplete = () => {
     if (!user || !firestore) {
         toast({
             variant: "destructive",
@@ -40,22 +40,15 @@ export default function LessonPage() {
     }
 
     const progressRef = doc(firestore, "users", user.uid, "progress", "main");
-    try {
-        await updateDoc(progressRef, {
-            lessonCompletions: arrayUnion({ lessonId: lesson.id, isCompleted: true })
-        });
-        toast({
-            title: "Progress Saved!",
-            description: `Lesson "${lesson.title}" marked as complete.`,
-        });
-    } catch (error) {
-        console.error("Failed to mark lesson as complete: ", error);
-        toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Could not save your progress. Please try again.",
-        });
-    }
+    
+    updateDocumentNonBlocking(progressRef, {
+        lessonCompletions: arrayUnion({ lessonId: lesson.id, isCompleted: true })
+    });
+
+    toast({
+        title: "Progress Saved!",
+        description: `Lesson "${lesson.title}" marked as complete.`,
+    });
   }
 
   return (
@@ -107,5 +100,3 @@ export default function LessonPage() {
     </div>
   );
 }
-
-    
