@@ -1,3 +1,4 @@
+
 export type Subject = 'Python' | 'English' | 'Maths' | 'Physics';
 export type TargetAudience = 'Children' | 'Teenagers' | 'Adults';
 
@@ -44,6 +45,7 @@ export interface UserProgress {
   exerciseAttempts: { exerciseId: string; attempts: number; successRate: number }[];
   badges: string[];
   challengeProgress: { level: number, completed: boolean }[];
+  hasCompletedTutorial?: boolean;
 }
 
 export interface UserAccount {

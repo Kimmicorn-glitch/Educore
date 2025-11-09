@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button"
@@ -57,7 +58,8 @@ export default function SignupPage() {
                 lessonCompletions: [],
                 exerciseAttempts: [],
                 badges: [],
-                challengeProgress: []
+                challengeProgress: [],
+                hasCompletedTutorial: false,
             };
             setDocumentNonBlocking(progressRef, initialProgress);
 
@@ -120,11 +122,11 @@ export default function SignupPage() {
         </Button>
         <p className="mt-2 text-center text-xs text-muted-foreground">
             By creating an account, you agree to our{" "}
-            <Link href="#" className="underline underline-offset-2">
+            <Link href="/terms" className="underline underline-offset-2">
                 Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="#" className="underline underline-offset-2">
+            <Link href="/privacy" className="underline underline-offset-2">
                 Privacy Policy
             </Link>
             .

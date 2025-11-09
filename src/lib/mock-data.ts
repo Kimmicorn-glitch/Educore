@@ -884,7 +884,7 @@ If the ray intersects multiple objects, you usually only care about the intersec
 export const badges: Badge[] = [
     { id: 'py-beginner', title: 'Python Novice', description: 'Completed the Python beginner lessons.', icon: 'GraduationCap' },
     { id: 'py-intermediate', title: 'Python Apprentice', description: 'Mastered intermediate Python concepts.', icon: 'Code' },
-    { id: 'first-badge', title: 'First Steps', description: 'Earned your very first badge!', icon: 'Award' },
+    { id: 'first-timer', title: 'First Timer', description: 'Completed the onboarding tutorial.', icon: 'Award' },
     { id: 'challenge-master', title: 'Challenge Master', description: 'Completed all 20 coding challenges.', icon: 'HardHat' }
 ]
 

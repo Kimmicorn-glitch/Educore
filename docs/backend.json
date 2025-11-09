@@ -76,6 +76,10 @@
                     "completed": { "type": "boolean" }
                 }
             }
+          },
+          "hasCompletedTutorial": {
+            "type": "boolean",
+            "description": "Indicates if the user has completed the onboarding tutorial."
           }
         },
         "required": ["lessonCompletions", "exerciseAttempts", "badges", "challengeProgress"]
