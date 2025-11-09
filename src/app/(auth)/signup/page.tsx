@@ -59,7 +59,6 @@ export default function SignupPage() {
                 exerciseAttempts: [],
                 badges: [],
                 challengeProgress: [],
-                hasCompletedTutorial: false,
             };
             setDocumentNonBlocking(progressRef, initialProgress);
 

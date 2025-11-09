@@ -3,7 +3,6 @@
 
 import Header from "@/components/layout/header";
 import { MainSidebar } from "@/components/layout/main-sidebar";
-import OnboardingTutorial from "@/components/tutorial/onboarding-tutorial";
 import {
     SidebarProvider,
     Sidebar,
@@ -32,7 +31,6 @@ export default function AppLayout({
                     </div>
                 </SidebarInset>
             </SidebarProvider>
-            <OnboardingTutorial />
         </FirebaseClientProvider>
     );
 }
