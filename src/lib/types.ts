@@ -71,3 +71,12 @@ export interface Challenge {
     test: string;
     tags: Subject[];
 }
+
+export interface TheoryContent {
+  subject: Subject;
+  glossary: {
+    term: string;
+    definition: string;
+  }[];
+  lectureNotes: string;
+}

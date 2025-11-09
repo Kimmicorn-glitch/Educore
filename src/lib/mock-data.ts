@@ -1,5 +1,5 @@
 
-import type { Course, Exercise, UserProgress, Badge, Challenge } from './types';
+import type { Course, Exercise, UserProgress, Badge, Challenge, TheoryContent } from './types';
 
 export const courses: Course[] = [
   {
@@ -1627,10 +1627,180 @@ export const userProgress: UserProgress = {
     { exerciseId: 'ex-en-1', attempts: 3, successRate: 0.66 },
     { exerciseId: 'ex-py-2', attempts: 5, successRate: 0.2 },
   ],
-  badges: ['first-badge', 'py-beginner'],
+  badges: ['py-beginner'],
   challengeProgress: [
     { level: 1, completed: true },
     { level: 2, completed: true },
     { level: 3, completed: false }
   ]
 };
+
+export const theoryContent: TheoryContent[] = [
+    {
+        subject: 'Python',
+        glossary: [
+            { term: 'Variable', definition: 'A symbolic name that is a reference or pointer to an object. Once an object is assigned to a variable, you can refer to the object by that name.' },
+            { term: 'Function', definition: 'A block of organized, reusable code that is used to perform a single, related action.' },
+            { term: 'List', definition: 'A collection which is ordered and changeable. Allows duplicate members.' },
+            { term: 'Dictionary', definition: 'A collection which is unordered, changeable and indexed. No duplicate members. In Python, dictionaries are written with curly brackets, and they have keys and values.' },
+            { term: 'Loop', definition: 'A programming structure that repeats a sequence of instructions until a specific condition is met.' },
+            { term: 'Class', definition: 'A blueprint for creating objects. It provides initial values for state (member variables or attributes), and implementations of behavior (member functions or methods).' },
+            { term: 'Decorator', definition: 'A design pattern in Python that allows a user to add new functionality to an existing object without modifying its structure.' },
+        ],
+        lectureNotes: `
+### Python Core Concepts
+
+**1. Data Types and Variables:**
+- Python is dynamically typed, meaning you don't need to declare the type of a variable.
+- Basic types include \`int\`, \`float\`, \`str\`, and \`bool\`.
+- Use descriptive variable names (e.g., \`user_name\` instead of \`un\`).
+
+**2. Control Flow:**
+- \`if-elif-else\` statements are used for conditional logic.
+- \`for\` loops are used to iterate over sequences (like lists or strings).
+- \`while\` loops are used to repeat a block of code as long as a condition is true.
+
+**3. Functions:**
+- Defined using the \`def\` keyword.
+- Functions are first-class objects, meaning they can be passed as arguments to other functions.
+- Use the \`return\` keyword to send a value back from a function.
+
+**4. Data Structures:**
+- **Lists:** Ordered, mutable collections. Great for sequences of items.
+- **Tuples:** Ordered, immutable collections. Used for data that should not change.
+- **Dictionaries:** Unordered collections of key-value pairs. Extremely efficient for lookups.
+- **Sets:** Unordered collections of unique items. Useful for membership testing and eliminating duplicates.
+
+**5. Object-Oriented Programming (OOP):**
+- Python is a fully object-oriented language.
+- \`class\` is used to define a blueprint for an object.
+- The \`__init__\` method is the constructor, called when an object is created.
+- **Inheritance** allows a new class to adopt the properties and methods of an existing class.
+`
+    },
+    {
+        subject: 'English',
+        glossary: [
+            { term: 'Subject', definition: 'The part of a sentence or clause that indicates who or what is performing the action.' },
+            { term: 'Verb', definition: 'A word used to describe an action, state, or occurrence.' },
+            { term: 'Object', definition: 'A noun or pronoun that is affected by the action of a verb.' },
+            { term: 'Clause', definition: 'A unit of grammatical organization next below the sentence in rank and in traditional grammar said to consist of a subject and predicate.' },
+            { term: 'Active Voice', definition: 'The voice used to indicate that the grammatical subject of the verb is performing the action.' },
+            { term: 'Passive Voice', definition: 'The voice used to indicate that the grammatical subject of the verb is the recipient of the action.' },
+        ],
+        lectureNotes: `
+### English for Technical Communication
+
+**1. Clarity and Conciseness:**
+- The primary goal of technical writing is to be understood.
+- Avoid ambiguity. Use precise language.
+- Prefer shorter sentences and paragraphs.
+
+**2. Active vs. Passive Voice:**
+- **Active Voice** is generally preferred in technical writing ("The function returns a boolean"). It is direct and assigns responsibility.
+- **Passive Voice** can be used when the actor is unknown or unimportant ("The configuration was updated last night"). Overuse can make writing seem weak or evasive.
+
+**3. Audience Awareness:**
+- Tailor your language, tone, and level of detail to your audience.
+- When writing for non-technical stakeholders, use analogies and avoid jargon.
+- For technical peers, be precise and use established terminology correctly.
+
+**4. Structure in Documentation:**
+- Use clear headings, subheadings, lists, and bold text.
+- For function/API documentation, always include:
+    - A brief summary of what it does.
+    - Descriptions of each parameter.
+    - What the function returns.
+    - Code examples.
+
+**5. Writing Commit Messages:**
+- Follow a consistent format (e.g., Conventional Commits).
+- The subject line should be a concise summary (\`<type>: <description>\`).
+- The body should explain the *why* of the change, not the *how*.
+`
+    },
+    {
+        subject: 'Maths',
+        glossary: [
+            { term: 'Algebra', definition: 'A branch of mathematics in which letters and other general symbols are used to represent numbers and quantities in formulae and equations.' },
+            { term: 'Logic', definition: 'The study of reasoning and inference.' },
+            { term: 'Binary', definition: 'A number system that uses only two digits, 0 and 1.' },
+            { term: 'Big O Notation', definition: 'A mathematical notation that describes the limiting behavior of a function when the argument tends towards a particular value or infinity. Used in computer science to classify algorithms according to how their run time or space requirements grow as the input size grows.' },
+            { term: 'Vector', definition: 'A quantity having direction as well as magnitude, especially as determining the position of one point in space relative to another.' },
+            { term: 'Matrix', definition: 'A rectangular array of numbers, symbols, or expressions, arranged in rows and columns.' },
+        ],
+        lectureNotes: `
+### Mathematical Concepts in Programming
+
+**1. Logic and Boolean Algebra:**
+- The foundation of all computation.
+- Computers operate on \`true\` and \`false\` values.
+- Logical operators (\`AND\`, \`OR\`, \`NOT\`) are used to create complex conditions in \`if\` statements and loops.
+
+**2. Binary System (Base-2):**
+- Computers store and process all information as bits (0s and 1s).
+- Understanding binary helps in understanding low-level data representation, bitwise operations, and computer architecture.
+
+**3. Algebra:**
+- Used everywhere in programming, from simple formulas to complex algorithms.
+- Variables in programming are directly analogous to variables in algebra.
+
+**4. Big O Notation:**
+- Describes the efficiency and scalability of an algorithm.
+- It's not about measuring time, but how the number of operations grows with the input size (\`n\`).
+- Common complexities:
+    - **O(1):** Constant time (ideal).
+    - **O(log n):** Logarithmic time (very efficient, e.g., binary search).
+    - **O(n):** Linear time (common, e.g., iterating a list).
+    - **O(n²):** Quadratic time (inefficient for large inputs, e.g., nested loops).
+
+**5. Linear Algebra (Vectors & Matrices):**
+- The language of data science, machine learning, and computer graphics.
+- **Vectors** represent points or directions in space. In code, they are often 1D arrays or lists.
+- **Matrices** are grids of numbers (2D arrays) and can represent datasets, transformations, or systems of equations.
+- Operations like matrix multiplication are fundamental to how neural networks work.
+`
+    },
+    {
+        subject: 'Physics',
+        glossary: [
+            { term: 'Gravity', definition: 'The force that attracts a body toward the center of the earth, or toward any other physical body having mass.' },
+            { term: 'Velocity', definition: 'The speed of something in a given direction.' },
+            { term: 'Acceleration', definition: 'The rate of change of velocity per unit of time.' },
+            { term: 'Inertia', definition: 'A property of matter by which it continues in its existing state of rest or uniform motion in a straight line, unless that state is changed by an external force.' },
+            { term: 'Vector', definition: 'A quantity having both magnitude and direction.' },
+            { term: 'Raycasting', definition: 'A rendering technique used in computer graphics and computational geometry by tracing a ray from an observer\'s eye to objects in a scene.' },
+        ],
+        lectureNotes: `
+### Core Physics for Simulations
+
+**1. Kinematics:**
+- The study of motion.
+- Key variables:
+    - **Position (p):** Where an object is.
+    - **Velocity (v):** How position changes over time (\`v = dp/dt\`).
+    - **Acceleration (a):** How velocity changes over time (\`a = dv/dt\`).
+
+**2. Newton's Laws of Motion:**
+- **1st Law (Inertia):** An object in motion stays in motion. In a simulation, this means an object's velocity remains constant unless a force is applied.
+- **2nd Law (F=ma):** The core of physics engines. To find an object's acceleration, you sum up all forces acting on it and divide by its mass (\`a = F / m\`).
+- **3rd Law (Action-Reaction):** When two objects collide, they exert equal and opposite forces on each other.
+
+**3. A Simple Physics Loop (Euler Integration):**
+- In each frame or time step (\`dt\`):
+    1. Apply forces (like gravity): \`acceleration.y += gravity\`
+    2. Update velocity: \`velocity += acceleration * dt\`
+    3. Update position: \`position += velocity * dt\`
+    4. Reset acceleration to zero for the next frame.
+
+**4. Collision Detection:**
+- The process of detecting if two or more objects have intersected.
+- **AABB (Axis-Aligned Bounding Box):** A simple and fast method using non-rotated rectangles. Collision occurs if all axes (X and Y) overlap.
+
+**5. Collision Response:**
+- What happens after a collision is detected.
+- **Resolution:** Move objects so they no longer overlap (often along the Minimum Translation Vector).
+- **Reaction:** Change the velocities of the objects based on the laws of conservation of momentum. For a simple wall bounce, reverse the velocity on the corresponding axis.
+`
+    },
+];
