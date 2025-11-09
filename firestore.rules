@@ -19,16 +19,12 @@ service cloud.firestore {
 
     // Secure user profiles
     match /users/{userId} {
-      allow read: if isOwner(userId) || isSupportAgent();
-      allow create: if isOwner(userId);
-      allow update: if isOwner(userId);
-      allow delete: if isOwner(userId);
+      allow read, update, delete: if isOwner(userId) || isSupportAgent();
+      allow create: if isSignedIn();
       
       // Secure progress subcollection
       match /progress/{progressId} {
-        allow read: if isOwner(userId);
-        allow create: if isOwner(userId);
-        allow update: if isOwner(userId);
+        allow read, write: if isOwner(userId);
       }
 
       // Secure support tickets subcollection
