@@ -1,9 +1,19 @@
 
+"use client"
+
+import { useState, useEffect } from 'react';
+
 export default function TermsOfServicePage() {
+    const [date, setDate] = useState('');
+
+    useEffect(() => {
+        setDate(new Date().toLocaleDateString());
+    }, []);
+
     return (
       <div>
         <h1>Terms of Service</h1>
-        <p>Last updated: {new Date().toLocaleDateString()}</p>
+        <p>Last updated: {date}</p>
   
         <h2>1. Agreement to Terms</h2>
         <p>

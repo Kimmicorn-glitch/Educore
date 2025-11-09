@@ -1,9 +1,19 @@
 
+"use client"
+
+import { useState, useEffect } from 'react';
+
 export default function PrivacyPolicyPage() {
+    const [date, setDate] = useState('');
+
+    useEffect(() => {
+        setDate(new Date().toLocaleDateString());
+    }, []);
+
     return (
       <div>
         <h1>Privacy Policy</h1>
-        <p>Last updated: {new Date().toLocaleDateString()}</p>
+        <p>Last updated: {date}</p>
   
         <h2>1. Introduction</h2>
         <p>
