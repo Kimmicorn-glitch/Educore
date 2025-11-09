@@ -1648,34 +1648,47 @@ export const theoryContent: TheoryContent[] = [
             { term: 'Decorator', definition: 'A design pattern in Python that allows a user to add new functionality to an existing object without modifying its structure.' },
         ],
         lectureNotes: `
-### Python Core Concepts
+<h3>Python Core Concepts</h3>
+<p>Python is a versatile, high-level programming language known for its readability and simplicity. These notes cover the foundational concepts that are essential for any Python programmer.</p>
 
-**1. Data Types and Variables:**
-- Python is dynamically typed, meaning you don't need to declare the type of a variable.
-- Basic types include \`int\`, \`float\`, \`str\`, and \`bool\`.
-- Use descriptive variable names (e.g., \`user_name\` instead of \`un\`).
+<h4>1. Data Types and Variables</h4>
+<p>Python is dynamically typed, which means you don't need to declare a variable's type. The interpreter infers it at runtime.</p>
+<ul>
+    <li><strong>Strings (<code>str</code>):</strong> Textual data, enclosed in single or double quotes. Example: <code>'hello'</code>, <code>"world"</code>.</li>
+    <li><strong>Numbers:</strong>
+        <ul>
+            <li><strong>Integers (<code>int</code>):</strong> Whole numbers, like <code>10</code> or <code>-5</code>.</li>
+            <li><strong>Floats (<code>float</code>):</strong> Numbers with a decimal point, like <code>3.14</code> or <code>-0.01</code>.</li>
+        </ul>
+    </li>
+    <li><strong>Booleans (<code>bool</code>):</strong> Represent truth values, either <code>True</code> or <code>False</code>.</li>
+</ul>
+<p><em>Good Practice:</em> Use descriptive variable names (e.g., <code>user_name</code> instead of <code>un</code>) to make your code more understandable.</p>
 
-**2. Control Flow:**
-- \`if-elif-else\` statements are used for conditional logic.
-- \`for\` loops are used to iterate over sequences (like lists or strings).
-- \`while\` loops are used to repeat a block of code as long as a condition is true.
+<h4>2. Control Flow</h4>
+<p>Control flow directs the order in which your code is executed.</p>
+<ul>
+    <li><strong><code>if-elif-else</code>:</strong> Used for conditional logic. The code block under the first true condition is executed.</li>
+    <li><strong><code>for</code> loops:</strong> Iterate over a sequence (like a list, tuple, or string). Example: <code>for item in my_list:</code>.</li>
+    <li><strong><code>while</code> loops:</strong> Repeat a block of code as long as a condition remains true. Be careful to avoid infinite loops!</li>
+</ul>
 
-**3. Functions:**
-- Defined using the \`def\` keyword.
-- Functions are first-class objects, meaning they can be passed as arguments to other functions.
-- Use the \`return\` keyword to send a value back from a function.
+<h4>3. Data Structures</h4>
+<p>Python offers several built-in data structures to store collections of data.</p>
+<ul>
+    <li><strong>Lists:</strong> Ordered and mutable (changeable). Defined with square brackets <code>[]</code>. Great for sequences of items that may need to be modified.</li>
+    <li><strong>Tuples:</strong> Ordered and immutable (unchangeable). Defined with parentheses <code>()</code>. Used for data that should not change, like coordinates.</li>
+    <li><strong>Dictionaries:</strong> Unordered collections of key-value pairs. Defined with curly braces <code>{}</code>. Extremely efficient for looking up values by a key.</li>
+    <li><strong>Sets:</strong> Unordered collections of unique items. Useful for membership testing and eliminating duplicate entries.</li>
+</ul>
 
-**4. Data Structures:**
-- **Lists:** Ordered, mutable collections. Great for sequences of items.
-- **Tuples:** Ordered, immutable collections. Used for data that should not change.
-- **Dictionaries:** Unordered collections of key-value pairs. Extremely efficient for lookups.
-- **Sets:** Unordered collections of unique items. Useful for membership testing and eliminating duplicates.
-
-**5. Object-Oriented Programming (OOP):**
-- Python is a fully object-oriented language.
-- \`class\` is used to define a blueprint for an object.
-- The \`__init__\` method is the constructor, called when an object is created.
-- **Inheritance** allows a new class to adopt the properties and methods of an existing class.
+<h4>4. Object-Oriented Programming (OOP)</h4>
+<p>Python is a fully object-oriented language. OOP helps in structuring code into reusable blueprints called classes.</p>
+<ul>
+    <li>A <code>class</code> is the blueprint for creating objects.</li>
+    <li>The <code>__init__()</code> method is the constructor, which is called when a new object (instance) is created.</li>
+    <li><strong>Inheritance</strong> allows a new class (child) to inherit attributes and methods from an existing class (parent), promoting code reuse.</li>
+</ul>
 `
     },
     {
@@ -1689,34 +1702,47 @@ export const theoryContent: TheoryContent[] = [
             { term: 'Passive Voice', definition: 'The voice used to indicate that the grammatical subject of the verb is the recipient of the action.' },
         ],
         lectureNotes: `
-### English for Technical Communication
+<h3>English for Technical Communication</h3>
+<p>In software development, clear communication is as crucial as clean code. These notes focus on English principles that directly improve the quality of technical documentation, comments, and team collaboration.</p>
 
-**1. Clarity and Conciseness:**
-- The primary goal of technical writing is to be understood.
-- Avoid ambiguity. Use precise language.
-- Prefer shorter sentences and paragraphs.
+<h4>1. Clarity, Conciseness, and Precision</h4>
+<ul>
+    <li><strong>Clarity:</strong> The primary goal is to be understood without ambiguity. Avoid jargon when writing for a mixed audience.</li>
+    <li><strong>Conciseness:</strong> Get to the point. Remove filler words. For example, instead of "It is important to note that the function returns...", simply write "The function returns...".</li>
+    <li><strong>Precision:</strong> Use the exact word. In a technical context, "a number" is less precise than "an integer" or "a floating-point number".</li>
+</ul>
 
-**2. Active vs. Passive Voice:**
-- **Active Voice** is generally preferred in technical writing ("The function returns a boolean"). It is direct and assigns responsibility.
-- **Passive Voice** can be used when the actor is unknown or unimportant ("The configuration was updated last night"). Overuse can make writing seem weak or evasive.
+<h4>2. Active vs. Passive Voice</h4>
+<p>This is one of the most important concepts in technical writing.</p>
+<ul>
+    <li><strong>Active Voice:</strong> The subject performs the action. It's direct, energetic, and clear.
+        <br><em>Example: "The garbage collector <strong>reclaims</strong> memory."</em> (Clear who does what)</li>
+    <li><strong>Passive Voice:</strong> The subject receives the action. It can be wordy and obscure the agent.
+        <br><em>Example: "Memory <strong>is reclaimed</strong> by the garbage collector."</em></li>
+</ul>
+<p><strong>Rule of Thumb:</strong> Strongly prefer the active voice in comments, documentation, and commit messages. It makes ownership and action explicit.</p>
 
-**3. Audience Awareness:**
-- Tailor your language, tone, and level of detail to your audience.
-- When writing for non-technical stakeholders, use analogies and avoid jargon.
-- For technical peers, be precise and use established terminology correctly.
+<h4>3. Audience Awareness</h4>
+<p>Always consider who you are writing for.</p>
+<ul>
+    <li><strong>For Technical Peers:</strong> Use established terminology correctly and be technically precise.</li>
+    <li><strong>For Non-Technical Stakeholders:</strong> Use analogies and simplify complex ideas. Avoid implementation details and focus on the "what" and "why".</li>
+</ul>
 
-**4. Structure in Documentation:**
-- Use clear headings, subheadings, lists, and bold text.
-- For function/API documentation, always include:
-    - A brief summary of what it does.
-    - Descriptions of each parameter.
-    - What the function returns.
-    - Code examples.
-
-**5. Writing Commit Messages:**
-- Follow a consistent format (e.g., Conventional Commits).
-- The subject line should be a concise summary (\`<type>: <description>\`).
-- The body should explain the *why* of the change, not the *how*.
+<h4>4. Structure in Documentation</h4>
+<p>Well-structured documentation is easy to scan and digest. Use formatting to your advantage.</p>
+<ul>
+    <li>Use clear, descriptive headings and subheadings.</li>
+    <li>Use bulleted or numbered lists for steps or features.</li>
+    <li>For documenting a function or API endpoint, always include:
+        <ol>
+            <li>A brief summary of its purpose.</li>
+            <li>A description of each parameter/argument.</li>
+            <li>A description of the return value.</li>
+            <li>One or more code examples showing its usage.</li>
+        </ol>
+    </li>
+</ul>
 `
     },
     {
@@ -1730,35 +1756,40 @@ export const theoryContent: TheoryContent[] = [
             { term: 'Matrix', definition: 'A rectangular array of numbers, symbols, or expressions, arranged in rows and columns.' },
         ],
         lectureNotes: `
-### Mathematical Concepts in Programming
+<h3>Mathematical Concepts in Programming</h3>
+<p>Mathematics provides the foundation for computer science, from basic hardware operations to complex machine learning algorithms. Understanding these concepts is key to becoming a more effective programmer.</p>
 
-**1. Logic and Boolean Algebra:**
-- The foundation of all computation.
-- Computers operate on \`true\` and \`false\` values.
-- Logical operators (\`AND\`, \`OR\`, \`NOT\`) are used to create complex conditions in \`if\` statements and loops.
+<h4>1. Logic and Boolean Algebra</h4>
+<p>At its core, all computation is based on logic. Computers operate on binary states: <code>true</code> and <code>false</code> (or 1 and 0).</p>
+<ul>
+    <li><strong>Logical Operators:</strong> <code>AND</code>, <code>OR</code>, and <code>NOT</code> are the building blocks for all decision-making in code (e.g., in <code>if</code> statements and <code>while</code> loops).</li>
+    <li><strong>Truth Tables:</strong> These are used to map out the results of logical expressions, which is fundamental to designing digital circuits and complex conditional checks in software.</li>
+</ul>
 
-**2. Binary System (Base-2):**
-- Computers store and process all information as bits (0s and 1s).
-- Understanding binary helps in understanding low-level data representation, bitwise operations, and computer architecture.
+<h4>2. Binary System (Base-2)</h4>
+<p>The binary system is the native language of computers.</p>
+<ul>
+    <li>All data—numbers, text, images, and instructions—is stored and processed as sequences of <strong>bits</strong> (0s and 1s).</li>
+    <li>Understanding binary is crucial for low-level programming, data compression, networking, and understanding how character encodings like UTF-8 work.</li>
+</ul>
 
-**3. Algebra:**
-- Used everywhere in programming, from simple formulas to complex algorithms.
-- Variables in programming are directly analogous to variables in algebra.
+<h4>3. Big O Notation</h4>
+<p>Big O notation is used to describe the efficiency and scalability of an algorithm. It's not about measuring speed in seconds, but about how an algorithm's performance changes as the input size (<code>n</code>) grows.</p>
+<ul>
+    <li><code>O(1)</code> - <strong>Constant Time:</strong> Performance is independent of input size. (e.g., accessing an array element by index).</li>
+    <li><code>O(log n)</code> - <strong>Logarithmic Time:</strong> Extremely scalable. Performance grows very slowly. (e.g., binary search).</li>
+    <li><code>O(n)</code> - <strong>Linear Time:</strong> Performance grows linearly with input size. (e.g., iterating through a list once).</li>
+    <li><code>O(n²)</code> - <strong>Quadratic Time:</strong> Becomes slow very quickly. Often involves nested loops. (e.g., comparing every element in a list to every other element).</li>
+</ul>
+<p>Knowing Big O helps you choose the right algorithm for the job, especially when dealing with large datasets.</p>
 
-**4. Big O Notation:**
-- Describes the efficiency and scalability of an algorithm.
-- It's not about measuring time, but how the number of operations grows with the input size (\`n\`).
-- Common complexities:
-    - **O(1):** Constant time (ideal).
-    - **O(log n):** Logarithmic time (very efficient, e.g., binary search).
-    - **O(n):** Linear time (common, e.g., iterating a list).
-    - **O(n²):** Quadratic time (inefficient for large inputs, e.g., nested loops).
-
-**5. Linear Algebra (Vectors & Matrices):**
-- The language of data science, machine learning, and computer graphics.
-- **Vectors** represent points or directions in space. In code, they are often 1D arrays or lists.
-- **Matrices** are grids of numbers (2D arrays) and can represent datasets, transformations, or systems of equations.
-- Operations like matrix multiplication are fundamental to how neural networks work.
+<h4>4. Linear Algebra (Vectors & Matrices)</h4>
+<p>This is the language of modern data science, machine learning, and computer graphics.</p>
+<ul>
+    <li><strong>Vectors:</strong> A vector can be thought of as a list of numbers representing a point in space. In code, they are often represented as 1D arrays. They can model a single data point with multiple features (e.g., a user's profile).</li>
+    <li><strong>Matrices:</strong> A matrix is a grid of numbers (a 2D array). They can represent an entire dataset, an image, or a transformation in space.</li>
+    <li>Operations like matrix multiplication are the backbone of how neural networks "learn" and process information.</li>
+</ul>
 `
     },
     {
@@ -1772,35 +1803,46 @@ export const theoryContent: TheoryContent[] = [
             { term: 'Raycasting', definition: 'A rendering technique used in computer graphics and computational geometry by tracing a ray from an observer\'s eye to objects in a scene.' },
         ],
         lectureNotes: `
-### Core Physics for Simulations
+<h3>Core Physics for Simulations and Game Development</h3>
+<p>Applying physics principles allows us to create dynamic, interactive, and realistic virtual worlds. These notes cover the foundational concepts used in most physics engines.</p>
 
-**1. Kinematics:**
-- The study of motion.
-- Key variables:
-    - **Position (p):** Where an object is.
-    - **Velocity (v):** How position changes over time (\`v = dp/dt\`).
-    - **Acceleration (a):** How velocity changes over time (\`a = dv/dt\`).
+<h4>1. Kinematics: The Study of Motion</h4>
+<p>Kinematics describes how objects move, without considering the forces that cause the motion.</p>
+<ul>
+    <li><strong>Position (p):</strong> A vector representing an object's location in space.</li>
+    <li><strong>Velocity (v):</strong> A vector representing the rate of change of an object's position. It has both speed and direction.</li>
+    <li><strong>Acceleration (a):</strong> A vector representing the rate of change of an object's velocity.</li>
+</ul>
 
-**2. Newton's Laws of Motion:**
-- **1st Law (Inertia):** An object in motion stays in motion. In a simulation, this means an object's velocity remains constant unless a force is applied.
-- **2nd Law (F=ma):** The core of physics engines. To find an object's acceleration, you sum up all forces acting on it and divide by its mass (\`a = F / m\`).
-- **3rd Law (Action-Reaction):** When two objects collide, they exert equal and opposite forces on each other.
+<h4>2. Newton's Laws of Motion</h4>
+<p>These three laws are the cornerstone of classical mechanics and simulation.</p>
+<ol>
+    <li><strong>Law of Inertia:</strong> An object's velocity remains constant unless a net force acts on it. In a simulation, this means if you stop applying forces, an object should continue moving in a straight line.</li>
+    <li><strong><code>F = ma</code> (Force = mass × acceleration):</strong> The most important law for physics engines. It tells us how to calculate an object's change in motion. We can rearrange it to <code>a = F / m</code>. To find an object's acceleration, you sum all forces (gravity, friction, user input) and divide by its mass.</li>
+    <li><strong>Action-Reaction:</strong> For every action, there is an equal and opposite reaction. This governs how objects interact, such as bouncing off each other or how rockets generate thrust.</li>
+</ol>
 
-**3. A Simple Physics Loop (Euler Integration):**
-- In each frame or time step (\`dt\`):
-    1. Apply forces (like gravity): \`acceleration.y += gravity\`
-    2. Update velocity: \`velocity += acceleration * dt\`
-    3. Update position: \`position += velocity * dt\`
-    4. Reset acceleration to zero for the next frame.
+<h4>3. A Simple Physics Loop (Euler Integration)</h4>
+<p>A physics engine runs in a continuous loop. In each step of the loop (a "frame" or "tick"), we update every object's state. A simple method for this is Euler integration.</p>
+<p>For each frame, with a time step of <code>dt</code>:</p>
+<ol>
+    <li><strong>Apply Forces:</strong> Sum all forces acting on the object to get a net force, then calculate acceleration using <code>a = F / m</code>. (e.g., <code>acceleration.y += gravity</code>).</li>
+    <li><strong>Update Velocity:</strong> Update the object's velocity based on its acceleration: <code>velocity += acceleration * dt</code>.</li>
+    <li><strong>Update Position:</strong> Update the object's position based on its new velocity: <code>position += velocity * dt</code>.</li>
+    <li><strong>Reset Acceleration:</strong> Clear acceleration to <code>0</code> so forces from the next frame can be calculated fresh.</li>
+</ol>
 
-**4. Collision Detection:**
-- The process of detecting if two or more objects have intersected.
-- **AABB (Axis-Aligned Bounding Box):** A simple and fast method using non-rotated rectangles. Collision occurs if all axes (X and Y) overlap.
-
-**5. Collision Response:**
-- What happens after a collision is detected.
-- **Resolution:** Move objects so they no longer overlap (often along the Minimum Translation Vector).
-- **Reaction:** Change the velocities of the objects based on the laws of conservation of momentum. For a simple wall bounce, reverse the velocity on the corresponding axis.
+<h4>4. Collision Handling</h4>
+<p>This is a two-step process:</p>
+<ul>
+    <li><strong>Collision Detection:</strong> Figuring out *if* two objects are overlapping. The simplest method is <strong>AABB (Axis-Aligned Bounding Box)</strong>, which checks if two non-rotated rectangles are intersecting.</li>
+    <li><strong>Collision Response:</strong> Deciding *what to do* after a collision is detected. This involves:
+        <ul>
+            <li><strong>Resolution:</strong> Moving the objects so they no longer overlap.</li>
+            <li><strong>Reaction:</strong> Changing the objects' velocities to simulate a bounce or transfer of momentum.</li>
+        </ul>
+    </li>
+</ul>
 `
     },
 ];

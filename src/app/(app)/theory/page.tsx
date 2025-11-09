@@ -27,7 +27,7 @@ function SubjectTheory({ content }: { content: TheoryContent }) {
       <AccordionItem value="notes">
         <AccordionTrigger>Lecture Notes</AccordionTrigger>
         <AccordionContent>
-          <div className="prose prose-sm dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: content.lectureNotes.replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\n/g, '<br />') }} />
+          <div className="prose prose-sm dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: content.lectureNotes }} />
         </AccordionContent>
       </AccordionItem>
     </Accordion>
