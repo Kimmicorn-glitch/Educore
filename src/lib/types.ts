@@ -45,7 +45,7 @@ export interface UserProgress {
   exerciseAttempts: { exerciseId: string; attempts: number; successRate: number }[];
   badges: string[];
   challengeProgress: { level: number, completed: boolean }[];
-  hasCompletedTutorial?: boolean;
+  hasCompletedTutorial: boolean;
 }
 
 export interface UserAccount {

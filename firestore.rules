@@ -27,7 +27,8 @@ service cloud.firestore {
       // Secure progress subcollection
       match /progress/{progressId} {
         allow read: if isOwner(userId);
-        allow create, update: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow update: if isOwner(userId);
       }
 
       // Secure support tickets subcollection
