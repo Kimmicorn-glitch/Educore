@@ -1,7 +1,6 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
 import Header from "@/components/layout/header";
 import { MainSidebar } from "@/components/layout/main-sidebar";
 import OnboardingTutorial from "@/components/tutorial/onboarding-tutorial";
@@ -17,11 +16,6 @@ export default function AppLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
 
     return (
         <FirebaseClientProvider>
@@ -33,12 +27,12 @@ export default function AppLayout({
                     <div className="flex h-full flex-col">
                         <Header />
                         <main className="flex-1 overflow-y-auto p-4 pt-6 md:p-8">
-                            {mounted && children}
+                            {children}
                         </main>
                     </div>
                 </SidebarInset>
             </SidebarProvider>
-            {mounted && <OnboardingTutorial />}
+            <OnboardingTutorial />
         </FirebaseClientProvider>
     );
 }
