@@ -10,9 +10,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle } from "lucide-react";
-import { useUser, useFirestore, useMemoFirebase, updateDocumentNonBlocking } from "@/firebase";
+import { useUser, useFirestore, useMemoFirebase, updateDocumentNonBlocking, useDoc } from "@/firebase";
 import { doc, arrayUnion } from 'firebase/firestore';
 import { useToast } from "@/hooks/use-toast";
+import type { UserProgress } from "@/lib/types";
 
 export default function LessonPage() {
   const params = useParams() as { subject: string; lessonId: string };
@@ -23,6 +24,9 @@ export default function LessonPage() {
   const course = courses.find(c => c.id.toLowerCase() === params.subject.toLowerCase());
   const lesson = course?.lessons.find(l => l.id === params.lessonId);
   
+  const progressDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid, "progress", "main") : null, [user, firestore]);
+  const { data: userProgress, mutate } = useDoc<UserProgress>(progressDocRef);
+
   if (!course || !lesson) {
     notFound();
   }
@@ -40,10 +44,21 @@ export default function LessonPage() {
     }
 
     const progressRef = doc(firestore, "users", user.uid, "progress", "main");
-    
+    const newCompletion = { lessonId: lesson.id, isCompleted: true };
+
     updateDocumentNonBlocking(progressRef, {
-        lessonCompletions: arrayUnion({ lessonId: lesson.id, isCompleted: true })
+        lessonCompletions: arrayUnion(newCompletion)
     });
+    
+    if (userProgress) {
+        const alreadyCompleted = userProgress.lessonCompletions.some(lc => lc.lessonId === lesson.id);
+        if (!alreadyCompleted) {
+            mutate({ 
+                ...userProgress, 
+                lessonCompletions: [...userProgress.lessonCompletions, newCompletion] 
+            });
+        }
+    }
 
     toast({
         title: "Progress Saved!",

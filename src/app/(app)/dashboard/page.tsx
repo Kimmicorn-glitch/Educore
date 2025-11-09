@@ -1,3 +1,4 @@
+
 'use client';
 
 import { BookOpenCheck, CheckCircle, Target } from "lucide-react";
@@ -22,14 +23,18 @@ export default function DashboardPage() {
     const firestore = useFirestore();
 
     const progressDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid, "progress", "main") : null, [user, firestore]);
-    const { data: userProgress } = useDoc<UserProgress>(progressDocRef);
+    const { data: userProgress, isLoading } = useDoc<UserProgress>(progressDocRef);
 
     const progress = userProgress || defaultProgress;
 
     const totalLessons = 10;
     const completedLessons = progress.lessonCompletions.filter(l => l.isCompleted).length;
-    const overallProgress = Math.round((completedLessons / totalLessons) * 100);
+    const overallProgress = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
     const totalAttempts = progress.exerciseAttempts.reduce((sum, item) => sum + item.attempts, 0);
+
+    if (isLoading) {
+        return <div>Loading dashboard...</div>
+    }
 
   return (
     <div className="space-y-6">
