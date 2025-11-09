@@ -32,8 +32,11 @@ export async function getAudioLecture(input: GenerateAudioInput) {
         const result = await generateAudio(input);
         return { success: true, data: result };
     } catch (error) {
-        console.error(error);
-        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+        console.error('Error in getAudioLecture action:', error);
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during audio generation.';
+        if (errorMessage.includes('deadline')) {
+            return { success: false, error: 'The request took too long to process and timed out. Please try again with a shorter text.' };
+        }
         return { success: false, error: `Failed to generate audio lecture: ${errorMessage}` };
     }
 }

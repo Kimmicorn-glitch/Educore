@@ -73,7 +73,7 @@ const generateAudioFlow = ai.defineFlow(
       },
       prompt: input.text,
     });
-    if (!media) {
+    if (!media?.url) {
       throw new Error('No media returned from TTS model');
     }
 

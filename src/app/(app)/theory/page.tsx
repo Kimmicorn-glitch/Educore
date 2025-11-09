@@ -7,7 +7,7 @@ import type { TheoryContent } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { BookText, Loader2, PlayCircle, Volume2 } from 'lucide-react';
+import { BookText, Loader2, PlayCircle, Info, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getAudioLecture } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -23,7 +23,14 @@ function SubjectTheory({ content }: { content: TheoryContent }) {
     setError(null);
     setAudioSrc(null);
     startTransition(async () => {
-        const result = await getAudioLecture({ text: content.lectureNotes.replace(/<[^>]*>/g, '') }); // Strip HTML for TTS
+        // Strip HTML tags for the TTS service, but keep paragraph breaks for natural pauses.
+        const plainText = content.lectureNotes
+            .replace(/<br\s*\/?>/gi, '\n')
+            .replace(/<\/p>/gi, '\n')
+            .replace(/<[^>]*>/g, '');
+
+        const result = await getAudioLecture({ text: plainText });
+
         if (result.success && result.data) {
             setAudioSrc(result.data.audio);
             toast({
@@ -69,12 +76,24 @@ function SubjectTheory({ content }: { content: TheoryContent }) {
                     )}
                 </Button>
 
+                {isPending && (
+                    <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertTitle>Generating Audio</AlertTitle>
+                        <AlertDescription>
+                            This can take up to a minute for longer lectures. Please be patient.
+                        </AlertDescription>
+                    </Alert>
+                )}
+
                 {error && (
                     <Alert variant="destructive">
-                        <AlertTitle>Error</AlertTitle>
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertTitle>Error Generating Audio</AlertTitle>
                         <AlertDescription>{error}</AlertDescription>
                     </Alert>
                 )}
+
                 {audioSrc && (
                     <div>
                         <audio controls src={audioSrc} className="w-full">
