@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useUser, useFirestore, useDoc, useMemoFirebase, updateDocumentNonBlocking } from '@/firebase';
-import { doc, arrayUnion } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 import type { UserProgress } from '@/lib/types';
 import { ArrowLeft, ArrowRight, BookCopy, LayoutDashboard, Swords, User as UserIcon, Award, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -41,7 +41,7 @@ const tutorialSteps = [
   {
     icon: Award,
     title: 'You\'re Ready to Go!',
-    description: 'You\'ve completed the tour! We\'ve awarded you the "First-Timer" badge as a welcome gift. Now, go ahead and start your learning journey. Good luck!',
+    description: 'You\'ve completed the tour! You can now start your learning journey. Good luck!',
   },
 ];
 
@@ -87,14 +87,12 @@ export default function OnboardingTutorial() {
   const handleFinish = async () => {
     if (!progressDocRef) return;
     try {
-      // Update hasCompletedTutorial and add the badge
       await updateDocumentNonBlocking(progressDocRef, {
         hasCompletedTutorial: true,
-        badges: arrayUnion('first-timer'),
       });
       toast({
         title: 'Tutorial Complete!',
-        description: 'You\'ve earned the "First-Timer" badge. Check it out on your profile!',
+        description: 'You can now start your learning journey.',
       });
       setIsOpen(false);
     } catch (error) {
