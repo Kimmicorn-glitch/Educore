@@ -31,7 +31,7 @@ export default function ChallengesPage() {
   const progress = userProgress || defaultProgress;
 
   const getCompletionStatus = (level: number) => {
-    return progress.challengeProgress.find(p => p.level === level)?.completed || false;
+    return progress.challengeProgress.some(p => p.level === level && p.completed);
   };
 
   const totalCompleted = progress.challengeProgress.filter(p => p.completed).length;
@@ -136,6 +136,7 @@ export default function ChallengesPage() {
                         <CodeRunner 
                             starterCode={selectedChallenge.starterCode}
                             testCode={selectedChallenge.test}
+                            challengeLevel={selectedChallenge.level}
                         />
                     </CardContent>
                 </Card>
@@ -145,3 +146,5 @@ export default function ChallengesPage() {
     </div>
   );
 }
+
+    

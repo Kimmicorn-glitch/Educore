@@ -39,7 +39,9 @@ service cloud.firestore {
 
     // Allow support agents to list all tickets via a collection group query
     match /{path=**}/supportTickets/{ticketId} {
-      allow read, list: if isSupportAgent();
+      allow list: if isSupportAgent();
     }
   }
 }
+
+    

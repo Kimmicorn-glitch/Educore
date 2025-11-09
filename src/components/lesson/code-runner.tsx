@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useEffect, useRef } from 'react';
@@ -6,13 +7,17 @@ import { Button } from '@/components/ui/button';
 import { Play, Loader2, Terminal, CheckCircle, XCircle, Send } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
+import { useUser, useFirestore, useMemoFirebase } from '@/firebase';
+import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 interface CodeRunnerProps {
     starterCode: string;
     testCode?: string;
+    challengeLevel?: number;
+    lessonId?: string;
 }
 
-export default function CodeRunner({ starterCode, testCode }: CodeRunnerProps) {
+export default function CodeRunner({ starterCode, testCode, challengeLevel }: CodeRunnerProps) {
     const [code, setCode] = useState(starterCode);
     const [output, setOutput] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -20,6 +25,9 @@ export default function CodeRunner({ starterCode, testCode }: CodeRunnerProps) {
     const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'correct' | 'incorrect'>('idle');
     const pyodideRef = useRef<PyodideInterface | null>(null);
     const hasAttemptedLoad = useRef(false);
+
+    const { user } = useUser();
+    const firestore = useFirestore();
 
     useEffect(() => {
         setCode(starterCode);
@@ -48,7 +56,6 @@ export default function CodeRunner({ starterCode, testCode }: CodeRunnerProps) {
             }
         };
         
-        // Ensure script is on the page before trying to load
         if (!document.getElementById('pyodide-script')) {
             const script = document.createElement('script');
             script.id = 'pyodide-script';
@@ -99,20 +106,25 @@ export default function CodeRunner({ starterCode, testCode }: CodeRunnerProps) {
         setIsExecuting(true);
         setOutput('');
         try {
-            // Define the user's code within the Python environment
             pyodideRef.current.globals.set('user_code', code);
             
-            const testWithUserCode = `
-# --- User's code is executed here ---
-exec(user_code)
-# ---
-
-# --- Test code is executed here ---
-${testCode}
-`;
-            const result = await pyodideRef.current.runPythonAsync(testWithUserCode);
-            setOutput(prev => prev + String(result || ''));
+            const fullCode = `${code}\n\n${testCode}`;
+            
+            await pyodideRef.current.runPythonAsync(fullCode);
+            setOutput(prev => prev + "All tests passed!");
             setSubmissionStatus('correct');
+
+            if (user && firestore && challengeLevel) {
+                const progressRef = doc(firestore, "users", user.uid, "progress", "main");
+                // Use a Set-like behavior by removing the old entry and adding a new one, or just add.
+                // Firestore's arrayUnion is effective for adding unique elements.
+                // We'll update a specific challenge level. A more robust solution might involve a map.
+                // For now, let's assume we can re-add the same progress object.
+                await updateDoc(progressRef, {
+                    challengeProgress: arrayUnion({ level: challengeLevel, completed: true })
+                });
+            }
+
         } catch (error) {
             if (error instanceof Error) {
                 setOutput(error.message);
@@ -160,7 +172,7 @@ ${testCode}
                     <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
                     <AlertTitle className="text-green-800 dark:text-green-200">Correct!</AlertTitle>
                     <AlertDescription className="text-green-700 dark:text-green-300">
-                        Great job! Your solution passed all the tests.
+                        Great job! Your solution passed all the tests. Your progress has been saved.
                     </AlertDescription>
                 </Alert>
             )}
@@ -195,3 +207,5 @@ declare global {
     loadPyodide: (options?: { indexURL: string }) => Promise<PyodideInterface>;
   }
 }
+
+    

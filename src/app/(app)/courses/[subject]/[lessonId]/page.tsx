@@ -9,10 +9,17 @@ import AiChatbot from "@/components/lesson/ai-chatbot";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CheckCircle } from "lucide-react";
+import { useUser, useFirestore, useMemoFirebase } from "@/firebase";
+import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { useToast } from "@/hooks/use-toast";
 
 export default function LessonPage() {
   const params = useParams() as { subject: string; lessonId: string };
+  const { user } = useUser();
+  const firestore = useFirestore();
+  const { toast } = useToast();
+
   const course = courses.find(c => c.id.toLowerCase() === params.subject.toLowerCase());
   const lesson = course?.lessons.find(l => l.id === params.lessonId);
   
@@ -22,6 +29,35 @@ export default function LessonPage() {
 
   const exercise = exercises.find(e => e.id === lesson.linkedExerciseId);
 
+  const handleMarkComplete = async () => {
+    if (!user || !firestore) {
+        toast({
+            variant: "destructive",
+            title: "Not logged in",
+            description: "You must be logged in to save your progress.",
+        });
+        return;
+    }
+
+    const progressRef = doc(firestore, "users", user.uid, "progress", "main");
+    try {
+        await updateDoc(progressRef, {
+            lessonCompletions: arrayUnion({ lessonId: lesson.id, isCompleted: true })
+        });
+        toast({
+            title: "Progress Saved!",
+            description: `Lesson "${lesson.title}" marked as complete.`,
+        });
+    } catch (error) {
+        console.error("Failed to mark lesson as complete: ", error);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Could not save your progress. Please try again.",
+        });
+    }
+  }
+
   return (
     <div className="space-y-8">
         <Link href={`/courses/${params.subject}`} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
@@ -29,17 +65,23 @@ export default function LessonPage() {
             Back to {course.title}
         </Link>
         
-        <div className="space-y-2">
-            <div className="flex items-center gap-2">
-                <Badge 
-                    variant={lesson.level === 'Beginner' ? 'secondary' : lesson.level === 'Intermediate' ? 'default' : 'destructive'}
-                    className="w-fit"
-                >
-                    {lesson.level}
-                </Badge>
-                <Badge variant="outline">{lesson.targetAudience}</Badge>
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div className="space-y-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                    <Badge 
+                        variant={lesson.level === 'Beginner' ? 'secondary' : lesson.level === 'Intermediate' ? 'default' : 'destructive'}
+                        className="w-fit"
+                    >
+                        {lesson.level}
+                    </Badge>
+                    <Badge variant="outline">{lesson.targetAudience}</Badge>
+                </div>
+                <h1 className="text-4xl font-bold font-headline">{lesson.title}</h1>
             </div>
-            <h1 className="text-4xl font-bold font-headline">{lesson.title}</h1>
+            <Button onClick={handleMarkComplete} className="w-full md:w-auto">
+                <CheckCircle className="mr-2 h-4 w-4" />
+                Mark as Complete
+            </Button>
         </div>
 
         <div className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.content.replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />') }} />
@@ -52,7 +94,11 @@ export default function LessonPage() {
                     <CardDescription>{exercise.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <CodeRunner starterCode={exercise.starterCode || ''} testCode={exercise.test} />
+                    <CodeRunner 
+                        starterCode={exercise.starterCode || ''} 
+                        testCode={exercise.test} 
+                        lessonId={lesson.id}
+                    />
                 </CardContent>
             </Card>
         )}
@@ -61,3 +107,5 @@ export default function LessonPage() {
     </div>
   );
 }
+
+    
