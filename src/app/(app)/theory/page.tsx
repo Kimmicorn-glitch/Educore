@@ -1,36 +1,94 @@
 
 'use client';
 
+import { useState, useTransition } from 'react';
 import { theoryContent } from '@/lib/mock-data';
 import type { TheoryContent } from '@/lib/types';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { BookText } from 'lucide-react';
+import { BookText, Loader2, PlayCircle, Volume2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { getAudioLecture } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 function SubjectTheory({ content }: { content: TheoryContent }) {
+  const [isPending, startTransition] = useTransition();
+  const [audioSrc, setAudioSrc] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const handleGenerateAudio = () => {
+    setError(null);
+    setAudioSrc(null);
+    startTransition(async () => {
+        const result = await getAudioLecture({ text: content.lectureNotes.replace(/<[^>]*>/g, '') }); // Strip HTML for TTS
+        if (result.success && result.data) {
+            setAudioSrc(result.data.audio);
+            toast({
+                title: "Audio Lecture Ready",
+                description: "Your audio lecture has been generated.",
+            });
+        } else {
+            setError(result.error || "An unknown error occurred.");
+            toast({
+                variant: "destructive",
+                title: "Audio Generation Failed",
+                description: result.error,
+            });
+        }
+    });
+  };
+
   return (
-    <Accordion type="single" collapsible defaultValue="glossary" className="w-full">
-      <AccordionItem value="glossary">
-        <AccordionTrigger>Vocabulary Glossary</AccordionTrigger>
-        <AccordionContent>
-          <div className="space-y-4">
-            {content.glossary.map((item, index) => (
-              <div key={index} className="border-b pb-2">
-                <h4 className="font-semibold">{item.term}</h4>
-                <p className="text-muted-foreground text-sm">{item.definition}</p>
-              </div>
-            ))}
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="notes">
-        <AccordionTrigger>Lecture Notes</AccordionTrigger>
-        <AccordionContent>
-          <div className="prose prose-sm dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: content.lectureNotes }} />
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <div className="space-y-4">
+      <Accordion type="single" collapsible defaultValue="glossary" className="w-full">
+        <AccordionItem value="glossary">
+          <AccordionTrigger>Vocabulary Glossary</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-4">
+              {content.glossary.map((item, index) => (
+                <div key={index} className="border-b pb-2">
+                  <h4 className="font-semibold">{item.term}</h4>
+                  <p className="text-muted-foreground text-sm">{item.definition}</p>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="notes">
+          <AccordionTrigger>Lecture Notes</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-4">
+                <Button onClick={handleGenerateAudio} disabled={isPending}>
+                    {isPending ? (
+                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...</>
+                    ) : (
+                        <><PlayCircle className="mr-2 h-4 w-4" /> Generate Audio Lecture</>
+                    )}
+                </Button>
+
+                {error && (
+                    <Alert variant="destructive">
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                )}
+                {audioSrc && (
+                    <div>
+                        <audio controls src={audioSrc} className="w-full">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                )}
+
+                <div className="prose prose-sm dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: content.lectureNotes }} />
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
   );
 }
 

@@ -3,6 +3,7 @@
 
 import { analyzePerformanceAndAdjustDifficulty, type PerformanceAnalysisInput } from '@/ai/flows/ai-powered-personalized-learning';
 import { askChatbot, type AskChatbotInput } from '@/ai/ai-chatbot-assistance';
+import { generateAudio, type GenerateAudioInput } from '@/ai/flows/generate-audio-flow';
 
 export async function getPerformanceAnalysis(input: PerformanceAnalysisInput) {
   try {
@@ -23,5 +24,16 @@ export async function getChatbotResponse(input: AskChatbotInput) {
         console.error(error);
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
         return { success: false, error: `Failed to get chatbot response: ${errorMessage}` };
+    }
+}
+
+export async function getAudioLecture(input: GenerateAudioInput) {
+    try {
+        const result = await generateAudio(input);
+        return { success: true, data: result };
+    } catch (error) {
+        console.error(error);
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+        return { success: false, error: `Failed to generate audio lecture: ${errorMessage}` };
     }
 }
