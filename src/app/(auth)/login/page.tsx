@@ -17,6 +17,7 @@ import { useAuth, useUser } from "@/firebase";
 import { initiateEmailSignIn, initiateGoogleSignIn } from "@/firebase/non-blocking-login";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -30,8 +31,9 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function LoginPage() {
     const auth = useAuth();
-    const { user } = useUser();
+    const { user, userError } = useUser();
     const router = useRouter();
+    const { toast } = useToast();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -40,6 +42,16 @@ export default function LoginPage() {
             router.push('/dashboard');
         }
     }, [user, router]);
+    
+    useEffect(() => {
+        if (userError) {
+          toast({
+            variant: "destructive",
+            title: "Authentication Error",
+            description: userError.message,
+          });
+        }
+      }, [userError, toast]);
 
 
     const handleSignIn = () => {
