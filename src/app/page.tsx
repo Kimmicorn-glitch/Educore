@@ -43,7 +43,7 @@ export default function LandingPage() {
                   cursorChar="_"
                 />
               </h1>
-              <p className="text-muted-foreground md:text-xl">
+              <p className="text-muted-foreground md:text-xl lg:text-lg">
                 EduCore is an AI-powered adaptive learning platform that personalizes your education. Master new skills in Python, English, Maths, and Physics with lessons tailored just for you.
               </p>
               <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">
@@ -108,3 +108,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    
