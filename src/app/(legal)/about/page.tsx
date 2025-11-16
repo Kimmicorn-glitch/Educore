@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Lightbulb, Target, Users, Code, School, BookOpen } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { SplineScene } from '@/components/ui/splite';
 
 const features = [
     {
@@ -29,21 +30,15 @@ const features = [
 
 export default function AboutPage() {
     const kimberleyImage = PlaceHolderImages.find(p => p.id === 'kimberley-profile');
-    const teamWorkingImage = PlaceHolderImages.find(p => p.id === 'team-working');
 
     return (
       <div className="not-prose space-y-16">
         {/* Hero Section */}
-        <div className="relative h-80 rounded-lg overflow-hidden flex items-center justify-center text-center p-8 bg-black">
-            {teamWorkingImage && (
-                <Image
-                    src={teamWorkingImage.imageUrl}
-                    alt="A collaborative team working on computers"
-                    fill
-                    className="object-cover opacity-30"
-                    data-ai-hint={teamWorkingImage.imageHint}
-                />
-            )}
+        <div className="relative h-96 rounded-lg overflow-hidden flex items-center justify-center text-center p-8 bg-black">
+            <SplineScene 
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="absolute top-0 left-0 w-full h-full opacity-70"
+            />
             <div className="relative z-10 text-white">
                 <h1 className="text-5xl md:text-6xl font-extrabold font-headline">About EduCore</h1>
                 <p className="mt-4 text-xl md:text-2xl text-neutral-200">
