@@ -29,6 +29,12 @@
       "description": "A placeholder for a user's avatar.",
       "imageUrl": "https://images.unsplash.com/photo-1521119989659-a83eee488004?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjI1OTQ3NDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "person portrait"
+    },
+    {
+      "id": "kimberley-profile",
+      "description": "A portrait of Kimberley Bezuidenhout, the creator of EduCore.",
+      "imageUrl": "https://storage.googleapis.com/aai-sit-studio-public-pro-apps/720a3249-9685-4555-83e8-a93a46516327/kimberley.jpg",
+      "imageHint": "woman portrait"
     }
   ]
 }

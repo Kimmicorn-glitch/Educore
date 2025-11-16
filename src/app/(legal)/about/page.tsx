@@ -80,7 +80,7 @@ export default function AboutPage() {
             <div className="flex justify-center">
                 <div className="text-center flex flex-col items-center">
                     <Image
-                        src="https://storage.googleapis.com/aai-sit-studio-public-pro-apps/720a3249-9685-4555-83e8-a93a46516327/kimberley.jpg"
+                        src="https://picsum.photos/seed/kimberley/200/200"
                         alt="Kimberley Bezuidenhout"
                         width={200}
                         height={200}
