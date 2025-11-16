@@ -71,7 +71,9 @@ export default function SupportDashboardPage() {
         }
     };
 
-    const sortedTickets = tickets?.sort((a, b) => new Date(b.submissionDate).getTime() - new Date(a.submissionDate).getTime());
+    const sortedTickets = useMemo(() => {
+        return tickets?.sort((a, b) => new Date(b.submissionDate).getTime() - new Date(a.submissionDate).getTime()) || null
+    }, [tickets]);
     
     if (isUserLoading || !isSupportAgent) {
         return (

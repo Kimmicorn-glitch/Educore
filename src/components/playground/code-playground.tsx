@@ -31,7 +31,7 @@ const getPyodide = () => {
     if (!pyodidePromise) {
         pyodidePromise = (async () => {
             // Load the pyodide script itself
-            if (!window.loadPyodide) {
+            if (typeof window !== 'undefined' && !window.loadPyodide) {
                 await new Promise<void>((resolve, reject) => {
                     const script = document.createElement('script');
                     script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js";
