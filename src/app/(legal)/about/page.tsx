@@ -26,12 +26,6 @@ const features = [
     }
 ];
 
-const teamMembers = [
-    { name: "Alex Johnson", role: "Founder & CEO", image: "https://picsum.photos/seed/alex/200/200", hint: "man portrait" },
-    { name: "Maria Garcia", role: "Lead Developer", image: "https://picsum.photos/seed/maria/200/200", hint: "woman portrait" },
-    { name: "Sam Lee", role: "Head of Curriculum", image: "https://picsum.photos/seed/sam/200/200", hint: "person smiling" },
-];
-
 export default function AboutPage() {
     return (
       <div className="not-prose space-y-16">
@@ -78,26 +72,24 @@ export default function AboutPage() {
             </div>
         </div>
 
-        {/* Meet the Team Section */}
+        {/* Meet the Creator Section */}
         <div>
             <h2 className="text-3xl font-bold font-headline text-center mb-8 flex items-center justify-center gap-3">
-                <Users className="h-8 w-8 text-primary"/> Meet the Team
+                <Users className="h-8 w-8 text-primary"/> Meet the Creator
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                {teamMembers.map((member, index) => (
-                    <div key={index} className="text-center flex flex-col items-center">
-                        <Image
-                            src={member.image}
-                            alt={member.name}
-                            width={150}
-                            height={150}
-                            className="rounded-full mb-4 object-cover"
-                            data-ai-hint={member.hint}
-                        />
-                        <h3 className="font-bold text-lg">{member.name}</h3>
-                        <p className="text-muted-foreground">{member.role}</p>
-                    </div>
-                ))}
+            <div className="flex justify-center">
+                <div className="text-center flex flex-col items-center">
+                    <Image
+                        src="https://storage.googleapis.com/aai-sit-studio-public-pro-apps/720a3249-9685-4555-83e8-a93a46516327/kimberley.jpg"
+                        alt="Kimberley Bezuidenhout"
+                        width={200}
+                        height={200}
+                        className="rounded-full mb-4 object-cover object-top"
+                        data-ai-hint="woman portrait"
+                    />
+                    <h3 className="font-bold text-xl">Kimberley Bezuidenhout</h3>
+                    <p className="text-muted-foreground">1st Year Student at WeThinkCode_</p>
+                </div>
             </div>
         </div>
       </div>
