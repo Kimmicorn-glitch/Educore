@@ -10,7 +10,7 @@ export default function ContactPage() {
         <div className="text-center">
             <h1 className="text-4xl font-bold font-headline">Contact Us</h1>
             <p className="text-muted-foreground mt-2">
-                We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
+                Have a question, feedback, or a partnership inquiry? We'd love to hear from you.
             </p>
         </div>
         <form className="space-y-6 max-w-xl mx-auto">
@@ -26,11 +26,11 @@ export default function ContactPage() {
             </div>
             <div className="space-y-2">
                 <Label htmlFor="subject">Subject</Label>
-                <Input id="subject" placeholder="Question about a course" />
+                <Input id="subject" placeholder="e.g., Question about a course" />
             </div>
             <div className="space-y-2">
                 <Label htmlFor="message">Message</Label>
-                <Textarea id="message" rows={6} placeholder="Your message..."/>
+                <Textarea id="message" rows={6} placeholder="Please describe your inquiry in detail..."/>
             </div>
             <Button type="submit" className="w-full">Send Message</Button>
         </form>
