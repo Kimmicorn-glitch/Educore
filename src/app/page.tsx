@@ -5,50 +5,6 @@ import { BookDashed, BrainCircuit, GraduationCap, Languages } from "lucide-react
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { EvervaultCard } from "@/components/ui/evervault-card";
-import { SplineScene } from "@/components/ui/splite";
-import { Card } from "@/components/ui/card"
-import { Spotlight } from "@/components/ui/spotlight"
-
-function SplineSceneBasic() {
-  return (
-    <Card className="w-full h-[500px] bg-black/[0.96] relative overflow-hidden">
-      <Spotlight
-        className="-top-40 left-0 md:left-60 md:-top-20"
-        fill="white"
-      />
-      
-      <div className="flex h-full flex-col md:flex-row">
-        {/* Left content */}
-        <div className="flex-1 p-8 relative z-10 flex flex-col justify-center text-center md:text-left">
-          <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
-            Interactive 3D Learning
-          </h1>
-          <p className="mt-4 text-neutral-300 max-w-lg mx-auto md:mx-0">
-            Bring your UI to life with beautiful 3D scenes. Create immersive experiences 
-            that capture attention and enhance your design.
-          </p>
-           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <Button asChild size="lg">
-                    <Link href="/signup">Get Started for Free</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                    <Link href="/courses">Explore Courses</Link>
-                </Button>
-              </div>
-        </div>
-
-        {/* Right content */}
-        <div className="flex-1 relative h-64 md:h-full">
-          <SplineScene 
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
-          />
-        </div>
-      </div>
-    </Card>
-  )
-}
-
 
 export default function LandingPage() {
   return (
@@ -72,9 +28,22 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        <section className="py-12 sm:py-24 lg:py-32">
+        <section className="py-12 text-center sm:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <SplineSceneBasic />
+              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+                The Smarter Way to Learn
+              </h1>
+              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+                An adaptive, AI-powered platform that makes mastering new skills intuitive and fun. Join us and unlock your potential.
+              </p>
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+                <Button asChild size="lg">
+                    <Link href="/signup">Get Started for Free</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                    <Link href="/courses">Explore Courses</Link>
+                </Button>
+              </div>
           </div>
         </section>
 
