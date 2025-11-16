@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { EvervaultCard } from "@/components/ui/evervault-card";
 import { Typewriter } from "@/components/ui/typewriter";
 import { SplineScene } from "@/components/ui/splite";
+import { Spotlight } from "@/components/ui/spotlight";
 
 export default function LandingPage() {
   return (
@@ -41,7 +42,8 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        <section className="py-12 sm:py-24 lg:py-32">
+        <section className="relative py-12 sm:py-24 lg:py-32">
+          <Spotlight />
           <div className="container grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
