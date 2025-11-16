@@ -12,6 +12,7 @@ import {
   LifeBuoy,
   Swords,
   BookText,
+  Gamepad2,
 } from "lucide-react";
 import {
   SidebarContent,
@@ -40,6 +41,11 @@ const links = [
     href: "/challenges",
     label: "Challenges",
     icon: Swords,
+  },
+  {
+    href: "/playground",
+    label: "Playground",
+    icon: Gamepad2,
   },
   {
     href: "/theory",
