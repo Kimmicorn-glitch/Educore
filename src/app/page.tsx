@@ -5,6 +5,7 @@ import { BookDashed, BrainCircuit, GraduationCap, Languages } from "lucide-react
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { EvervaultCard } from "@/components/ui/evervault-card";
+import { Typewriter } from "@/components/ui/typewriter";
 
 export default function LandingPage() {
   return (
@@ -31,7 +32,7 @@ export default function LandingPage() {
         <section className="py-12 text-center sm:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
               <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-                The Smarter Way to Learn
+                The <Typewriter text={["Smarter", "Faster", "Better"]} /> Way to Learn
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                 An adaptive, AI-powered platform that makes mastering new skills intuitive and fun. Join us and unlock your potential.
@@ -82,7 +83,7 @@ export default function LandingPage() {
       </main>
 
       <footer className="border-t">
-          <div className="container flex flex-col md:flex-row items-center justify-between py-6 gap-4">
+          <div className="container flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
               <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} EduCore. All rights reserved.</p>
               <div className="flex items-center gap-4">
                 <Link href="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
