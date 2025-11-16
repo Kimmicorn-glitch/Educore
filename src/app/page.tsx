@@ -5,6 +5,7 @@ import { BookDashed, BrainCircuit, GraduationCap, Languages } from "lucide-react
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Typewriter } from "@/components/ui/typewriter";
+import { EvervaultCard } from "@/components/ui/evervault-card";
 
 export default function LandingPage() {
   return (
@@ -58,19 +59,31 @@ export default function LandingPage() {
         </section>
 
         <section className="bg-muted py-12 sm:py-24 lg:py-32">
-            <div className="container grid grid-cols-1 md:grid-cols-3 gap-8 px-4 text-center md:px-6">
-                <div className="flex flex-col items-center space-y-3">
-                    <BrainCircuit className="h-12 w-12 text-primary" />
+            <div className="container grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-6">
+                <div className="flex flex-col items-center text-center space-y-3">
+                    <div className="w-48 h-48">
+                        <EvervaultCard>
+                            <BrainCircuit className="h-24 w-24 text-primary" />
+                        </EvervaultCard>
+                    </div>
                     <h3 className="text-xl font-bold font-headline">AI-Powered Adaptation</h3>
                     <p className="text-muted-foreground">Our intelligent system analyzes your performance and adjusts lesson difficulty in real-time, ensuring you're always challenged but never overwhelmed.</p>
                 </div>
-                <div className="flex flex-col items-center space-y-3">
-                    <GraduationCap className="h-12 w-12 text-primary" />
+                <div className="flex flex-col items-center text-center space-y-3">
+                     <div className="w-48 h-48">
+                        <EvervaultCard>
+                            <GraduationCap className="h-24 w-24 text-primary" />
+                        </EvervaultCard>
+                    </div>
                     <h3 className="text-xl font-bold font-headline">Curated for All Ages</h3>
                     <p className="text-muted-foreground">With dedicated learning paths for children, teenagers, and adults, everyone can find content that resonates with their learning style and goals.</p>
                 </div>
-                <div className="flex flex-col items-center space-y-3">
-                    <Languages className="h-12 w-12 text-primary" />
+                <div className="flex flex-col items-center text-center space-y-3">
+                     <div className="w-48 h-48">
+                        <EvervaultCard>
+                            <Languages className="h-24 w-24 text-primary" />
+                        </EvervaultCard>
+                    </div>
                     <h3 className="text-xl font-bold font-headline">Interactive Learning</h3>
                     <p className="text-muted-foreground">Engage with hands-on coding exercises, get instant feedback with our auto-grader, and clarify doubts with an AI assistant available 24/7.</p>
                 </div>
