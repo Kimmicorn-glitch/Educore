@@ -97,7 +97,7 @@ export function useCollection<T = any>(
           path,
         })
 
-        setError(contextualError)
+        setError(contextualError);
         setData(null)
         setIsLoading(false)
 

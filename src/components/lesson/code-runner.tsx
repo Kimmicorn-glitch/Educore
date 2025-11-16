@@ -10,6 +10,33 @@ import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { useUser, useFirestore, useMemoFirebase } from '@/firebase';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 
+// Store the pyodide instance promise globally to ensure it's loaded only once.
+let pyodidePromise: Promise<PyodideInterface> | null = null;
+
+const getPyodide = () => {
+    if (!pyodidePromise) {
+        pyodidePromise = (async () => {
+            // Load the pyodide script itself
+            if (!window.loadPyodide) {
+                await new Promise<void>((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js";
+                    script.async = true;
+                    script.onload = () => resolve();
+                    script.onerror = () => reject(new Error("Failed to load Pyodide script."));
+                    document.body.appendChild(script);
+                });
+            }
+            // Initialize pyodide
+            const pyodide = await window.loadPyodide({
+                indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/"
+            });
+            return pyodide;
+        })();
+    }
+    return pyodidePromise;
+};
+
 interface CodeRunnerProps {
     starterCode: string;
     testCode?: string;
@@ -24,7 +51,6 @@ export default function CodeRunner({ starterCode, testCode, challengeLevel }: Co
     const [isExecuting, setIsExecuting] = useState(false);
     const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'correct' | 'incorrect'>('idle');
     const pyodideRef = useRef<PyodideInterface | null>(null);
-    const hasAttemptedLoad = useRef(false);
 
     const { user } = useUser();
     const firestore = useFirestore();
@@ -35,49 +61,21 @@ export default function CodeRunner({ starterCode, testCode, challengeLevel }: Co
 
     useEffect(() => {
         const loadPyodide = async () => {
-            if (window.loadPyodide) {
-                try {
-                    const pyodide = await window.loadPyodide({
-                        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/"
-                    });
-                    pyodide.setStdout({ batched: (str) => setOutput(prev => prev + str + '\n') });
-                    pyodide.setStderr({ batched: (str) => setOutput(prev => prev + str + '\n') });
-                    pyodideRef.current = pyodide;
-                    setIsLoading(false);
-                } catch (error) {
-                    console.error("Failed to load Pyodide:", error);
-                    setOutput("Error: Failed to load Python environment.");
-                    setIsLoading(false);
-                }
-            } else {
-                 console.error("Pyodide script not loaded.");
-                 setOutput("Error: Python runtime is not available.");
-                 setIsLoading(false);
+            try {
+                const pyodide = await getPyodide();
+                pyodide.setStdout({ batched: (str) => setOutput(prev => prev + str + '\n') });
+                pyodide.setStderr({ batched: (str) => setOutput(prev => prev + str + '\n') });
+                pyodideRef.current = pyodide;
+            } catch (error) {
+                console.error("Failed to initialize Pyodide:", error);
+                setOutput(error instanceof Error ? error.message : "Error: Failed to load Python environment.");
+            } finally {
+                setIsLoading(false);
             }
         };
         
-        if (!document.getElementById('pyodide-script')) {
-            const script = document.createElement('script');
-            script.id = 'pyodide-script';
-            script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js";
-            script.async = true;
-            script.onload = () => {
-                if (!hasAttemptedLoad.current && window.loadPyodide) {
-                    loadPyodide();
-                    hasAttemptedLoad.current = true;
-                }
-            };
-            script.onerror = () => {
-                 setOutput("Error: Failed to load Python runtime script.");
-                 setIsLoading(false);
-            }
-            document.body.appendChild(script);
-        } else if (window.loadPyodide && !hasAttemptedLoad.current) {
-            loadPyodide();
-            hasAttemptedLoad.current = true;
-        }
-
-    }, [typeof window !== 'undefined' ? window.loadPyodide : undefined]);
+        loadPyodide();
+    }, []);
 
 
     const runCode = async () => {
@@ -116,10 +114,6 @@ export default function CodeRunner({ starterCode, testCode, challengeLevel }: Co
 
             if (user && firestore && challengeLevel) {
                 const progressRef = doc(firestore, "users", user.uid, "progress", "main");
-                // Use a Set-like behavior by removing the old entry and adding a new one, or just add.
-                // Firestore's arrayUnion is effective for adding unique elements.
-                // We'll update a specific challenge level. A more robust solution might involve a map.
-                // For now, let's assume we can re-add the same progress object.
                 await updateDoc(progressRef, {
                     challengeProgress: arrayUnion({ level: challengeLevel, completed: true })
                 });
@@ -207,5 +201,3 @@ declare global {
     loadPyodide: (options?: { indexURL: string }) => Promise<PyodideInterface>;
   }
 }
-
-    

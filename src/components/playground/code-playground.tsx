@@ -24,13 +24,41 @@ move(100, 0)
 # What's next?
 `;
 
+// Store the pyodide instance promise globally to ensure it's loaded only once.
+let pyodidePromise: Promise<PyodideInterface> | null = null;
+
+const getPyodide = () => {
+    if (!pyodidePromise) {
+        pyodidePromise = (async () => {
+            // Load the pyodide script itself
+            if (!window.loadPyodide) {
+                await new Promise<void>((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js";
+                    script.async = true;
+                    script.onload = () => resolve();
+                    script.onerror = () => reject(new Error("Failed to load Pyodide script."));
+                    document.body.appendChild(script);
+                });
+            }
+            // Initialize pyodide
+            const pyodide = await window.loadPyodide({
+                indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/"
+            });
+            return pyodide;
+        })();
+    }
+    return pyodidePromise;
+};
+
+
 const GameCanvas = ({ characterState, targetState, controls }: { characterState: any, targetState: any, controls: any }) => {
     return (
         <div className="relative w-full h-full bg-gray-800 overflow-hidden rounded-lg shadow-inner-lg flex items-center justify-center">
             <Image 
                 src="https://picsum.photos/seed/night-sky/800/600" 
                 alt="Night sky with stars background" 
-                layout="fill" 
+                fill
                 objectFit="cover" 
                 className="opacity-40"
                 data-ai-hint="night sky"
@@ -59,7 +87,6 @@ export default function CodePlayground() {
     const [isLoading, setIsLoading] = useState(true);
     const [isExecuting, setIsExecuting] = useState(false);
     const pyodideRef = useRef<PyodideInterface | null>(null);
-    const hasAttemptedLoad = useRef(false);
     const { toast } = useToast();
 
     const initialCharacterState = { x: 0, y: 0, rotation: 0, color: '#FFFFFF' };
@@ -86,62 +113,38 @@ export default function CodePlayground() {
 
     useEffect(() => {
         const loadPyodide = async () => {
-            if (window.loadPyodide) {
-                try {
-                    const pyodide = await window.loadPyodide({
-                        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/"
+             try {
+                const pyodide = await getPyodide();
+                
+                const move = (x: number, y: number) => {
+                   setCharacterState(prev => {
+                       const newState = {...prev, x: prev.x + x, y: prev.y + y};
+                       controls.start({ x: newState.x, y: newState.y });
+                       checkCollision(newState);
+                       return newState;
                     });
-                    
-                    const move = (x: number, y: number) => {
-                       setCharacterState(prev => {
-                           const newState = {...prev, x: prev.x + x, y: prev.y + y};
-                           controls.start({ x: newState.x, y: newState.y });
-                           checkCollision(newState);
-                           return newState;
-                        });
-                    };
-                    const rotate = (degrees: number) => {
-                        setCharacterState(prev => {
-                            const newState = {...prev, rotation: prev.rotation + degrees };
-                            controls.start({ rotate: newState.rotation });
-                            return newState;
-                        });
-                    };
+                };
+                const rotate = (degrees: number) => {
+                    setCharacterState(prev => {
+                        const newState = {...prev, rotation: prev.rotation + degrees };
+                        controls.start({ rotate: newState.rotation });
+                        return newState;
+                    });
+                };
 
-                    pyodide.globals.set('move', move);
-                    pyodide.globals.set('rotate', rotate);
-                    
-                    pyodideRef.current = pyodide;
-                    setIsLoading(false);
-                } catch (error) {
-                    console.error("Failed to load Pyodide:", error);
-                    setIsLoading(false);
-                }
-            } else {
-                 console.error("Pyodide script not loaded.");
-                 setIsLoading(false);
+                pyodide.globals.set('move', move);
+                pyodide.globals.set('rotate', rotate);
+                
+                pyodideRef.current = pyodide;
+            } catch (error) {
+                console.error("Failed to initialize Pyodide:", error);
+                toast({ variant: 'destructive', title: "Environment Error", description: error instanceof Error ? error.message : "Failed to load Python environment." });
+            } finally {
+                setIsLoading(false);
             }
         };
         
-        if (!document.getElementById('pyodide-script')) {
-            const script = document.createElement('script');
-            script.id = 'pyodide-script';
-            script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js";
-            script.async = true;
-            script.onload = () => {
-                if (!hasAttemptedLoad.current && window.loadPyodide) {
-                    loadPyodide();
-                    hasAttemptedLoad.current = true;
-                }
-            };
-            script.onerror = () => {
-                 setIsLoading(false);
-            }
-            document.body.appendChild(script);
-        } else if (window.loadPyodide && !hasAttemptedLoad.current) {
-            loadPyodide();
-            hasAttemptedLoad.current = true;
-        }
+        loadPyodide();
 
     }, [controls, toast]);
 
