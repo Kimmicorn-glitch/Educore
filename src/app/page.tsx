@@ -44,15 +44,15 @@ export default function LandingPage() {
       <main className="flex-1">
         <section className="relative py-12 sm:py-24 lg:py-32">
           <Spotlight />
-          <div className="container grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-6">
+          <div className="container grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+              <div className="space-y-6 text-center lg:text-left">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
                   The Smarter Way to <Typewriter text={["Learn", "Code", "Create"]} className="text-blue-500"/>
                 </h1>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                <p className="max-w-[600px] text-muted-foreground md:text-xl mx-auto lg:mx-0">
                   An adaptive, AI-powered platform that makes mastering new skills intuitive and fun. Join us and unlock your potential.
                 </p>
-                <div className="flex flex-col gap-4 sm:flex-row">
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
                   <Button asChild size="lg">
                       <Link href="/signup">Get Started for Free</Link>
                   </Button>
@@ -61,7 +61,7 @@ export default function LandingPage() {
                   </Button>
                 </div>
               </div>
-              <div className="h-[400px] lg:h-[500px] w-full">
+              <div className="h-[400px] w-full lg:h-[500px]">
                 <SplineScene 
                     scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                     className="w-full h-full"
