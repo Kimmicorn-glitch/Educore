@@ -1,3 +1,4 @@
+
 "use client";
 import { useMotionValue } from "framer-motion";
 import React, { useState, useEffect } from "react";
@@ -25,9 +26,6 @@ export const EvervaultCard = ({
     let { left, top } = currentTarget.getBoundingClientRect();
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
-
-    const str = generateRandomString(1500);
-    setRandomString(str);
   }
 
   return (
