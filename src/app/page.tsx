@@ -32,7 +32,7 @@ export default function LandingPage() {
         <section className="py-12 text-center sm:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
               <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-                The Smarter Way to <Typewriter text={["Learn", "Code", "Create"]} />
+                The Smarter Way to <Typewriter text={["Learn", "Code", "Create"]} className="text-blue-500"/>
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                 An adaptive, AI-powered platform that makes mastering new skills intuitive and fun. Join us and unlock your potential.
