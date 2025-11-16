@@ -1,6 +1,7 @@
+
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardAction } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
@@ -105,11 +106,15 @@ export default function DashboardPage() {
   const progress = userProgress || defaultProgress;
 
   const [streak, setStreak] = useState(7); // Static for now
-  const totalPoints = (progress.lessonCompletions.length * 10) + (progress.challengeProgress.filter(c => c.completed).length * 50);
-  const level = Math.floor(totalPoints / 200) + 1;
-  const nextLevelProgress = ((totalPoints % 200) / 200) * 100;
   
-  const courses: Course[] = allCourses.map(course => {
+  const { totalPoints, level, nextLevelProgress } = useMemo(() => {
+    const totalPoints = (progress.lessonCompletions.length * 10) + (progress.challengeProgress.filter(c => c.completed).length * 50);
+    const level = Math.floor(totalPoints / 200) + 1;
+    const nextLevelProgress = ((totalPoints % 200) / 200) * 100;
+    return { totalPoints, level, nextLevelProgress };
+  }, [progress]);
+  
+  const courses: Course[] = useMemo(() => allCourses.map(course => {
     const completedLessons = progress.lessonCompletions.filter(lc => course.lessons.some(l => l.id === lc.lessonId && lc.isCompleted)).length;
     const courseProgress = course.lessons.length > 0 ? Math.round((completedLessons / course.lessons.length) * 100) : 0;
     return {
@@ -121,36 +126,39 @@ export default function DashboardPage() {
       color: courseColorMap[course.id] || 'bg-gray-100 text-gray-700 border-gray-200',
       icon: courseIconMap[course.id] || <BookOpen className="w-5 h-5" />,
     };
-  });
+  }), [progress.lessonCompletions]);
 
-  const achievements: Achievement[] = allBadges.map(badge => ({
+  const achievements: Achievement[] = useMemo(() => allBadges.map(badge => ({
     id: badge.id,
     title: badge.title,
     description: badge.description,
     icon: React.createElement(iconMap[badge.icon] || Star, { className: 'w-6 h-6' }),
     unlocked: progress.badges.includes(badge.id),
     date: progress.badges.includes(badge.id) ? 'Unlocked' : undefined
-  }));
+  })), [progress.badges]);
 
-  const recentActivities: Activity[] = [
-      ...progress.lessonCompletions.slice(-2).map(lc => {
-          const lesson = allCourses.flatMap(c => c.lessons).find(l => l.id === lc.lessonId);
-          return {
-            id: `l-${lc.lessonId}`,
-            type: 'lesson',
-            title: `Completed "${lesson?.title || 'a lesson'}"`,
-            time: 'Recently',
-            points: 10
-          }
-      }),
-      ...progress.challengeProgress.filter(c => c.completed).slice(-2).map(cc => ({
-          id: `c-${cc.level}`,
-          type: 'achievement',
-          title: `Completed Challenge Level ${cc.level}`,
-          time: 'Recently',
-          points: 50
-      }))
-  ].sort(() => -1); // Simple reverse sort for demo
+  const recentActivities: Activity[] = useMemo(() => {
+      const activities = [
+          ...progress.lessonCompletions.slice(-2).map(lc => {
+              const lesson = allCourses.flatMap(c => c.lessons).find(l => l.id === lc.lessonId);
+              return {
+                id: `l-${lc.lessonId}`,
+                type: 'lesson',
+                title: `Completed "${lesson?.title || 'a lesson'}"`,
+                time: 'Recently',
+                points: 10
+              }
+          }),
+          ...progress.challengeProgress.filter(c => c.completed).slice(-2).map(cc => ({
+              id: `c-${cc.level}`,
+              type: 'achievement',
+              title: `Completed Challenge Level ${cc.level}`,
+              time: 'Recently',
+              points: 50
+          }))
+      ];
+      return activities.sort(() => -1); // Simple reverse sort for demo
+  }, [progress.lessonCompletions, progress.challengeProgress]);
 
 
   const dailyGoalCompleted = progress.lessonCompletions.length % 5;
@@ -460,3 +468,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
