@@ -1,7 +1,10 @@
 
+"use client";
+
 import { BookDashed, BrainCircuit, GraduationCap, Languages } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Typewriter } from "@/components/ui/typewriter";
 
 export default function LandingPage() {
   return (
@@ -29,7 +32,15 @@ export default function LandingPage() {
           <div className="container px-4 text-center md:px-6">
             <div className="max-w-3xl mx-auto space-y-4">
               <h1 className="text-4xl font-bold font-headline tracking-tighter sm:text-5xl md:text-6xl">
-                The Smarter Way to Learn
+                The Smarter Way to{" "}
+                <Typewriter
+                  text={["Learn", "Grow", "Succeed", "Create"]}
+                  speed={80}
+                  className="text-primary"
+                  waitTime={2000}
+                  deleteSpeed={50}
+                  cursorChar="_"
+                />
               </h1>
               <p className="text-muted-foreground md:text-xl">
                 EduCore is an AI-powered adaptive learning platform that personalizes your education. Master new skills in Python, English, Maths, and Physics with lessons tailored just for you.
