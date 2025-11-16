@@ -7,6 +7,7 @@ import {
     SidebarProvider,
     Sidebar,
     SidebarInset,
+    SidebarRail,
 } from "@/components/ui/sidebar";
 import { FirebaseClientProvider } from "@/firebase/client-provider";
 
@@ -19,8 +20,9 @@ export default function AppLayout({
     return (
         <FirebaseClientProvider>
             <SidebarProvider>
-                <Sidebar>
+                <Sidebar collapsible="icon">
                     <MainSidebar />
+                    <SidebarRail />
                 </Sidebar>
                 <SidebarInset>
                     <div className="flex h-full flex-col">
