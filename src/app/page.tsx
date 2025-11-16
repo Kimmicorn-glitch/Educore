@@ -4,8 +4,51 @@
 import { BookDashed, BrainCircuit, GraduationCap, Languages } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Typewriter } from "@/components/ui/typewriter";
 import { EvervaultCard } from "@/components/ui/evervault-card";
+import { SplineScene } from "@/components/ui/splite";
+import { Card } from "@/components/ui/card"
+import { Spotlight } from "@/components/ui/spotlight"
+
+function SplineSceneBasic() {
+  return (
+    <Card className="w-full h-[500px] bg-black/[0.96] relative overflow-hidden">
+      <Spotlight
+        className="-top-40 left-0 md:left-60 md:-top-20"
+        fill="white"
+      />
+      
+      <div className="flex h-full flex-col md:flex-row">
+        {/* Left content */}
+        <div className="flex-1 p-8 relative z-10 flex flex-col justify-center text-center md:text-left">
+          <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+            Interactive 3D Learning
+          </h1>
+          <p className="mt-4 text-neutral-300 max-w-lg mx-auto md:mx-0">
+            Bring your UI to life with beautiful 3D scenes. Create immersive experiences 
+            that capture attention and enhance your design.
+          </p>
+           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                <Button asChild size="lg">
+                    <Link href="/signup">Get Started for Free</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                    <Link href="/courses">Explore Courses</Link>
+                </Button>
+              </div>
+        </div>
+
+        {/* Right content */}
+        <div className="flex-1 relative h-64 md:h-full">
+          <SplineScene 
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            className="w-full h-full"
+          />
+        </div>
+      </div>
+    </Card>
+  )
+}
+
 
 export default function LandingPage() {
   return (
@@ -30,31 +73,8 @@ export default function LandingPage() {
 
       <main className="flex-1">
         <section className="py-12 sm:py-24 lg:py-32">
-          <div className="container px-4 text-center md:px-6">
-            <div className="max-w-3xl mx-auto space-y-4">
-              <h1 className="text-4xl font-bold font-headline tracking-tighter sm:text-5xl md:text-6xl">
-                The Smarter Way to{" "}
-                <Typewriter
-                  text={["Learn", "Grow", "Succeed", "Create"]}
-                  speed={80}
-                  className="text-primary"
-                  waitTime={2000}
-                  deleteSpeed={50}
-                  cursorChar="_"
-                />
-              </h1>
-              <p className="text-muted-foreground md:text-xl lg:text-lg">
-                EduCore is an AI-powered adaptive learning platform that personalizes your education. Master new skills in Python, English, Maths, and Physics with lessons tailored just for you.
-              </p>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">
-                <Button asChild size="lg">
-                    <Link href="/signup">Get Started for Free</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                    <Link href="/courses">Explore Courses</Link>
-                </Button>
-              </div>
-            </div>
+          <div className="container px-4 md:px-6">
+            <SplineSceneBasic />
           </div>
         </section>
 
