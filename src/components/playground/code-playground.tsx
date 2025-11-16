@@ -28,12 +28,12 @@ const GameCanvas = ({ characterState, targetState, controls }: { characterState:
     return (
         <div className="relative w-full h-full bg-gray-800 overflow-hidden rounded-lg shadow-inner-lg flex items-center justify-center">
             <Image 
-                src="https://picsum.photos/seed/space-bg/800/600" 
-                alt="Space background" 
+                src="https://picsum.photos/seed/galaxy/800/600" 
+                alt="Galaxy background" 
                 layout="fill" 
                 objectFit="cover" 
                 className="opacity-40"
-                data-ai-hint="space stars"
+                data-ai-hint="galaxy space"
             />
             <motion.div
                 className="absolute"
