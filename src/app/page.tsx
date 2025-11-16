@@ -46,10 +46,11 @@ export default function LandingPage() {
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
                   The Smarter Way to{" "}
                   <Typewriter
-                    text="Learn"
-                    speed={150}
-                    loop={false}
-                    showCursor={false}
+                    text={["Code", "Build", "Create", "Innovate"]}
+                    speed={80}
+                    deleteSpeed={50}
+                    waitTime={1500}
+                    loop={true}
                     className="inline-block text-primary"
                   />
                 </h1>
@@ -123,3 +124,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
