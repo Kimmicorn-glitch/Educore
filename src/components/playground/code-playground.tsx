@@ -10,6 +10,7 @@ import { Card, CardContent } from '../ui/card';
 import { motion, useAnimation } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const starterCode = `# Welcome to the Playground!
 # Your goal: guide the rocket to the star!
@@ -53,16 +54,18 @@ const getPyodide = () => {
 
 
 const GameCanvas = ({ characterState, targetState, controls }: { characterState: any, targetState: any, controls: any }) => {
+    const nightSkyImage = PlaceHolderImages.find(p => p.id === 'night-sky');
     return (
         <div className="relative w-full h-full bg-gray-800 overflow-hidden rounded-lg shadow-inner-lg flex items-center justify-center">
-            <Image 
-                src="https://picsum.photos/seed/night-sky/800/600" 
-                alt="Night sky with stars background" 
-                fill
-                objectFit="cover" 
-                className="opacity-40"
-                data-ai-hint="night sky"
-            />
+            {nightSkyImage && (
+                <Image 
+                    src={nightSkyImage.imageUrl} 
+                    alt="Night sky with stars background" 
+                    fill
+                    className="object-cover opacity-40"
+                    data-ai-hint={nightSkyImage.imageHint}
+                />
+            )}
             <motion.div
                 className="absolute"
                 initial={{ x: targetState.x, y: targetState.y }}

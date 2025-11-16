@@ -35,6 +35,18 @@
       "description": "A portrait of Kimberley Bezuidenhout, the creator of EduCore.",
       "imageUrl": "https://storage.googleapis.com/aai-sit-studio-public-pro-apps/720a3249-9685-4555-83e8-a93a46516327/kimberley.jpg",
       "imageHint": "woman portrait"
+    },
+    {
+      "id": "night-sky",
+      "description": "A background image of a night sky with stars.",
+      "imageUrl": "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxuaWdodCUyMHNreXxlbnwwfHx8fDE3NjI1OTQ4MDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "night sky"
+    },
+    {
+      "id": "team-working",
+      "description": "A background image of a team working collaboratively.",
+      "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwd29ya2luZ3xlbnwwfHx8fDE3NjI1OTQ4Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "team working"
     }
   ]
 }

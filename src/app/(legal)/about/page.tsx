@@ -29,18 +29,21 @@ const features = [
 
 export default function AboutPage() {
     const kimberleyImage = PlaceHolderImages.find(p => p.id === 'kimberley-profile');
+    const teamWorkingImage = PlaceHolderImages.find(p => p.id === 'team-working');
 
     return (
       <div className="not-prose space-y-16">
         {/* Hero Section */}
         <div className="relative h-80 rounded-lg overflow-hidden flex items-center justify-center text-center p-8 bg-black">
-            <Image
-                src="https://picsum.photos/seed/team-working/1200/400"
-                alt="A collaborative team working on computers"
-                fill
-                className="object-cover opacity-30"
-                data-ai-hint="team working"
-            />
+            {teamWorkingImage && (
+                <Image
+                    src={teamWorkingImage.imageUrl}
+                    alt="A collaborative team working on computers"
+                    fill
+                    className="object-cover opacity-30"
+                    data-ai-hint={teamWorkingImage.imageHint}
+                />
+            )}
             <div className="relative z-10 text-white">
                 <h1 className="text-5xl md:text-6xl font-extrabold font-headline">About EduCore</h1>
                 <p className="mt-4 text-xl md:text-2xl text-neutral-200">

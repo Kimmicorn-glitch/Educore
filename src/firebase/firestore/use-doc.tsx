@@ -23,7 +23,7 @@ export interface UseDocResult<T> {
   data: WithId<T> | null; // Document data with ID, or null.
   isLoading: boolean;       // True if loading.
   error: FirestoreError | Error | null; // Error object, or null.
-  mutate: (newData: any) => void;
+  mutate: (newData: Partial<WithId<T>>) => void;
 }
 
 /**
@@ -49,8 +49,18 @@ export function useDoc<T = any>(
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<FirestoreError | Error | null>(null);
 
-  const mutate = useCallback((newData: any) => {
-    setData(prevData => (prevData ? { ...prevData, ...newData } : newData));
+  const mutate = useCallback((newData: Partial<WithId<T>>) => {
+    setData(prevData => {
+        if (prevData) {
+            // If previous data exists, merge the new data into it
+            return { ...prevData, ...newData };
+        }
+        // If there's no previous data, we can't just set the partial data.
+        // It's better to wait for the full data from Firestore.
+        // Or, if the logic requires it, you could cast newData to StateDataType,
+        // but this might lead to incomplete state.
+        return null; 
+    });
   }, []);
 
   useEffect(() => {
