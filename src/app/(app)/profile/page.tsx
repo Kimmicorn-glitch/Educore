@@ -70,7 +70,7 @@ export default function ProfilePage() {
                 handleFontSizeChange(Number(storedFontSize), false);
             }
             const storedContrast = localStorage.getItem('highContrast');
-            if(storedContrast) {
+            if(storedContrast !== null && storedContrast !== 'undefined') {
                 toggleHighContrast(JSON.parse(storedContrast), false)
             }
         }
@@ -237,5 +237,7 @@ export default function ProfilePage() {
       </div>
     );
   }
+
+    
 
     

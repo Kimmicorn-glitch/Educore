@@ -7,32 +7,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/context/translation-context";
 import { Globe } from "lucide-react";
 
 const languages = [
-  { value: "en", label: "English" },
-  { value: "fr", label: "French" },
-  { value: "sw", label: "Swahili" },
-  { value: "zu", label: "Zulu" },
-  { value: "ar", label: "Arabic" },
-  { value: "pt", label: "Portuguese" },
+  { value: "English", label: "English" },
+  { value: "French", label: "French" },
+  { value: "Swahili", label: "Swahili" },
+  { value: "Zulu", label: "Zulu" },
+  { value: "Arabic", label: "Arabic" },
+  { value: "Portuguese", label: "Portuguese" },
 ];
 
 export default function LanguageSelector() {
-  const { toast } = useToast();
-
-  const handleLanguageChange = (value: string) => {
-    if (value === "en") return;
-    const language = languages.find((l) => l.value === value)?.label;
-    toast({
-      title: "Translation Simulation",
-      description: `Content would be translated to ${language}. This is a UI demonstration.`,
-    });
-  };
+  const { setLanguage, language } = useTranslation();
 
   return (
-    <Select defaultValue="en" onValueChange={handleLanguageChange}>
+    <Select defaultValue={language} onValueChange={setLanguage}>
       <SelectTrigger className="w-auto gap-2 border-0 bg-transparent shadow-none focus:ring-0">
         <Globe className="h-4 w-4" />
         <SelectValue />

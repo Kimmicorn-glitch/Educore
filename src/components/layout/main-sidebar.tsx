@@ -25,6 +25,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useUser } from "@/firebase";
 import { useEffect, useState } from "react";
+import { useTranslation } from "@/context/translation-context";
 
 const links = [
   {
@@ -76,6 +77,7 @@ export function MainSidebar() {
   const pathname = usePathname();
   const { isSupportAgent } = useUser();
   const [mounted, setMounted] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
@@ -100,11 +102,11 @@ export function MainSidebar() {
               <SidebarMenuButton
                 asChild
                 isActive={pathname.startsWith(link.href)}
-                tooltip={link.label}
+                tooltip={t(link.label)}
               >
                 <Link href={link.href}>
                   <link.icon />
-                  <span>{link.label}</span>
+                  <span>{t(link.label)}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -113,18 +115,18 @@ export function MainSidebar() {
         {mounted && isSupportAgent && (
           <>
             <Separator className="my-4" />
-            <p className="px-4 text-xs text-muted-foreground font-semibold uppercase group-data-[collapsible=icon]:hidden">Support Agent</p>
+            <p className="px-4 text-xs text-muted-foreground font-semibold uppercase group-data-[collapsible=icon]:hidden">{t('Support Agent')}</p>
             <SidebarMenu>
               {agentLinks.map((link) => (
                 <SidebarMenuItem key={link.href}>
                   <SidebarMenuButton
                     asChild
                     isActive={pathname.startsWith(link.href)}
-                    tooltip={link.label}
+                    tooltip={t(link.label)}
                   >
                     <Link href={link.href}>
                       <link.icon />
-                      <span>{link.label}</span>
+                      <span>{t(link.label)}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -138,10 +140,10 @@ export function MainSidebar() {
         <Separator className="my-2" />
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip="Settings">
+            <SidebarMenuButton asChild tooltip={t("Settings")}>
               <Link href="/profile">
                 <Settings />
-                <span>Settings</span>
+                <span>{t("Settings")}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
