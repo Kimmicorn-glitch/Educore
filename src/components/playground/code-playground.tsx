@@ -4,55 +4,52 @@
 import { useState, useEffect, useRef } from 'react';
 import type { PyodideInterface } from 'pyodide';
 import { Button } from '@/components/ui/button';
-import { Play, Loader2, RefreshCw, Bot } from 'lucide-react';
+import { Play, Loader2, RefreshCw, Rocket, Star } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
 import { Card, CardContent } from '../ui/card';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
+import { useToast } from '@/hooks/use-toast';
+import Image from 'next/image';
 
 const starterCode = `# Welcome to the Playground!
-# Use these commands to control the character:
-# move(x, y) - Moves the character by x and y pixels.
-# rotate(degrees) - Rotates the character.
-# change_color(color) - Changes color (e.g., "red", "#FF5733").
+# Your goal: guide the rocket to the star!
 
-# Let's draw a square!
-for i in range(4):
-  move(100, 0)
-  rotate(90)
+# Use these commands to control the rocket:
+# move(x, y) - Moves by x (right) and y (down) pixels.
+# rotate(degrees) - Rotates the character clockwise.
+
+# Try to reach the star at position (200, -150)
+# from your starting point (0, 0)
+move(100, 0)
+# What's next?
 `;
 
-const GameCanvas = ({ characterState }: { characterState: any }) => {
+const GameCanvas = ({ characterState, targetState, controls }: { characterState: any, targetState: any, controls: any }) => {
     return (
-        <div className="relative w-full h-full bg-gray-900 overflow-hidden rounded-lg shadow-inner-lg">
-            <motion.div
-                className="absolute inset-0 z-0"
-                animate={{
-                    background: [
-                        'linear-gradient(135deg, #1e3a8a, #4c1d95)',
-                        'linear-gradient(135deg, #4c1d95, #be185d)',
-                        'linear-gradient(135deg, #be185d, #1e3a8a)',
-                    ],
-                }}
-                transition={{
-                    duration: 10,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                }}
+        <div className="relative w-full h-full bg-gray-800 overflow-hidden rounded-lg shadow-inner-lg flex items-center justify-center">
+            <Image 
+                src="https://picsum.photos/seed/space-bg/800/600" 
+                alt="Space background" 
+                layout="fill" 
+                objectFit="cover" 
+                className="opacity-40"
+                data-ai-hint="space stars"
             />
-            <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                    animate={{
-                        x: characterState.x,
-                        y: characterState.y,
-                        rotate: characterState.rotation,
-                    }}
-                    transition={{ type: "spring", stiffness: 100 }}
-                    className="relative"
-                >
-                    <Bot style={{ color: characterState.color }} className="w-12 h-12" />
-                </motion.div>
-            </div>
+            <motion.div
+                className="absolute"
+                initial={{ x: targetState.x, y: targetState.y }}
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+            >
+                <Star className="w-10 h-10 text-yellow-400 fill-yellow-400" />
+            </motion.div>
+            <motion.div
+                animate={controls}
+                transition={{ type: "spring", stiffness: 100 }}
+                className="absolute"
+            >
+                <Rocket style={{ color: characterState.color }} className="w-10 h-10" />
+            </motion.div>
         </div>
     )
 }
@@ -63,16 +60,28 @@ export default function CodePlayground() {
     const [isExecuting, setIsExecuting] = useState(false);
     const pyodideRef = useRef<PyodideInterface | null>(null);
     const hasAttemptedLoad = useRef(false);
+    const { toast } = useToast();
 
-    const [characterState, setCharacterState] = useState({
-        x: 0,
-        y: 0,
-        rotation: 0,
-        color: '#FFFFFF'
-    });
+    const initialCharacterState = { x: 0, y: 0, rotation: 0, color: '#FFFFFF' };
+    const [characterState, setCharacterState] = useState(initialCharacterState);
+    
+    const targetState = { x: 200, y: -150 };
+
+    const controls = useAnimation();
 
     const resetCharacter = () => {
-        setCharacterState({ x: 0, y: 0, rotation: 0, color: '#FFFFFF' });
+        setCharacterState(initialCharacterState);
+        controls.start({ ...initialCharacterState, transition: { duration: 0 } });
+    }
+
+    const checkCollision = (charPos: {x: number, y: number}) => {
+        const distance = Math.sqrt(Math.pow(charPos.x - targetState.x, 2) + Math.pow(charPos.y - targetState.y, 2));
+        if (distance < 30) { // 30px collision threshold
+            toast({
+                title: "You reached the star! 🌟",
+                description: "Great job navigating the cosmos!",
+            });
+        }
     }
 
     useEffect(() => {
@@ -84,19 +93,24 @@ export default function CodePlayground() {
                     });
                     
                     const move = (x: number, y: number) => {
-                        setCharacterState(prev => ({...prev, x: prev.x + x, y: prev.y + y}));
+                       setCharacterState(prev => {
+                           const newState = {...prev, x: prev.x + x, y: prev.y + y};
+                           controls.start({ x: newState.x, y: newState.y });
+                           checkCollision(newState);
+                           return newState;
+                        });
                     };
                     const rotate = (degrees: number) => {
-                        setCharacterState(prev => ({...prev, rotation: prev.rotation + degrees}));
-                    };
-                    const change_color = (color: string) => {
-                        setCharacterState(prev => ({...prev, color}));
+                        setCharacterState(prev => {
+                            const newState = {...prev, rotation: prev.rotation + degrees };
+                            controls.start({ rotate: newState.rotation });
+                            return newState;
+                        });
                     };
 
                     pyodide.globals.set('move', move);
                     pyodide.globals.set('rotate', rotate);
-                    pyodide.globals.set('change_color', change_color);
-
+                    
                     pyodideRef.current = pyodide;
                     setIsLoading(false);
                 } catch (error) {
@@ -129,23 +143,22 @@ export default function CodePlayground() {
             hasAttemptedLoad.current = true;
         }
 
-    }, []);
+    }, [controls, toast]);
 
     const runCode = async () => {
         if (!pyodideRef.current) return;
         setIsExecuting(true);
         resetCharacter();
-        // A small delay to ensure state reset before running new code
-        await new Promise(resolve => setTimeout(resolve, 50)); 
+        await new Promise(resolve => setTimeout(resolve, 100)); 
         try {
             await pyodideRef.current.runPythonAsync(code);
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.message);
-                alert(`Execution Error: ${error.message}`);
+                toast({ variant: 'destructive', title: "Execution Error", description: error.message });
             } else {
                 console.error(String(error));
-                alert(`An unknown error occurred: ${String(error)}`);
+                toast({ variant: 'destructive', title: "An unknown error occurred", description: String(error) });
             }
         }
         setIsExecuting(false);
@@ -154,12 +167,12 @@ export default function CodePlayground() {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[60vh]">
             <div className="space-y-4">
-                <div className='rounded-md border bg-card'>
+                <div className='rounded-md border bg-card flex flex-col h-full'>
                     <Textarea
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
                         placeholder="Write your Python code here..."
-                        className="font-code text-sm border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-b-none bg-gray-900 text-gray-100"
+                        className="font-code text-sm border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-b-none bg-gray-900 text-gray-100 flex-grow"
                         rows={20}
                         disabled={isLoading || isExecuting}
                     />
@@ -169,7 +182,7 @@ export default function CodePlayground() {
                         </Button>
                         <Button onClick={runCode} disabled={isLoading || isExecuting}>
                             {isLoading ? (
-                                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading...</>
+                                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading Env...</>
                             ) : isExecuting ? (
                                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Running...</>
                             ) : (
@@ -180,9 +193,9 @@ export default function CodePlayground() {
                 </div>
             </div>
             <div>
-                <Card className="h-full">
+                <Card className="h-full aspect-square lg:aspect-auto">
                     <CardContent className="p-2 h-full">
-                        <GameCanvas characterState={characterState} />
+                        <GameCanvas characterState={characterState} targetState={targetState} controls={controls} />
                     </CardContent>
                 </Card>
             </div>
@@ -196,3 +209,5 @@ declare global {
     loadPyodide: (options?: { indexURL: string }) => Promise<PyodideInterface>;
   }
 }
+
+    
