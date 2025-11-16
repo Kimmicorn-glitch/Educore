@@ -6,34 +6,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import type { UserProgress as UserProgressType } from '@/lib/types';
-import { courses as allCourses, badges as allBadges, exercises } from '@/lib/mock-data';
+import { courses as allCourses, badges as allBadges } from '@/lib/mock-data';
 
 import PerformanceAnalysis from '@/components/dashboard/performance-analysis';
 import ProgressChart from '@/components/dashboard/progress-chart';
+import StatsCard from '@/components/dashboard/stats-card';
 
 import { 
   BookOpen, 
   Trophy, 
   Target, 
   Flame, 
-  Star, 
-  Award,
-  TrendingUp,
-  Clock,
+  Star,
   CheckCircle2,
-  Zap,
-  Heart,
   Sparkles,
-  Rocket,
   Brain,
-  LucideIcon
+  Rocket,
+  PlusCircle,
+  TrendingUp
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -53,12 +48,11 @@ interface Achievement {
   description: string;
   icon: React.ReactNode;
   unlocked: boolean;
-  date?: string;
 }
 
 interface Activity {
   id: string;
-  type: string;
+  type: 'lesson' | 'challenge';
   title: string;
   time: string;
   points: number;
@@ -66,14 +60,13 @@ interface Activity {
 
 
 const iconMap: { [key: string]: React.ElementType } = {
-  Award,
-  Code: Zap,
+  Award: Star,
+  Code: Sparkles,
   GraduationCap: Brain,
   HardHat: Trophy,
   Trophy,
   Star,
   Flame,
-  Heart
 };
 
 
@@ -110,11 +103,10 @@ export default function DashboardPage() {
 
   const [streak, setStreak] = useState(7); // Static for now
   
-  const { totalPoints, level, nextLevelProgress } = useMemo(() => {
+  const { totalPoints, level } = useMemo(() => {
     const totalPoints = (progress.lessonCompletions.length * 10) + (progress.challengeProgress.filter(c => c.completed).length * 50);
     const level = Math.floor(totalPoints / 200) + 1;
-    const nextLevelProgress = ((totalPoints % 200) / 200) * 100;
-    return { totalPoints, level, nextLevelProgress };
+    return { totalPoints, level };
   }, [progress]);
   
   const courses: Course[] = useMemo(() => allCourses.map(course => {
@@ -137,16 +129,15 @@ export default function DashboardPage() {
     description: badge.description,
     icon: React.createElement(iconMap[badge.icon] || Star, { className: 'w-6 h-6' }),
     unlocked: progress.badges.includes(badge.id),
-    date: progress.badges.includes(badge.id) ? 'Unlocked' : undefined
   })), [progress.badges]);
 
   const recentActivities: Activity[] = useMemo(() => {
       const activities = [
-          ...progress.lessonCompletions.slice(-2).map(lc => {
+          ...progress.lessonCompletions.slice(-3).map(lc => {
               const lesson = allCourses.flatMap(c => c.lessons).find(l => l.id === lc.lessonId);
               return {
                 id: `l-${lc.lessonId}`,
-                type: 'lesson',
+                type: 'lesson' as 'lesson',
                 title: `Completed "${lesson?.title || 'a lesson'}"`,
                 time: 'Recently',
                 points: 10
@@ -154,8 +145,8 @@ export default function DashboardPage() {
           }),
           ...progress.challengeProgress.filter(c => c.completed).slice(-2).map(cc => ({
               id: `c-${cc.level}`,
-              type: 'achievement',
-              title: `Completed Challenge Level ${cc.level}`,
+              type: 'challenge' as 'challenge',
+              title: `Conquered Challenge Level ${cc.level}`,
               time: 'Recently',
               points: 50
           }))
@@ -163,93 +154,87 @@ export default function DashboardPage() {
       return activities.sort(() => -1); // Simple reverse sort for demo
   }, [progress.lessonCompletions, progress.challengeProgress]);
 
-
-  const dailyGoalCompleted = progress.lessonCompletions.length % 5;
-  const dailyGoalTotal = 5;
-  const dailyGoalProgress = (dailyGoalCompleted / dailyGoalTotal) * 100;
-
-
   if (isUserLoading || isProgressLoading) {
       return <div>Loading dashboard...</div>
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="p-4 md:p-6 lg:p-8 space-y-8">
+      
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-4xl font-bold text-foreground mb-2 flex items-center gap-2">
-              <Sparkles className="w-8 h-8 text-purple-500" />
-              Learning Dashboard
-            </h1>
-            <p className="text-muted-foreground">Welcome back, {user?.displayName || 'Learner'}! Keep up the amazing work! 🎉</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Avatar className="w-12 h-12 border-2 border-purple-200">
-              <AvatarImage src={user?.photoURL || ''} />
-              <AvatarFallback className="bg-gradient-to-br from-purple-400 to-teal-400 text-white">
-                {user?.displayName?.charAt(0) || 'L'}
-              </AvatarFallback>
-            </Avatar>
             <div>
-              <p className="font-semibold text-foreground">{user?.displayName || 'Learner'}</p>
-              <p className="text-sm text-muted-foreground">Level {level}</p>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground font-headline flex items-center gap-3">
+                    <Sparkles className="w-8 h-8 text-primary" />
+                    Welcome Back, {user?.displayName?.split(' ')[0] || 'Learner'}!
+                </h1>
+                <p className="text-muted-foreground mt-2">Here's a snapshot of your learning journey. Keep up the great work! 🎉</p>
             </div>
-          </div>
+            <Button asChild>
+              <Link href="/courses">
+                <PlusCircle className="mr-2 h-4 w-4"/>
+                Start a New Lesson
+              </Link>
+            </Button>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <StatsCard title="Total Points" value={totalPoints.toString()} icon={Star} description={`You are currently Level ${level}`} />
+            <StatsCard title="Lessons Completed" value={progress.lessonCompletions.length.toString()} icon={BookOpen} description="Keep learning new things!" />
+            <StatsCard title="Challenges Won" value={progress.challengeProgress.filter(c => c.completed).length.toString()} icon={Trophy} description="Putting skills to the test." />
+            <StatsCard title="Learning Streak" value={`${streak} days`} icon={Flame} description="Consistency is key!" />
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             
-            {/* Left Column */}
-            <div className="lg:col-span-2 space-y-6">
-                <Card className="border-border/50 shadow-sm">
+            {/* Left Column (Main) */}
+            <div className="lg:col-span-3 space-y-6">
+                <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <Target className="w-5 h-5 text-purple-500" />
+                            <Target className="w-5 h-5 text-primary" />
                             Course Progress
                         </CardTitle>
-                        <CardDescription>An overview of your progress across all subjects.</CardDescription>
+                        <CardDescription>Your progress across all subjects.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <ProgressChart userProgress={progress} />
                     </CardContent>
                 </Card>
 
-                <Card className="border-border/50 shadow-sm">
+                <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-teal-500" />
                             Recent Activity
                         </CardTitle>
-                        <CardDescription>Your latest achievements and completed lessons</CardDescription>
+                        <CardDescription>Your latest achievements and completed lessons.</CardDescription>
                     </CardHeader>
                     <CardContent>
                          <ScrollArea className="h-[250px] pr-4">
-                            <div className="space-y-3">
+                            <div className="space-y-1">
                                 {recentActivities.map((activity, index) => (
                                 <React.Fragment key={activity.id}>
-                                    <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-teal-50/50 transition-colors">
-                                    <div className="p-2 rounded-full bg-teal-100 text-teal-600">
-                                        {activity.type === 'lesson' && <BookOpen className="w-4 h-4" />}
-                                        {activity.type === 'quiz' && <CheckCircle2 className="w-4 h-4" />}
-                                        {activity.type === 'achievement' && <Trophy className="w-4 h-4" />}
+                                    <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                                        <div className="p-2.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-900/50 dark:text-teal-400">
+                                            {activity.type === 'lesson' ? <BookOpen className="w-5 h-5" /> : <Trophy className="w-5 h-5" />}
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-medium text-sm text-foreground">{activity.title}</p>
+                                            <p className="text-xs text-muted-foreground">{activity.time}</p>
+                                        </div>
+                                        <Badge variant="secondary" className="bg-lime-100 text-lime-700 dark:bg-lime-900/50 dark:text-lime-300">
+                                            +{activity.points} XP
+                                        </Badge>
                                     </div>
-                                    <div className="flex-1">
-                                        <p className="font-medium text-sm text-foreground">{activity.title}</p>
-                                        <p className="text-xs text-muted-foreground">{activity.time}</p>
-                                    </div>
-                                    <Badge variant="secondary" className="bg-lime-100 text-lime-700">
-                                        +{activity.points}
-                                    </Badge>
-                                    </div>
-                                    {index < recentActivities.length - 1 && <Separator />}
+                                    {index < recentActivities.length - 1 && <Separator className="my-1" />}
                                 </React.Fragment>
                                 ))}
                                 {recentActivities.length === 0 && (
                                     <div className="text-center text-muted-foreground py-10">
-                                        <p>No recent activity. Time to start learning!</p>
+                                        <p>No recent activity yet. Let's start learning!</p>
                                     </div>
                                 )}
                             </div>
@@ -258,81 +243,91 @@ export default function DashboardPage() {
                 </Card>
             </div>
 
-            {/* Right Column */}
-            <div className="space-y-6">
-                <PerformanceAnalysis userProgress={progress} />
-
-                <Card className="border-border/50 shadow-sm">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                        <Trophy className="w-5 h-5 text-yellow-500" />
-                        Achievements
-                        </CardTitle>
-                        <CardDescription>Badges you've unlocked</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <ScrollArea className="h-[300px] pr-4">
-                        {achievements
-                            .filter((a) => a.unlocked)
-                            .map((achievement) => (
-                            <div
-                                key={achievement.id}
-                                className="mb-3 p-3 rounded-lg border border-lime-200 bg-gradient-to-br from-lime-50/50 to-white hover:shadow-md transition-all duration-300"
-                            >
-                                <div className="flex items-start gap-3">
-                                <div className="p-2 rounded-full bg-lime-100 text-lime-600">
-                                    {achievement.icon}
+            {/* Right Column (Continue Learning) */}
+            <div className="lg:col-span-2 space-y-6">
+                <Card className="h-full flex flex-col">
+                  <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                          <TrendingUp className="w-5 h-5 text-primary" />
+                          Continue Your Journey
+                      </CardTitle>
+                      <CardDescription>Pick up where you left off.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-grow flex flex-col gap-4">
+                      {courses.map((course) => (
+                        <Link href={`/courses/${course.id.toLowerCase()}`} key={course.id} className="block group">
+                          <Card className="hover:shadow-md hover:border-primary/50 transition-all duration-300">
+                            <CardContent className="p-4 flex items-center gap-4">
+                                <div className={`p-3 rounded-lg ${course.color} border`}>
+                                    {course.icon}
                                 </div>
                                 <div className="flex-1">
-                                    <h4 className="font-semibold text-sm text-foreground">
-                                    {achievement.title}
-                                    </h4>
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                    {achievement.description}
-                                    </p>
+                                  <div className="flex justify-between items-center mb-1">
+                                    <h4 className="font-semibold group-hover:text-primary transition-colors">{course.title}</h4>
+                                    <span className="text-xs font-medium text-muted-foreground">{course.progress}%</span>
+                                  </div>
+                                  <Progress value={course.progress} className="h-2" />
                                 </div>
-                                </div>
-                            </div>
-                            ))}
-                            {achievements.filter((a) => a.unlocked).length === 0 && (
-                                <div className="text-center text-muted-foreground py-10">
-                                    <p>No badges unlocked yet. Complete some lessons!</p>
-                                </div>
-                            )}
-                        </ScrollArea>
-                    </CardContent>
-                </Card>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      ))}
+                  </CardContent>
+              </Card>
             </div>
         </div>
 
-        {/* Continue Learning Section */}
-        <div>
-            <h2 className="text-2xl font-bold mb-4">Continue Your Journey</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                 {courses.map((course) => (
-                  <Card key={course.id} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                    <CardHeader>
-                        <div className="flex items-center gap-3">
-                             <div className={`p-2 rounded-lg ${course.color} border`}>
-                                {course.icon}
-                            </div>
-                            <CardTitle className="text-lg group-hover:text-purple-600 transition-colors">{course.title}</CardTitle>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground mb-3">{course.completedLessons} of {course.totalLessons} lessons done</p>
-                        <Progress value={course.progress} className="h-2" />
-                    </CardContent>
-                    <CardFooter>
-                         <Button size="sm" variant="ghost" className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 w-full justify-center" asChild>
-                            <Link href={`/courses/${course.id.toLowerCase()}`}>Continue Learning</Link>
-                        </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-            </div>
+        {/* Secondary Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <div className="lg:col-span-3">
+              <PerformanceAnalysis userProgress={progress} />
+          </div>
+          <div className="lg:col-span-2">
+              <Card>
+                  <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                      <Trophy className="w-5 h-5 text-yellow-500" />
+                      Achievements
+                      </CardTitle>
+                      <CardDescription>Badges you've unlocked so far.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                      <ScrollArea className="h-[340px] pr-4">
+                      {achievements
+                          .filter((a) => a.unlocked)
+                          .map((achievement) => (
+                          <div
+                              key={achievement.id}
+                              className="mb-3 p-3 rounded-lg border bg-background hover:border-yellow-400/50 transition-colors"
+                          >
+                              <div className="flex items-center gap-4">
+                              <div className="p-2.5 rounded-full bg-yellow-100 text-yellow-600 dark:bg-yellow-900/50 dark:text-yellow-400">
+                                  {achievement.icon}
+                              </div>
+                              <div className="flex-1">
+                                  <h4 className="font-semibold text-sm text-foreground">
+                                  {achievement.title}
+                                  </h4>
+                                  <p className="text-xs text-muted-foreground mt-0.5">
+                                  {achievement.description}
+                                  </p>
+                              </div>
+                              </div>
+                          </div>
+                          ))}
+                          {achievements.filter((a) => a.unlocked).length === 0 && (
+                              <div className="text-center text-muted-foreground py-10">
+                                  <p>No badges unlocked yet. Complete lessons and challenges to earn them!</p>
+                              </div>
+                          )}
+                      </ScrollArea>
+                  </CardContent>
+              </Card>
+          </div>
         </div>
-      </div>
+
     </div>
   );
 }
+
+    
