@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Lightbulb, Target, Users, Code, School, BookOpen } from 'lucide-react';
 import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const features = [
     {
@@ -27,6 +28,8 @@ const features = [
 ];
 
 export default function AboutPage() {
+    const kimberleyImage = PlaceHolderImages.find(p => p.id === 'kimberley-profile');
+
     return (
       <div className="not-prose space-y-16">
         {/* Hero Section */}
@@ -79,14 +82,16 @@ export default function AboutPage() {
             </h2>
             <div className="flex justify-center">
                 <div className="text-center flex flex-col items-center">
-                    <Image
-                        src="https://picsum.photos/seed/kimberley/200/200"
-                        alt="Kimberley Bezuidenhout"
-                        width={200}
-                        height={200}
-                        className="rounded-full mb-4 object-cover object-top"
-                        data-ai-hint="woman portrait"
-                    />
+                    {kimberleyImage && (
+                        <Image
+                            src={kimberleyImage.imageUrl}
+                            alt="Kimberley Bezuidenhout"
+                            width={200}
+                            height={200}
+                            className="rounded-full mb-4 object-cover object-top"
+                            data-ai-hint={kimberleyImage.imageHint}
+                        />
+                    )}
                     <h3 className="font-bold text-xl">Kimberley Bezuidenhout</h3>
                     <p className="text-muted-foreground">1st Year Student at WeThinkCode_</p>
                 </div>
