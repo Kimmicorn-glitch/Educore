@@ -77,7 +77,7 @@ export default function CodeRunner({ starterCode, testCode, challengeLevel }: Co
             hasAttemptedLoad.current = true;
         }
 
-    }, []);
+    }, [typeof window !== 'undefined' ? window.loadPyodide : undefined]);
 
 
     const runCode = async () => {
