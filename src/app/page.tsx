@@ -5,6 +5,7 @@ import { BookDashed, BrainCircuit, GraduationCap, Languages } from "lucide-react
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { EvervaultCard } from "@/components/ui/evervault-card";
+import { Typewriter } from "@/components/ui/typewriter";
 
 export default function LandingPage() {
   return (
@@ -43,7 +44,14 @@ export default function LandingPage() {
           <div className="container text-center">
               <div className="space-y-6">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-                  The Smarter Way to <span className="text-primary">Learn</span>
+                  The Smarter Way to{" "}
+                  <Typewriter
+                    text="Learn"
+                    speed={150}
+                    loop={false}
+                    showCursor={false}
+                    className="inline-block text-primary"
+                  />
                 </h1>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl mx-auto">
                   An adaptive, AI-powered platform that makes mastering new skills intuitive and fun. Join us and unlock your potential.
