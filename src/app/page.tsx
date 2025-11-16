@@ -6,39 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { EvervaultCard } from "@/components/ui/evervault-card";
 import { Typewriter } from "@/components/ui/typewriter";
-import { Card } from "@/components/ui/card";
-import { Spotlight } from "@/components/ui/spotlight";
 import { SplineScene } from "@/components/ui/splite";
-
-function SplineSceneBasic() {
-  return (
-    <Card className="w-full h-[500px] bg-black/[0.96] relative overflow-hidden">
-      <Spotlight
-        className="-top-40 left-0 md:left-60 md:-top-20"
-        fill="white"
-      />
-      
-      <div className="flex flex-col md:flex-row h-full">
-        <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
-            Interactive 3D
-          </h1>
-          <p className="mt-4 text-neutral-300 max-w-lg">
-            Bring your UI to life with beautiful 3D scenes. Create immersive experiences 
-            that capture attention and enhance your design.
-          </p>
-        </div>
-
-        <div className="flex-1 relative">
-          <SplineScene 
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
-          />
-        </div>
-      </div>
-    </Card>
-  )
-}
 
 export default function LandingPage() {
   return (
@@ -50,7 +18,13 @@ export default function LandingPage() {
             <span className="font-bold font-headline">EduCore</span>
           </Link>
           <div className="flex-1"></div>
-          <nav className="flex items-center space-x-2">
+          <nav className="hidden md:flex items-center space-x-2">
+            <Button variant="ghost" asChild>
+                <Link href="/about">About Us</Link>
+            </Button>
+             <Button variant="ghost" asChild>
+                <Link href="/contact">Contact Us</Link>
+            </Button>
             <Button variant="ghost" asChild>
                 <Link href="/login">Log In</Link>
             </Button>
@@ -58,25 +32,38 @@ export default function LandingPage() {
                 <Link href="/signup">Sign Up</Link>
             </Button>
           </nav>
+           <div className="md:hidden">
+            <Button asChild>
+                <Link href="/login">Get Started</Link>
+            </Button>
+           </div>
         </div>
       </header>
 
       <main className="flex-1">
-        <section className="py-12 text-center sm:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-                The Smarter Way to <Typewriter text={["Learn", "Code", "Create"]} className="text-blue-500"/>
-              </h1>
-              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                An adaptive, AI-powered platform that makes mastering new skills intuitive and fun. Join us and unlock your potential.
-              </p>
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-                <Button asChild size="lg">
-                    <Link href="/signup">Get Started for Free</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                    <Link href="/courses">Explore Courses</Link>
-                </Button>
+        <section className="py-12 sm:py-24 lg:py-32">
+          <div className="container grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+                  The Smarter Way to <Typewriter text={["Learn", "Code", "Create"]} className="text-blue-500"/>
+                </h1>
+                <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                  An adaptive, AI-powered platform that makes mastering new skills intuitive and fun. Join us and unlock your potential.
+                </p>
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <Button asChild size="lg">
+                      <Link href="/signup">Get Started for Free</Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline">
+                      <Link href="/courses">Explore Courses</Link>
+                  </Button>
+                </div>
+              </div>
+              <div className="h-[400px] lg:h-[500px] w-full">
+                <SplineScene 
+                    scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                    className="w-full h-full"
+                />
               </div>
           </div>
         </section>
@@ -112,19 +99,18 @@ export default function LandingPage() {
                 </div>
             </div>
         </section>
-
-        <section className="py-12 sm:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
-                <SplineSceneBasic />
-            </div>
-        </section>
-
       </main>
 
       <footer className="border-t">
           <div className="container flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
               <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} EduCore. All rights reserved.</p>
               <div className="flex items-center gap-4">
+                <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    About Us
+                </Link>
+                <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    Contact Us
+                </Link>
                 <Link href="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                     Terms of Service
                 </Link>

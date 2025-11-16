@@ -15,6 +15,18 @@ export default function LegalLayout({
             <BookDashed className="h-6 w-6 text-primary" />
             <span className="font-bold font-headline">EduCore</span>
           </Link>
+          <div className="flex-1"></div>
+           <nav className="flex items-center space-x-2">
+             <Button variant="ghost" asChild>
+                <Link href="/about">About Us</Link>
+            </Button>
+             <Button variant="ghost" asChild>
+                <Link href="/contact">Contact Us</Link>
+            </Button>
+            <Button variant="ghost" asChild>
+                <Link href="/login">Log In</Link>
+            </Button>
+          </nav>
         </div>
       </header>
 
@@ -30,6 +42,12 @@ export default function LegalLayout({
           <div className="container flex flex-col md:flex-row items-center justify-between py-6 gap-4">
               <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} EduCore. All rights reserved.</p>
               <div className="flex items-center gap-4">
+                 <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    About Us
+                </Link>
+                <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    Contact Us
+                </Link>
                 <Link href="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                     Terms of Service
                 </Link>
