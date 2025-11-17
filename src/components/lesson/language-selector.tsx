@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { useTranslation } from "@/context/translation-context";
 import { Globe } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const languages = [
   { value: "English", label: "English" },
@@ -21,6 +23,15 @@ const languages = [
 
 export default function LanguageSelector() {
   const { setLanguage, language } = useTranslation();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Select defaultValue={language} onValueChange={setLanguage}>

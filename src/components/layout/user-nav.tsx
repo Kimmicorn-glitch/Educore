@@ -20,11 +20,17 @@ import { useUser, useAuth } from "@/firebase"
 import { signOut } from "firebase/auth"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export function UserNav() {
     const { user } = useUser();
     const auth = useAuth();
     const router = useRouter();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleSignOut = () => {
         if(auth) {
@@ -32,6 +38,11 @@ export function UserNav() {
         }
         router.push('/login');
     }
+    
+    if (!mounted) {
+        return null;
+    }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
