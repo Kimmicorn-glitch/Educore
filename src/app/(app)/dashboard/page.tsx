@@ -1,89 +1,38 @@
+"use client"
 
-'use client';
+import * as React from "react"
+import { useState, useEffect, useMemo } from "react"
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { 
+  BookOpen, 
+  Trophy, 
+  Star, 
+  TrendingUp, 
+  Award, 
+  Target,
+  Sparkles,
+  Zap,
+  Heart,
+  Flame,
+  Crown,
+  ChevronRight
+} from "lucide-react"
 
-import React, { useState, useMemo } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
+import { cn } from "@/lib/utils"
 import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import type { UserProgress as UserProgressType } from '@/lib/types';
 import { courses as allCourses, badges as allBadges } from '@/lib/mock-data';
 
-import PerformanceAnalysis from '@/components/dashboard/performance-analysis';
-import ProgressChart from '@/components/dashboard/progress-chart';
-import StatsCard from '@/components/dashboard/stats-card';
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-import { 
-  BookOpen, 
-  Trophy, 
-  Target, 
-  Flame, 
-  Star,
-  CheckCircle2,
-  Sparkles,
-  Brain,
-  Rocket,
-  PlusCircle,
-  TrendingUp
-} from 'lucide-react';
-import Link from 'next/link';
-
-interface Course {
-  id: string;
-  title: string;
-  progress: number;
-  totalLessons: number;
-  completedLessons: number;
-  color: string;
-  icon: React.ReactNode;
-}
-
-interface Achievement {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  unlocked: boolean;
-}
-
-interface Activity {
-  id: string;
-  type: 'lesson' | 'challenge';
-  title: string;
-  time: string;
-  points: number;
-}
-
-
-const iconMap: { [key: string]: React.ElementType } = {
-  Award: Star,
-  Code: Sparkles,
-  GraduationCap: Brain,
-  HardHat: Trophy,
-  Trophy,
-  Star,
-  Flame,
-};
-
-
-const courseIconMap: { [key: string]: React.ReactNode } = {
-  Python: <Brain className="w-5 h-5" />,
-  English: <BookOpen className="w-5 h-5" />,
-  Maths: <Rocket className="w-5 h-5" />,
-  Physics: <Sparkles className="w-5 h-5" />
-};
-
-const courseColorMap: { [key: string]: string } = {
-  Python: 'bg-purple-100 text-purple-700 border-purple-200',
-  English: 'bg-teal-100 text-teal-700 border-teal-200',
-  Maths: 'bg-lime-100 text-lime-700 border-lime-200',
-  Physics: 'bg-orange-100 text-orange-700 border-orange-200'
-};
-
+import { AnimatedNumber } from "@/components/dashboard/animated/animated-number"
+import { AnimatedCircularProgress } from "@/components/dashboard/animated/animated-circular-progress"
 
 const defaultProgress: UserProgressType = {
     lessonCompletions: [],
@@ -92,244 +41,351 @@ const defaultProgress: UserProgressType = {
     challengeProgress: [],
 }
 
+const iconMap: { [key: string]: React.ElementType } = {
+  Award,
+  Code: Sparkles,
+  GraduationCap: BookOpen,
+  HardHat: Trophy,
+  Star,
+  Flame,
+  Crown,
+};
+
+
 export default function DashboardPage() {
-  const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
+    const { user, isUserLoading } = useUser();
+    const firestore = useFirestore();
 
-  const progressDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid, "progress", "main") : null, [user, firestore]);
-  const { data: userProgress, isLoading: isProgressLoading } = useDoc<UserProgressType>(progressDocRef);
+    const progressDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid, "progress", "main") : null, [user, firestore]);
+    const { data: userProgress, isLoading: isProgressLoading } = useDoc<UserProgressType>(progressDocRef);
 
-  const progress = userProgress || defaultProgress;
+    const progress = userProgress || defaultProgress;
+    
+    const { totalPoints } = useMemo(() => {
+        const totalPoints = (progress.lessonCompletions.length * 10) + (progress.challengeProgress.filter(c => c.completed).length * 50);
+        return { totalPoints };
+    }, [progress]);
 
-  const [streak, setStreak] = useState(7); // Static for now
-  
-  const { totalPoints, level } = useMemo(() => {
-    const totalPoints = (progress.lessonCompletions.length * 10) + (progress.challengeProgress.filter(c => c.completed).length * 50);
-    const level = Math.floor(totalPoints / 200) + 1;
-    return { totalPoints, level };
-  }, [progress]);
-  
-  const courses: Course[] = useMemo(() => allCourses.map(course => {
-    const completedLessons = progress.lessonCompletions.filter(lc => course.lessons.some(l => l.id === lc.lessonId && lc.isCompleted)).length;
-    const courseProgress = course.lessons.length > 0 ? Math.round((completedLessons / course.lessons.length) * 100) : 0;
-    return {
-      id: course.id,
-      title: course.title,
-      progress: courseProgress,
-      totalLessons: course.lessons.length,
-      completedLessons: completedLessons,
-      color: courseColorMap[course.id] || 'bg-gray-100 text-gray-700 border-gray-200',
-      icon: courseIconMap[course.id] || <BookOpen className="w-5 h-5" />,
+    const weeklyActivity = useMemo(() => {
+        // Mock data for weekly activity
+        return [45, 60, 55, 70, 65, 80, 75];
+    }, []);
+
+    const coursesData = useMemo(() => allCourses.map(course => {
+        const completedLessons = progress.lessonCompletions.filter(lc => course.lessons.some(l => l.id === lc.lessonId && lc.isCompleted)).length;
+        const courseProgress = course.lessons.length > 0 ? Math.round((completedLessons / course.lessons.length) * 100) : 0;
+        return {
+          id: course.id,
+          title: course.title,
+          progress: courseProgress,
+          totalLessons: course.lessons.length,
+          completedLessons: completedLessons,
+        };
+    }), [progress.lessonCompletions]);
+
+    const currentCourse = coursesData.find(c => c.progress < 100) || coursesData[0] || {
+        title: "No courses started",
+        progress: 0,
+        totalLessons: 0,
+        completedLessons: 0
     };
-  }), [progress.lessonCompletions]);
 
-  const achievements: Achievement[] = useMemo(() => allBadges.map(badge => ({
-    id: badge.id,
-    title: badge.title,
-    description: badge.description,
-    icon: React.createElement(iconMap[badge.icon] || Star, { className: 'w-6 h-6' }),
-    unlocked: progress.badges.includes(badge.id),
-  })), [progress.badges]);
+    const achievementsData = useMemo(() => allBadges.map(badge => ({
+        id: badge.id,
+        title: badge.title,
+        icon: React.createElement(iconMap[badge.icon] || Star, { className: 'w-4 h-4' }),
+        unlocked: progress.badges.includes(badge.id),
+      })), [progress.badges]);
 
-  const recentActivities: Activity[] = useMemo(() => {
-      const activities = [
-          ...progress.lessonCompletions.slice(-3).map(lc => {
-              const lesson = allCourses.flatMap(c => c.lessons).find(l => l.id === lc.lessonId);
-              return {
-                id: `l-${lc.lessonId}`,
-                type: 'lesson' as 'lesson',
-                title: `Completed "${lesson?.title || 'a lesson'}"`,
+    const recentActivity = useMemo(() => {
+        const activities = [
+            ...progress.lessonCompletions.slice(-3).map(lc => {
+                const lesson = allCourses.flatMap(c => c.lessons).find(l => l.id === lc.lessonId);
+                return {
+                  id: `l-${lc.lessonId}`,
+                  title: `Completed: ${lesson?.title || 'a lesson'}`,
+                  time: 'Recently',
+                  points: 10
+                }
+            }),
+            ...progress.challengeProgress.filter(c => c.completed).slice(-2).map(cc => ({
+                id: `c-${cc.level}`,
+                title: `Conquered Challenge Level ${cc.level}`,
                 time: 'Recently',
-                points: 10
-              }
-          }),
-          ...progress.challengeProgress.filter(c => c.completed).slice(-2).map(cc => ({
-              id: `c-${cc.level}`,
-              type: 'challenge' as 'challenge',
-              title: `Conquered Challenge Level ${cc.level}`,
-              time: 'Recently',
-              points: 50
-          }))
-      ];
-      return activities.sort(() => -1); // Simple reverse sort for demo
-  }, [progress.lessonCompletions, progress.challengeProgress]);
+                points: 50
+            }))
+        ];
+        return activities.sort(() => -1); // Simple reverse sort for demo
+    }, [progress.lessonCompletions, progress.challengeProgress]);
 
-  if (isUserLoading || isProgressLoading) {
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    };
+
+    const maxActivity = Math.max(...weeklyActivity);
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    if (isUserLoading || isProgressLoading) {
       return <div>Loading dashboard...</div>
-  }
+    }
 
-  return (
-    <div className="space-y-8">
-      
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    return (
+        <motion.div
+        className="w-full space-y-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        >
+        {/* Header Section */}
+        <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+            <Avatar className="w-16 h-16 border-4 border-purple-200 dark:border-purple-800">
+                <AvatarImage src={user?.photoURL || ''} alt={user?.displayName || 'user'} />
+                <AvatarFallback className="bg-gradient-to-br from-purple-400 to-teal-400 text-white">
+                {user?.displayName?.charAt(0) || 'U'}
+                </AvatarFallback>
+            </Avatar>
             <div>
-                <h1 className="text-3xl font-bold text-foreground font-headline flex items-center gap-3">
-                    <Sparkles className="w-8 h-8 text-primary" />
-                    Welcome Back, {user?.displayName?.split(' ')[0] || 'Learner'}!
+                <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-teal-600 bg-clip-text text-transparent">
+                Welcome back, {user?.displayName?.split(' ')[0] || 'Learner'}!
                 </h1>
-                <p className="text-muted-foreground mt-2">Here's a snapshot of your learning journey. Keep up the great work! 🎉</p>
+                <p className="text-sm text-muted-foreground">Keep up the amazing progress! 🎉</p>
             </div>
-            <Button asChild>
-              <Link href="/courses">
-                <PlusCircle className="mr-2 h-4 w-4"/>
-                Start a New Lesson
-              </Link>
+            </div>
+            <Button asChild className="bg-gradient-to-r from-purple-500 to-teal-500 hover:from-purple-600 hover:to-teal-600 text-white">
+                <Link href="/courses">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Explore Courses
+                </Link>
             </Button>
-        </div>
+        </motion.div>
 
-        {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <StatsCard title="Total Points" value={totalPoints.toString()} icon={Star} description={`You are currently Level ${level}`} />
-            <StatsCard title="Lessons Completed" value={progress.lessonCompletions.length.toString()} icon={BookOpen} description="Keep learning new things!" />
-            <StatsCard title="Challenges Won" value={progress.challengeProgress.filter(c => c.completed).length.toString()} icon={Trophy} description="Putting skills to the test." />
-            <StatsCard title="Learning Streak" value={`${streak} days`} icon={Flame} description="Consistency is key!" />
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <motion.div variants={itemVariants} whileHover={{ scale: 1.02, y: -5 }}>
+            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/30 dark:to-purple-900/30 border-purple-200 dark:border-purple-800">
+                <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                    <Flame className="w-8 h-8 text-orange-500" />
+                    <Badge className="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                    Active
+                    </Badge>
+                </div>
+                <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">Current Streak</p>
+                    <p className="text-3xl font-bold">
+                    <AnimatedNumber value={7} /> days
+                    </p>
+                </div>
+                </CardContent>
+            </Card>
+            </motion.div>
+
+            <motion.div variants={itemVariants} whileHover={{ scale: 1.02, y: -5 }}>
+            <Card className="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-950/30 dark:to-teal-900/30 border-teal-200 dark:border-teal-800">
+                <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                    <Star className="w-8 h-8 text-yellow-500" />
+                    <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                    Points
+                    </Badge>
+                </div>
+                <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">Total Points</p>
+                    <p className="text-3xl font-bold">
+                    <AnimatedNumber value={totalPoints} />
+                    </p>
+                </div>
+                </CardContent>
+            </Card>
+            </motion.div>
+
+            <motion.div variants={itemVariants} whileHover={{ scale: 1.02, y: -5 }}>
+            <Card className="bg-gradient-to-br from-lime-50 to-lime-100 dark:from-lime-950/30 dark:to-lime-900/30 border-lime-200 dark:border-lime-800">
+                <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                    <Trophy className="w-8 h-8 text-lime-600" />
+                    <Badge className="bg-lime-100 text-lime-700 dark:bg-lime-900/30 dark:text-lime-400">
+                    Completed
+                    </Badge>
+                </div>
+                <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">Lessons Done</p>
+                    <p className="text-3xl font-bold">
+                    <AnimatedNumber value={progress.lessonCompletions.length} />
+                    </p>
+                </div>
+                </CardContent>
+            </Card>
+            </motion.div>
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            
-            {/* Left Column (Main) */}
-            <div className="lg:col-span-3 space-y-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Target className="w-5 h-5 text-primary" />
-                            Course Progress
-                        </CardTitle>
-                        <CardDescription>Your progress across all subjects.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <ProgressChart userProgress={progress} />
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-teal-500" />
-                            Recent Activity
-                        </CardTitle>
-                        <CardDescription>Your latest achievements and completed lessons.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                         <ScrollArea className="h-[250px] pr-4">
-                            <div className="space-y-1">
-                                {recentActivities.map((activity, index) => (
-                                <React.Fragment key={activity.id}>
-                                    <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                                        <div className="p-2.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-900/50 dark:text-teal-400">
-                                            {activity.type === 'lesson' ? <BookOpen className="w-5 h-5" /> : <Trophy className="w-5 h-5" />}
-                                        </div>
-                                        <div className="flex-1">
-                                            <p className="font-medium text-sm text-foreground">{activity.title}</p>
-                                            <p className="text-xs text-muted-foreground">{activity.time}</p>
-                                        </div>
-                                        <Badge variant="secondary" className="bg-lime-100 text-lime-700 dark:bg-lime-900/50 dark:text-lime-300">
-                                            +{activity.points} XP
-                                        </Badge>
-                                    </div>
-                                    {index < recentActivities.length - 1 && <Separator className="my-1" />}
-                                </React.Fragment>
-                                ))}
-                                {recentActivities.length === 0 && (
-                                    <div className="text-center text-muted-foreground py-10">
-                                        <p>No recent activity yet. Let's start learning!</p>
-                                    </div>
-                                )}
-                            </div>
-                        </ScrollArea>
-                    </CardContent>
-                </Card>
-            </div>
-
-            {/* Right Column (Continue Learning) */}
-            <div className="lg:col-span-2 space-y-6">
-                <Card className="h-full flex flex-col">
-                  <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                          <TrendingUp className="w-5 h-5 text-primary" />
-                          Continue Your Journey
-                      </CardTitle>
-                      <CardDescription>Pick up where you left off.</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                      {courses.map((course) => (
-                        <Link href={`/courses/${course.id.toLowerCase()}`} key={course.id} className="block group">
-                          <Card className="hover:shadow-md hover:border-primary/50 transition-all duration-300">
-                            <CardContent className="p-4 flex items-center gap-4">
-                                <div className={`p-3 rounded-lg ${course.color} border`}>
-                                    {course.icon}
-                                </div>
-                                <div className="flex-1">
-                                  <div className="flex justify-between items-center mb-1">
-                                    <h4 className="font-semibold group-hover:text-primary transition-colors">{course.title}</h4>
-                                    <span className="text-xs font-medium text-muted-foreground">{course.progress}%</span>
-                                  </div>
-                                  <Progress value={course.progress} className="h-2" />
-                                </div>
-                            </CardContent>
-                          </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Current Course Progress */}
+            <motion.div variants={itemVariants} className="lg:col-span-2">
+            <Card className="h-full">
+                <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-purple-600" />
+                    <h3 className="text-lg font-semibold">Current Course</h3>
+                    </div>
+                    <Button variant="ghost" size="sm" asChild>
+                        <Link href="/courses">
+                            View All <ChevronRight className="w-4 h-4 ml-1" />
                         </Link>
-                      ))}
-                  </CardContent>
-              </Card>
-            </div>
+                    </Button>
+                </div>
+
+                <div className="space-y-6">
+                    <div>
+                    <h4 className="text-xl font-bold mb-2">{currentCourse.title}</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                        {currentCourse.completedLessons} of {currentCourse.totalLessons} lessons completed
+                    </p>
+                    <Progress value={currentCourse.progress} className="h-3" />
+                    <p className="text-sm text-muted-foreground mt-2">{currentCourse.progress}% Complete</p>
+                    </div>
+
+                    {/* Weekly Activity Chart */}
+                    <div>
+                    <h4 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-teal-600" />
+                        Weekly Activity
+                    </h4>
+                    <div className="flex items-end justify-between gap-2 h-32">
+                        {weeklyActivity.map((value, index) => (
+                        <motion.div
+                            key={index}
+                            className="flex-1 flex flex-col items-center gap-2"
+                            initial={{ height: 0 }}
+                            animate={{ height: "100%" }}
+                            transition={{ delay: 0.5 + index * 0.1 }}
+                        >
+                            <motion.div
+                            className="w-full bg-gradient-to-t from-purple-500 to-teal-500 rounded-t-lg"
+                            style={{ height: `${(value / maxActivity) * 100}%` }}
+                            whileHover={{ scale: 1.1 }}
+                            />
+                            <span className="text-xs text-muted-foreground">{days[index]}</span>
+                        </motion.div>
+                        ))}
+                    </div>
+                    </div>
+                </div>
+                </CardContent>
+            </Card>
+            </motion.div>
+
+            {/* Circular Progress & Achievements */}
+            <motion.div variants={itemVariants} className="space-y-6">
+            <Card>
+                <CardContent className="p-6 flex flex-col items-center">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <Target className="w-5 h-5 text-purple-600" />
+                    Overall Progress
+                </h3>
+                <AnimatedCircularProgress
+                    max={100}
+                    min={0}
+                    value={currentCourse.progress}
+                    gaugePrimaryColor="rgb(168 85 247)"
+                    gaugeSecondaryColor="rgba(168, 85, 247, 0.1)"
+                />
+                <p className="text-sm text-muted-foreground mt-4 text-center">
+                    You're doing great! Keep learning!
+                </p>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardContent className="p-6">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <Award className="w-5 h-5 text-yellow-600" />
+                    Achievements
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                    {achievementsData.map((achievement) => (
+                    <motion.div
+                        key={achievement.id}
+                        className={cn(
+                        "p-3 rounded-lg border-2 flex flex-col items-center gap-2 text-center",
+                        achievement.unlocked
+                            ? "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/30 border-yellow-300 dark:border-yellow-800"
+                            : "bg-muted/50 border-muted opacity-50"
+                        )}
+                        whileHover={achievement.unlocked ? { scale: 1.05 } : {}}
+                    >
+                        <div
+                        className={cn(
+                            "p-2 rounded-full",
+                            achievement.unlocked
+                            ? "bg-yellow-200 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-400"
+                            : "bg-muted text-muted-foreground"
+                        )}
+                        >
+                        {achievement.icon}
+                        </div>
+                        <span className="text-xs font-medium">{achievement.title}</span>
+                    </motion.div>
+                    ))}
+                </div>
+                </CardContent>
+            </Card>
+            </motion.div>
         </div>
 
-        {/* Secondary Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          <div className="lg:col-span-3">
-              <PerformanceAnalysis userProgress={progress} />
-          </div>
-          <div className="lg:col-span-2">
-              <Card>
-                  <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                      <Trophy className="w-5 h-5 text-yellow-500" />
-                      Achievements
-                      </CardTitle>
-                      <CardDescription>Badges you've unlocked so far.</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                      <ScrollArea className="h-[340px] pr-4">
-                      {achievements
-                          .filter((a) => a.unlocked)
-                          .map((achievement) => (
-                          <div
-                              key={achievement.id}
-                              className="mb-3 p-3 rounded-lg border bg-background hover:border-yellow-400/50 transition-colors"
-                          >
-                              <div className="flex items-center gap-4">
-                              <div className="p-2.5 rounded-full bg-yellow-100 text-yellow-600 dark:bg-yellow-900/50 dark:text-yellow-400">
-                                  {achievement.icon}
-                              </div>
-                              <div className="flex-1">
-                                  <h4 className="font-semibold text-sm text-foreground">
-                                  {achievement.title}
-                                  </h4>
-                                  <p className="text-xs text-muted-foreground mt-0.5">
-                                  {achievement.description}
-                                  </p>
-                              </div>
-                              </div>
-                          </div>
-                          ))}
-                          {achievements.filter((a) => a.unlocked).length === 0 && (
-                              <div className="text-center text-muted-foreground py-10">
-                                  <p>No badges unlocked yet. Complete lessons and challenges to earn them!</p>
-                              </div>
-                          )}
-                      </ScrollArea>
-                  </CardContent>
-              </Card>
-          </div>
-        </div>
-
-    </div>
-  );
+        {/* Recent Activity */}
+        <motion.div variants={itemVariants}>
+            <Card>
+            <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-teal-600" />
+                    Recent Activity
+                </h3>
+                <Button variant="ghost" size="sm">
+                    View All <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+                </div>
+                <div className="space-y-3">
+                {recentActivity.map((activity, index) => (
+                    <motion.div
+                    key={activity.id}
+                    className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 + index * 0.1 }}
+                    whileHover={{ x: 5 }}
+                    >
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-full bg-gradient-to-br from-purple-500 to-teal-500">
+                        <Heart className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                        <p className="text-sm font-medium">{activity.title}</p>
+                        <p className="text-xs text-muted-foreground">{activity.time}</p>
+                        </div>
+                    </div>
+                    <Badge className="bg-gradient-to-r from-purple-500 to-teal-500 text-white">
+                        +{activity.points} pts
+                    </Badge>
+                    </motion.div>
+                ))}
+                </div>
+            </CardContent>
+            </Card>
+        </motion.div>
+        </motion.div>
+    )
 }
-    
-    
-
-    
