@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI-powered personalized learning tool that analyzes user performance and adjusts lesson difficulty.
@@ -71,7 +72,10 @@ const analyzePerformanceAndAdjustDifficultyFlow = ai.defineFlow(
     outputSchema: PerformanceAnalysisOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    const {output} = await ai.generate({
+        model: 'googleai/gemini-pro',
+        prompt: await prompt.render(input)
+    });
     return output!;
   }
 );
