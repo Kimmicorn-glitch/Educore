@@ -13,11 +13,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { useAuth, useUser } from "@/firebase";
+import { useAuth, useFirestore, useUser } from "@/firebase";
 import { initiateEmailSignIn, initiateGoogleSignIn } from "@/firebase/non-blocking-login";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { setDocumentNonBlocking } from "@/firebase/non-blocking-updates";
+import { doc } from "firebase/firestore";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -31,17 +33,40 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function LoginPage() {
     const auth = useAuth();
+    const firestore = useFirestore();
     const { user, userError } = useUser();
     const router = useRouter();
     const { toast } = useToast();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isNewUser, setIsNewUser] = useState(false);
 
     useEffect(() => {
-        if (user) {
+        if (user && isNewUser) {
+            // Create a user profile document in Firestore
+            const userRef = doc(firestore, "users", user.uid);
+            const userData = {
+                id: user.uid,
+                email: user.email,
+                registrationDate: new Date().toISOString(),
+                name: user.displayName
+            };
+            setDocumentNonBlocking(userRef, userData, { merge: true });
+
+            // Create an initial progress document
+            const progressRef = doc(firestore, "users", user.uid, "progress", "main");
+            const initialProgress = {
+                lessonCompletions: [],
+                exerciseAttempts: [],
+                badges: [],
+                challengeProgress: [],
+            };
+            setDocumentNonBlocking(progressRef, initialProgress);
+            router.push('/dashboard');
+        } else if (user) {
             router.push('/dashboard');
         }
-    }, [user, router]);
+    }, [user, isNewUser, router, firestore]);
     
     useEffect(() => {
         if (userError) {
@@ -60,6 +85,7 @@ export default function LoginPage() {
 
     const handleGoogleSignIn = () => {
         if(auth) {
+            setIsNewUser(true);
             initiateGoogleSignIn(auth);
         }
     };
