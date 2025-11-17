@@ -33,7 +33,7 @@ export default function ProgressChart({ userProgress }: ProgressChartProps) {
     })
 
   return (
-    <div className="h-80 w-full">
+    <div className="w-full aspect-video">
         <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
             <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
