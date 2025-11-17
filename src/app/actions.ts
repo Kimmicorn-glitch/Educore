@@ -1,9 +1,11 @@
+
 // @ts-nocheck
 'use server';
 
 import { analyzePerformanceAndAdjustDifficulty, type PerformanceAnalysisInput } from '@/ai/flows/ai-powered-personalized-learning';
 import { askChatbot, type AskChatbotInput } from '@/ai/ai-chatbot-assistance';
-import { translate, type TranslateInput } from '@/ai/flows/translator';
+import { translate } from '@/ai/flows/translator';
+import { type TranslateInput } from '@/ai/flows/translator-types';
 
 export async function getPerformanceAnalysis(input: PerformanceAnalysisInput) {
   try {

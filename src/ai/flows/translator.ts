@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A flow for translating text into different languages.
@@ -8,18 +9,8 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {TranslateInput, TranslateInputSchema, TranslateOutput, TranslateOutputSchema} from './translator-types';
 
-export const TranslateInputSchema = z.object({
-  text: z.string().describe('The text to translate.'),
-  targetLanguage: z.string().describe('The language to translate the text into (e.g., "French", "Spanish").'),
-});
-export type TranslateInput = z.infer<typeof TranslateInputSchema>;
-
-export const TranslateOutputSchema = z.object({
-  translatedText: z.string().describe('The translated text.'),
-});
-export type TranslateOutput = z.infer<typeof TranslateOutputSchema>;
 
 export async function translate(input: TranslateInput): Promise<TranslateOutput> {
   return translateFlow(input);
