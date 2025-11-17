@@ -72,10 +72,7 @@ const analyzePerformanceAndAdjustDifficultyFlow = ai.defineFlow(
     outputSchema: PerformanceAnalysisOutputSchema,
   },
   async input => {
-    const {output} = await ai.generate({
-        model: 'googleai/gemini-pro',
-        prompt: await prompt.render(input)
-    });
+    const {output} = await prompt(input);
     return output!;
   }
 );
