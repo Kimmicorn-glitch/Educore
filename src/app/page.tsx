@@ -1,13 +1,17 @@
 
 "use client";
 
-import { BookDashed, BrainCircuit, GraduationCap, Languages } from "lucide-react";
+import { useState } from 'react';
+import { BookDashed, BrainCircuit, GraduationCap, Languages, Menu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { EvervaultCard } from "@/components/ui/evervault-card";
 import { Typewriter } from "@/components/ui/typewriter";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 
 export default function LandingPage() {
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
@@ -17,7 +21,7 @@ export default function LandingPage() {
             <span className="font-bold font-headline">EduCore</span>
           </Link>
           <div className="flex-1"></div>
-          <nav className="hidden md:flex items-center space-x-2">
+          <nav className="hidden md:flex items-center space-x-1">
             <Button variant="ghost" asChild>
                 <Link href="/about">About Us</Link>
             </Button>
@@ -31,11 +35,36 @@ export default function LandingPage() {
                 <Link href="/signup">Sign Up</Link>
             </Button>
           </nav>
-           <div className="md:hidden">
-            <Button asChild>
-                <Link href="/login">Get Started</Link>
-            </Button>
-           </div>
+          <div className="md:hidden">
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                <SheetTrigger asChild>
+                    <Button variant="outline" size="icon">
+                        <Menu className="h-6 w-6" />
+                        <span className="sr-only">Open menu</span>
+                    </Button>
+                </SheetTrigger>
+                <SheetContent side="left">
+                    <div className="flex flex-col gap-4 p-4">
+                        <Link href="/" className="flex items-center gap-2 mb-4">
+                            <BookDashed className="h-6 w-6 text-primary" />
+                            <span className="font-bold font-headline">EduCore</span>
+                        </Link>
+                        <SheetClose asChild>
+                            <Button variant="ghost" className="justify-start" asChild><Link href="/about">About Us</Link></Button>
+                        </SheetClose>
+                        <SheetClose asChild>
+                            <Button variant="ghost" className="justify-start" asChild><Link href="/contact">Contact Us</Link></Button>
+                        </SheetClose>
+                        <SheetClose asChild>
+                            <Button variant="ghost" className="justify-start" asChild><Link href="/login">Log In</Link></Button>
+                        </SheetClose>
+                        <SheetClose asChild>
+                             <Button asChild><Link href="/signup">Sign Up</Link></Button>
+                        </SheetClose>
+                    </div>
+                </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
 
@@ -124,4 +153,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
