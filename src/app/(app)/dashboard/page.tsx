@@ -159,12 +159,12 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 space-y-8">
+    <div className="space-y-8">
       
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-foreground font-headline flex items-center gap-3">
+                <h1 className="text-3xl font-bold text-foreground font-headline flex items-center gap-3">
                     <Sparkles className="w-8 h-8 text-primary" />
                     Welcome Back, {user?.displayName?.split(' ')[0] || 'Learner'}!
                 </h1>
@@ -329,5 +329,5 @@ export default function DashboardPage() {
     </div>
   );
 }
-
+    
     
