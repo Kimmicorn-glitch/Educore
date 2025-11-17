@@ -8,7 +8,7 @@
  * - TranslateOutput - The return type for the translate function.
  */
 
-import {ai} from '@/ai/genkit';
+import {translatorAi} from '@/ai/translator-ai';
 import {TranslateInput, TranslateInputSchema, TranslateOutput, TranslateOutputSchema} from './translator-types';
 
 
@@ -16,7 +16,7 @@ export async function translate(input: TranslateInput): Promise<TranslateOutput>
   return translateFlow(input);
 }
 
-const prompt = ai.definePrompt({
+const prompt = translatorAi.definePrompt({
   name: 'translatePrompt',
   input: {schema: TranslateInputSchema},
   output: {schema: TranslateOutputSchema},
@@ -28,7 +28,7 @@ Text:
 Translation:`,
 });
 
-const translateFlow = ai.defineFlow(
+const translateFlow = translatorAi.defineFlow(
   {
     name: 'translateFlow',
     inputSchema: TranslateInputSchema,
