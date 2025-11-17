@@ -139,13 +139,17 @@ export default function CodePlayground() {
             });
         }
     }
-
-    const checkCollision = (charPos: {x: number, y: number}) => {
-        const distance = Math.sqrt(Math.pow(charPos.x - currentLevel.target.x, 2) + Math.pow(charPos.y - currentLevel.target.y, 2));
-        if (distance < 30) { // 30px collision threshold
-           handleLevelComplete();
+    
+    useEffect(() => {
+        const checkCollision = (charPos: {x: number, y: number}) => {
+            const distance = Math.sqrt(Math.pow(charPos.x - currentLevel.target.x, 2) + Math.pow(charPos.y - currentLevel.target.y, 2));
+            if (distance < 30) { // 30px collision threshold
+               handleLevelComplete();
+            }
         }
-    }
+        checkCollision(characterState);
+    }, [characterState, currentLevel.target]);
+
 
     useEffect(() => {
         const loadPyodide = async () => {
@@ -156,7 +160,6 @@ export default function CodePlayground() {
                    setCharacterState(prev => {
                        const newState = {...prev, x: prev.x + x, y: prev.y + y};
                        controls.start({ x: newState.x, y: newState.y });
-                       checkCollision(newState);
                        return newState;
                     });
                 };
@@ -182,7 +185,7 @@ export default function CodePlayground() {
         
         loadPyodide();
 
-    }, [currentLevel, controls, toast]);
+    }, [controls, toast]);
 
     const runCode = async () => {
         if (!pyodideRef.current) return;
