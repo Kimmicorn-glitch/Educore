@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -33,6 +34,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { AnimatedNumber } from "@/components/dashboard/animated/animated-number"
 import { AnimatedCircularProgress } from "@/components/dashboard/animated/animated-circular-progress"
+import PerformanceAnalysis from "@/components/dashboard/performance-analysis"
 
 const defaultProgress: UserProgressType = {
     lessonCompletions: [],
@@ -287,61 +289,63 @@ export default function DashboardPage() {
             </Card>
             </motion.div>
 
-            {/* Circular Progress & Achievements */}
+            {/* Right Column: Circular Progress, Achievements, and AI Analysis */}
             <motion.div variants={itemVariants} className="space-y-6">
-            <Card>
-                <CardContent className="p-6 flex flex-col items-center">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <Target className="w-5 h-5 text-purple-600" />
-                    Overall Progress
-                </h3>
-                <AnimatedCircularProgress
-                    max={100}
-                    min={0}
-                    value={currentCourse.progress}
-                    gaugePrimaryColor="rgb(168 85 247)"
-                    gaugeSecondaryColor="rgba(168, 85, 247, 0.1)"
-                />
-                <p className="text-sm text-muted-foreground mt-4 text-center">
-                    You're doing great! Keep learning!
-                </p>
-                </CardContent>
-            </Card>
+                <Card>
+                    <CardContent className="p-6 flex flex-col items-center">
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <Target className="w-5 h-5 text-purple-600" />
+                        Overall Progress
+                    </h3>
+                    <AnimatedCircularProgress
+                        max={100}
+                        min={0}
+                        value={currentCourse.progress}
+                        gaugePrimaryColor="rgb(168 85 247)"
+                        gaugeSecondaryColor="rgba(168, 85, 247, 0.1)"
+                    />
+                    <p className="text-sm text-muted-foreground mt-4 text-center">
+                        You're doing great! Keep learning!
+                    </p>
+                    </CardContent>
+                </Card>
 
-            <Card>
-                <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <Award className="w-5 h-5 text-yellow-600" />
-                    Achievements
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                    {achievementsData.map((achievement) => (
-                    <motion.div
-                        key={achievement.id}
-                        className={cn(
-                        "p-3 rounded-lg border-2 flex flex-col items-center gap-2 text-center",
-                        achievement.unlocked
-                            ? "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/30 border-yellow-300 dark:border-yellow-800"
-                            : "bg-muted/50 border-muted opacity-50"
-                        )}
-                        whileHover={achievement.unlocked ? { scale: 1.05 } : {}}
-                    >
-                        <div
-                        className={cn(
-                            "p-2 rounded-full",
+                <PerformanceAnalysis userProgress={progress} />
+
+                <Card>
+                    <CardContent className="p-6">
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <Award className="w-5 h-5 text-yellow-600" />
+                        Achievements
+                    </h3>
+                    <div className="grid grid-cols-2 gap-3">
+                        {achievementsData.map((achievement) => (
+                        <motion.div
+                            key={achievement.id}
+                            className={cn(
+                            "p-3 rounded-lg border-2 flex flex-col items-center gap-2 text-center",
                             achievement.unlocked
-                            ? "bg-yellow-200 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-400"
-                            : "bg-muted text-muted-foreground"
-                        )}
+                                ? "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/30 border-yellow-300 dark:border-yellow-800"
+                                : "bg-muted/50 border-muted opacity-50"
+                            )}
+                            whileHover={achievement.unlocked ? { scale: 1.05 } : {}}
                         >
-                        {achievement.icon}
-                        </div>
-                        <span className="text-xs font-medium">{achievement.title}</span>
-                    </motion.div>
-                    ))}
-                </div>
-                </CardContent>
-            </Card>
+                            <div
+                            className={cn(
+                                "p-2 rounded-full",
+                                achievement.unlocked
+                                ? "bg-yellow-200 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-400"
+                                : "bg-muted text-muted-foreground"
+                            )}
+                            >
+                            {achievement.icon}
+                            </div>
+                            <span className="text-xs font-medium">{achievement.title}</span>
+                        </motion.div>
+                        ))}
+                    </div>
+                    </CardContent>
+                </Card>
             </motion.div>
         </div>
 

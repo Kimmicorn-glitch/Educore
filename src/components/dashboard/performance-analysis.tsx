@@ -26,6 +26,14 @@ export default function PerformanceAnalysis({ userProgress }: PerformanceAnalysi
     setError(null);
     setAnalysis(null);
     startTransition(async () => {
+      if (!userProgress) {
+        toast({
+          variant: "destructive",
+          title: "No Progress Data",
+          description: "We couldn't find any progress data to analyze.",
+        });
+        return;
+      }
       const result = await getPerformanceAnalysis({
         ...userProgress,
         subject,
@@ -59,8 +67,8 @@ export default function PerformanceAnalysis({ userProgress }: PerformanceAnalysi
           Get personalized tips to improve your skills. Select a subject and click analyze.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
+      <CardContent className="flex flex-col flex-grow">
+        <div className="space-y-4 flex-grow">
             <Select onValueChange={(value) => setSubject(value as Subject)} defaultValue={subject}>
                 <SelectTrigger>
                     <SelectValue placeholder="Select a subject" />
@@ -122,5 +130,3 @@ export default function PerformanceAnalysis({ userProgress }: PerformanceAnalysi
     </Card>
   );
 }
-
-    
