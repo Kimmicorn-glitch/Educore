@@ -47,6 +47,7 @@ export async function analyzePerformanceAndAdjustDifficulty(
 
 const prompt = ai.definePrompt({
   name: 'performanceAnalysisPrompt',
+  model: 'googleai/gemini-pro',
   input: {schema: PerformanceAnalysisInputSchema},
   output: {schema: PerformanceAnalysisOutputSchema},
   prompt: `You are an AI-powered learning assistant. Analyze the student\'s performance in {{subject}} based on the provided data and suggest difficulty adjustments and focus areas.
