@@ -13,8 +13,6 @@ import {
   Award, 
   Target,
   Sparkles,
-  Zap,
-  Heart,
   Flame,
   Crown,
   ChevronRight
@@ -57,6 +55,11 @@ const iconMap: { [key: string]: React.ElementType } = {
 export default function DashboardPage() {
     const { user, isUserLoading } = useUser();
     const firestore = useFirestore();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const progressDocRef = useMemoFirebase(() => user ? doc(firestore, "users", user.uid, "progress", "main") : null, [user, firestore]);
     const { data: userProgress, isLoading: isProgressLoading } = useDoc<UserProgressType>(progressDocRef);
@@ -99,27 +102,6 @@ export default function DashboardPage() {
         unlocked: progress.badges.includes(badge.id),
       })), [progress.badges]);
 
-    const recentActivity = useMemo(() => {
-        const activities = [
-            ...progress.lessonCompletions.slice(-3).map(lc => {
-                const lesson = allCourses.flatMap(c => c.lessons).find(l => l.id === lc.lessonId);
-                return {
-                  id: `l-${lc.lessonId}`,
-                  title: `Completed: ${lesson?.title || 'a lesson'}`,
-                  time: 'Recently',
-                  points: 10
-                }
-            }),
-            ...progress.challengeProgress.filter(c => c.completed).slice(-2).map(cc => ({
-                id: `c-${cc.level}`,
-                title: `Conquered Challenge Level ${cc.level}`,
-                time: 'Recently',
-                points: 50
-            }))
-        ];
-        return activities.sort(() => -1); // Simple reverse sort for demo
-    }, [progress.lessonCompletions, progress.challengeProgress]);
-
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -136,7 +118,7 @@ export default function DashboardPage() {
     const maxActivity = Math.max(...weeklyActivity);
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-    if (isUserLoading || isProgressLoading) {
+    if (!mounted || isUserLoading || isProgressLoading) {
       return <div>Loading dashboard...</div>
     }
 
@@ -325,8 +307,8 @@ export default function DashboardPage() {
                             className={cn(
                             "p-3 rounded-lg border-2 flex flex-col items-center gap-2 text-center",
                             achievement.unlocked
-                                ? "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/30 border-yellow-300 dark:border-yellow-800"
-                                : "bg-muted/50 border-muted opacity-50"
+                                ? "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-950/30 border-yellow-300 dark:border-yellow-800"
+                                : "bg-muted border-muted opacity-50"
                             )}
                             whileHover={achievement.unlocked ? { scale: 1.05 } : {}}
                         >
@@ -348,48 +330,6 @@ export default function DashboardPage() {
                 </Card>
             </motion.div>
         </div>
-
-        {/* Recent Activity */}
-        <motion.div variants={itemVariants}>
-            <Card>
-            <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-teal-600" />
-                    Recent Activity
-                </h3>
-                <Button variant="ghost" size="sm">
-                    View All <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-                </div>
-                <div className="space-y-3">
-                {recentActivity.map((activity, index) => (
-                    <motion.div
-                    key={activity.id}
-                    className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.8 + index * 0.1 }}
-                    whileHover={{ x: 5 }}
-                    >
-                    <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-full bg-gradient-to-br from-purple-500 to-teal-500">
-                        <Heart className="w-4 h-4 text-white" />
-                        </div>
-                        <div>
-                        <p className="text-sm font-medium">{activity.title}</p>
-                        <p className="text-xs text-muted-foreground">{activity.time}</p>
-                        </div>
-                    </div>
-                    <Badge className="bg-gradient-to-r from-purple-500 to-teal-500 text-white">
-                        +{activity.points} pts
-                    </Badge>
-                    </motion.div>
-                ))}
-                </div>
-            </CardContent>
-            </Card>
-        </motion.div>
         </motion.div>
     )
 }
