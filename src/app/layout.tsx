@@ -3,22 +3,14 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/theme-provider';
-import { Inter, Space_Grotesk } from 'next/font/google';
 
 export const metadata: Metadata = {
   title: 'EduCore - Adaptive Learning Platform',
   description: 'An adaptive learning platform to master Python, English, Maths, and Physics.',
 };
 
-const fontBody = Inter({
-  subsets: ['latin'],
-  variable: '--font-body',
-});
-
-const fontHeadline = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-headline',
-});
+// These fonts are not available via next/font, so we can't define them as variables here.
+// The font-family will be set in tailwind.config.ts based on the theme.
 
 export default function RootLayout({
   children,
@@ -29,9 +21,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-body antialiased",
-          fontBody.variable,
-          fontHeadline.variable
+          "min-h-screen bg-background font-body antialiased"
         )}
         suppressHydrationWarning
       >
