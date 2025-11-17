@@ -29,10 +29,8 @@ export default function AppLayout({
                     <SidebarInset>
                         <div className="flex h-full flex-col">
                             <Header />
-                            <main className="flex-1 overflow-y-auto p-4 pt-6 md:p-8">
-                                <div className="container mx-auto">
-                                    {children}
-                                </div>
+                            <main className="container mx-auto flex-1 overflow-y-auto p-4 pt-6 md:p-8">
+                                {children}
                             </main>
                         </div>
                     </SidebarInset>
