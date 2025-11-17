@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useTransition } from "react";
@@ -58,8 +59,8 @@ export default function PerformanceAnalysis({ userProgress }: PerformanceAnalysi
           Get personalized tips to improve your skills. Select a subject and click analyze.
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex-grow flex flex-col justify-between gap-4">
-        <div>
+      <CardContent>
+        <div className="space-y-4">
             <Select onValueChange={(value) => setSubject(value as Subject)} defaultValue={subject}>
                 <SelectTrigger>
                     <SelectValue placeholder="Select a subject" />
@@ -110,7 +111,7 @@ export default function PerformanceAnalysis({ userProgress }: PerformanceAnalysi
             )}
         </div>
 
-        <Button onClick={handleAnalysis} disabled={isPending} className="w-full mt-4">
+        <Button onClick={handleAnalysis} disabled={isPending} className="w-full mt-6">
           {isPending ? (
             <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...</>
           ) : (
@@ -121,3 +122,5 @@ export default function PerformanceAnalysis({ userProgress }: PerformanceAnalysi
     </Card>
   );
 }
+
+    

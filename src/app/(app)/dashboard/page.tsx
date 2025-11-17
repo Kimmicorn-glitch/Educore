@@ -253,7 +253,7 @@ export default function DashboardPage() {
                       </CardTitle>
                       <CardDescription>Pick up where you left off.</CardDescription>
                   </CardHeader>
-                  <CardContent className="flex-grow flex flex-col gap-4">
+                  <CardContent className="space-y-4">
                       {courses.map((course) => (
                         <Link href={`/courses/${course.id.toLowerCase()}`} key={course.id} className="block group">
                           <Card className="hover:shadow-md hover:border-primary/50 transition-all duration-300">
@@ -330,4 +330,6 @@ export default function DashboardPage() {
   );
 }
     
+    
+
     
