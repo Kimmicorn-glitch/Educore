@@ -1,4 +1,5 @@
 
+
 {
   "entities": {
     "UserAccount": {
@@ -69,6 +70,17 @@
           "challengeProgress": {
             "type": "array",
             "description": "Progress on coding challenges.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "level": { "type": "number" },
+                    "completed": { "type": "boolean" }
+                }
+            }
+          },
+          "playgroundProgress": {
+            "type": "array",
+            "description": "Progress on playground challenges.",
             "items": {
                 "type": "object",
                 "properties": {
@@ -173,3 +185,4 @@
     ]
   }
 }
+

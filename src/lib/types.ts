@@ -1,4 +1,5 @@
 
+
 export type Subject = 'Python' | 'English' | 'Maths' | 'Physics';
 export type TargetAudience = 'Children' | 'Teenagers' | 'Adults';
 
@@ -45,6 +46,7 @@ export interface UserProgress {
   exerciseAttempts: { exerciseId: string; attempts: number; successRate: number }[];
   badges: string[];
   challengeProgress: { level: number, completed: boolean }[];
+  playgroundProgress?: { level: number, completed: boolean }[];
 }
 
 export interface UserAccount {
@@ -79,4 +81,14 @@ export interface TheoryContent {
     definition: string;
   }[];
   lectureNotes: string;
+}
+
+export interface PlaygroundLevel {
+    level: number;
+    title: string;
+    starterCode: string;
+    target: {
+        x: number;
+        y: number;
+    }
 }

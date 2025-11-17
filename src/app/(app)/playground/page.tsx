@@ -8,9 +8,9 @@ export default function PlaygroundPage() {
       <div className="flex items-center gap-4">
         <Gamepad2 className="h-10 w-10 text-primary" />
         <div>
-          <h1 className="text-3xl font-bold font-headline">Code Playground</h1>
+          <h1 className="text-3xl font-bold font-headline">Playground Challenges</h1>
           <p className="text-muted-foreground">
-            Write Python code to control the character on the canvas. Try giving it commands!
+            Write Python code to control the rocket and complete the challenges!
           </p>
         </div>
       </div>

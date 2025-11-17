@@ -1,5 +1,5 @@
 
-import type { Course, Exercise, UserProgress, Badge, Challenge, TheoryContent } from './types';
+import type { Course, Exercise, UserProgress, Badge, Challenge, TheoryContent, PlaygroundLevel } from './types';
 
 export const courses: Course[] = [
   {
@@ -1616,6 +1616,33 @@ export const challenges: Challenge[] = [
     },
 ];
 
+export const playgroundLevels: PlaygroundLevel[] = [
+    {
+        level: 1,
+        title: "First Steps",
+        starterCode: `# Welcome to the Playground!\n# Your goal: guide the rocket to the star!\n\n# Use 'move(x, y)' to move right (x) and down (y).\n# The star is at position (200, 0).\n\nmove(100, 0)\n# What's next?`,
+        target: { x: 200, y: 0 }
+    },
+    {
+        level: 2,
+        title: "A Little Turn",
+        starterCode: `# Good job! Now the star is somewhere else.\n# Use 'rotate(degrees)' to turn the rocket clockwise.\n# The star is at (150, -150).\n\n# Hint: A 45-degree turn might be useful.\n\nmove(100, 0)`,
+        target: { x: 150, y: -150 }
+    },
+    {
+        level: 3,
+        title: "Box Step",
+        starterCode: `# Let's try multiple moves.\n# Can you move in a box shape to reach the star?\n# The star is at (100, 100).\n\nmove(100, 0)\n`,
+        target: { x: 100, y: 100 }
+    },
+    {
+        level: 4,
+        title: "The Final Frontier",
+        starterCode: `# This is the final challenge!\n# The star is far away at (-200, -200).\n# You'll need to combine moves and rotations.\n\n`,
+        target: { x: -200, y: -200 }
+    }
+];
+
 export const userProgress: UserProgress = {
   lessonCompletions: [
     { lessonId: 'py-1', isCompleted: true },
@@ -1632,6 +1659,9 @@ export const userProgress: UserProgress = {
     { level: 1, completed: true },
     { level: 2, completed: true },
     { level: 3, completed: false }
+  ],
+  playgroundProgress: [
+    { level: 1, completed: true }
   ]
 };
 
